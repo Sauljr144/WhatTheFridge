@@ -1,11 +1,15 @@
 import React from 'react'
+import { TouchableOpacityBase } from 'react-native'
 
 const LoginScreen = () => {
   return (
-    <div>
+    <TouchableOpacityBase>
         
-    </div>
+    </TouchableOpacityBase>
   )
+  const styles = StyleSheet.create({
+    
+  })
 }
 
 export default LoginScreen
