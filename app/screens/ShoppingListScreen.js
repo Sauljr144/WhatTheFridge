@@ -1,20 +1,30 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, ScrollView, } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import {
   HStack,
   Center,
   Icon,
-  Button, ButtonIcon} from '@gluestack-ui/themed';
+  Button,
+  ButtonIcon,
+  Select,
+  SelectIcon,
+  SelectTrigger,
+  SelectInput,
+  SelectItem,
+  VStack,
+  SelectContent, 
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectPortal,
+  SelectBackdrop
+} from "@gluestack-ui/themed";
 import { Feather } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
-
 
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false)
- 
-
-
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
     <ScrollView>
@@ -22,75 +32,51 @@ const ShoppingListScreen = () => {
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
       <View>
-        <HStack
-          direction="row"
-          mb="3"
-          mt="3"
-          space="md"
-          justifyContent="space-between"
-        >
-          <HStack space="md">
-            <Center style={styles.subHeaderFont}>
-              <Text>
-                Sort By:
-              </Text>
-            </Center>
+        <HStack>
+          <VStack>
+            <Text style={styles.subHeaderFont}>Sort By:</Text>
+          </VStack>
 
+          <Select>
+    <SelectTrigger>
+      <SelectInput placeholder="Select option" />
+      <SelectIcon mr="$3">
+      <Feather name="plus-circle" size={24} color="#FFCE20" />
+      </SelectIcon>
+    </SelectTrigger>
+    <SelectPortal>
+      <SelectBackdrop />
+      <SelectContent>
+        <SelectDragIndicatorWrapper>
+          <SelectDragIndicator />
+        </SelectDragIndicatorWrapper>
+        <SelectItem label="Beverages" value="beverages" />
+        <SelectItem label="Dairy" value="dairy" />
+        <SelectItem label="Fruits" value="fruits" />
+        <SelectItem label="Grains" value="grains" />
+        <SelectItem label="Meats" value="meats" />
+        <SelectItem label="Miscellaneous" value="misc" />
+        <SelectItem label="Veggies" value="veggies" />
+      </SelectContent>
+    </SelectPortal>
+  </Select>
 
+          <VStack style={styles.addItemContainer}>
+            <Text style={styles.addItemTxt}>Add Item:</Text>
+          </VStack>
 
-            {/* <Select>
-<SelectTrigger variant="outline" size="md">
-    <SelectInput placeholder="Select option" />
-    <SelectIcon mr="$3">
-      <Icon as={ChevronDownIcon} />
-    </SelectIcon>
-  </SelectTrigger>
-</Select> */}
-            {/* <Select
-            selectedValue={category}
-            minWidth="200"
-            accessibilityLabel="Choose Service"
-            placeholder="Choose Service"
-            _selectedItem={{
-              bg: "teal.600",
-              endIcon: <CheckIcon/>,
-            }}
-            mt={1}
-            onValueChange={(itemValue) => setCategory(itemValue)}
-          >
-            <Select.Item label="Beverages" value="beverage" />
-            <Select.Item label="Dairy" value="dairy" />
-            <Select.Item label="Fruits" value="fruits" />
-            <Select.Item label="Grains" value="grains" />
-            <Select.Item label="Meats" value="meats" />
-            <Select.Item label="Miscellaneous" value="misc" />
-            <Select.Item label="View All" value="all" />
-          </Select> */}
-          </HStack>
-         
-          <Center>
-            <HStack space="md" alignItems="center">
-              <Button
-                onPress={() => setIsModalVisible(true)}
-                variant="solid"
-                size="md"
-                borderRadius="Full"
-                style={styles.addItemBtn}
-              >
-                <Text>Add Item</Text>
-              </Button>
-              <ButtonIcon
-                as={Feather}
-                name="plus-circle"
-                icon={<Icon as={Feather} name="plus-circle" />}
-                borderRadius="Full"
-                onPress={() => setIsModalVisible(true)}
-              />
-            </HStack>
-          </Center>
+          <Feather
+            name="plus-circle"
+            size={35}
+            color="#FFCE20"
+            onPress={() => setIsModalVisible(true)}
+          />
         </HStack>
       </View>
-      {isModalVisible && <ShoppingListItemModal onClose={() => setIsModalVisible(false)} />}
+
+      {isModalVisible && (
+        <ShoppingListItemModal onClose={() => setIsModalVisible(false)} />
+      )}
     </ScrollView>
   );
 };
@@ -109,17 +95,23 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
   },
   shoppingHeader: {
-    fontFamily: "Roboto-Bold",
     fontWeight: 700,
     fontSize: 24,
   },
   subHeaderFont: {
-    fontFamily: "Roboto-Regular",
     fontWeight: 400,
-    fontSize: 14,
+    fontSize: 20,
+    justifyContent: "flex-start",
   },
   addItemBtn: {
     padding: 25,
+  },
+  addItemTxt: {
+    fontWeight: 400,
+    fontSize: 20,
+  },
+  addItemContainer: {
+    justifyContent: "end",
   },
 });
 export default ShoppingListScreen;

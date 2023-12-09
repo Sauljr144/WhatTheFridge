@@ -14,7 +14,7 @@ export default function App() {
   //   </Screen>
   //  </GluestackUIProvider>
 
-<GluestackUIProvider>
+<GluestackUIProvider config={config}>
   <Screen>
    <ShoppingListScreen/>
   </Screen>
