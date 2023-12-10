@@ -41,7 +41,7 @@ const ShoppingListScreen = () => {
     <SelectTrigger>
       <SelectInput placeholder="Select option" />
       <SelectIcon mr="$3">
-      <Feather name="plus-circle" size={24} color="#FFCE20" />
+      <Entypo name="chevron-down" size={15} color="black" />
       </SelectIcon>
     </SelectTrigger>
     <SelectPortal>
@@ -75,7 +75,7 @@ const ShoppingListScreen = () => {
       </View>
 
       {isModalVisible && (
-        <ShoppingListItemModal onClose={() => setIsModalVisible(false)} />
+        <ShoppingListItemModal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} />
       )}
     </ScrollView>
   );
