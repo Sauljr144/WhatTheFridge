@@ -12,11 +12,11 @@ import {
   SelectInput,
   SelectItem,
   VStack,
-  SelectContent, 
+  SelectContent,
   SelectDragIndicator,
   SelectDragIndicatorWrapper,
   SelectPortal,
-  SelectBackdrop
+  SelectBackdrop,
 } from "@gluestack-ui/themed";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -38,28 +38,28 @@ const ShoppingListScreen = () => {
           </VStack>
 
           <Select>
-    <SelectTrigger>
-      <SelectInput placeholder="Select option" />
-      <SelectIcon mr="$3">
-      <Entypo name="chevron-down" size={15} color="black" />
-      </SelectIcon>
-    </SelectTrigger>
-    <SelectPortal>
-      <SelectBackdrop />
-      <SelectContent>
-        <SelectDragIndicatorWrapper>
-          <SelectDragIndicator />
-        </SelectDragIndicatorWrapper>
-        <SelectItem label="Beverages" value="beverages" />
-        <SelectItem label="Dairy" value="dairy" />
-        <SelectItem label="Fruits" value="fruits" />
-        <SelectItem label="Grains" value="grains" />
-        <SelectItem label="Meats" value="meats" />
-        <SelectItem label="Miscellaneous" value="misc" />
-        <SelectItem label="Veggies" value="veggies" />
-      </SelectContent>
-    </SelectPortal>
-  </Select>
+            <SelectTrigger>
+              <SelectInput placeholder="Select option" />
+              <SelectIcon mr="$3">
+                <Entypo name="chevron-down" size={15} color="black" />
+              </SelectIcon>
+            </SelectTrigger>
+            <SelectPortal>
+              <SelectBackdrop />
+              <SelectContent>
+                <SelectDragIndicatorWrapper>
+                  <SelectDragIndicator />
+                </SelectDragIndicatorWrapper>
+                <SelectItem label="Beverages" value="beverages" />
+                <SelectItem label="Dairy" value="dairy" />
+                <SelectItem label="Fruits" value="fruits" />
+                <SelectItem label="Grains" value="grains" />
+                <SelectItem label="Meats" value="meats" />
+                <SelectItem label="Miscellaneous" value="misc" />
+                <SelectItem label="Veggies" value="veggies" />
+              </SelectContent>
+            </SelectPortal>
+          </Select>
 
           <VStack style={styles.addItemContainer}>
             <Text style={styles.addItemTxt}>Add Item:</Text>
@@ -71,12 +71,16 @@ const ShoppingListScreen = () => {
             color="#FFCE20"
             onPress={() => setIsModalVisible(true)}
           />
-        </HStack>
-      </View>
 
-      {isModalVisible && (
-        <ShoppingListItemModal isVisible={isModalVisible} onClose={() => setIsModalVisible(false)} />
-      )}
+        {isModalVisible && (
+          <ShoppingListItemModal
+            isVisible={isModalVisible}
+            onClose={() => setIsModalVisible(false)}
+          />
+        )}
+        </HStack>
+
+      </View>
     </ScrollView>
   );
 };

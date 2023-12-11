@@ -4,6 +4,7 @@ import { config } from "@gluestack-ui/config"
 import { StyleSheet, View, Text } from 'react-native';
 import ShoppingListScreen from './app/screens/ShoppingListScreen';
 import Screen from './app/screens/Screen';
+import ShoppingListItemModal from './app/components/ShoppingListItemModal';
 
 
 export default function App() {
