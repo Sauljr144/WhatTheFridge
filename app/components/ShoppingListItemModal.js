@@ -56,9 +56,9 @@ const ShoppingListItemModal = ({
   };
   return (
    
-      <Modal isOpen={isVisible} onClose={onClose} size="lg">
+      <Modal isOpen={isVisible} onClose={onClose} size="lg" >
         <ModalBackdrop />
-        <SafeAreaView>
+      
           <ModalContent style={styles.ModalContent}>
             <ModalHeader>
               <Heading size="sm">Add Item</Heading>
@@ -66,7 +66,7 @@ const ShoppingListItemModal = ({
 
             <ModalBody style={styles.modalInnerContent}>
               <FormControl>
-                <Input>
+                <Input style={styles.input}>
                   <InputField
                     placeholder="Item Name"
                     value={itemName}
@@ -75,15 +75,15 @@ const ShoppingListItemModal = ({
                 </Input>
               </FormControl>
 
-              <Select>
+              <Select style={styles.input}>
                 <SelectTrigger>
-                  <SelectInput
+                  <SelectInput style={styles.input}
                     placeholder="Category"
-                    value={itemCategory}
-                    onValueChange={(value) => {
-                      console.log("Selected Category (onValueChange):", value);
-                      setItemCategory(value);
-                    }}
+                    onValueChange={(text) => {
+                     selectedValue(true)
+                     selectedLabel(text)
+                    }} 
+                    
                   />
 
                   <SelectIcon mr="$3">
@@ -108,7 +108,7 @@ const ShoppingListItemModal = ({
                 </SelectPortal>
               </Select>
 
-              <Input>
+              <Input style={styles.input}>
                 <InputField
                   placeholder="Quantity"
                   value={itemQuantity}
@@ -122,23 +122,32 @@ const ShoppingListItemModal = ({
                 action="positive"
                 borderWidth="$0"
                 onPress={handleAddItem}
+                style={{backgroundColor:"white"}}
               >
-                <ButtonText>Add</ButtonText>
+                <ButtonText style={{color:"black"}}>Add</ButtonText>
               </Button>
             </ModalFooter>
           </ModalContent>
-        </SafeAreaView>
+     
       </Modal>
    
   );
 };
 
 const styles = StyleSheet.create({
+  input:{
+    backgroundColor:"white",
+    margin: 8,
+    borderColor: "white",
+    borderRadius: 15
+  
+
+  },
   ModalContent: {
-    flex: 1,
-    color: "Yellow",
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:"#FFCE20",
+    borderRadius:25
   },
   modalInnerContent: {
     width: '100%', // Adjust the width as needed
