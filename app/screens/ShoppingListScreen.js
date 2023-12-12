@@ -25,6 +25,10 @@ import ShoppingListItemModal from "../components/ShoppingListItemModal";
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [shoppingList, setShoppingList] = useState([])
+  const addItemToShoppingList = (item) =>{
+    setShoppingList((prevList) => [...prevList, item])
+  }
 
   return (
     <ScrollView>
@@ -50,13 +54,13 @@ const ShoppingListScreen = () => {
                 <SelectDragIndicatorWrapper>
                   <SelectDragIndicator />
                 </SelectDragIndicatorWrapper>
-                <SelectItem label="Beverages" value="beverages" />
-                <SelectItem label="Dairy" value="dairy" />
-                <SelectItem label="Fruits" value="fruits" />
-                <SelectItem label="Grains" value="grains" />
-                <SelectItem label="Meats" value="meats" />
+                <SelectItem label="Beverages" value="bevs" />
+                <SelectItem label="Dairy" value="dairyy" />
+                <SelectItem label="Fruits" value="fruit" />
+                <SelectItem label="Grains" value="grain" />
+                <SelectItem label="Meats" value="meat" />
                 <SelectItem label="Miscellaneous" value="misc" />
-                <SelectItem label="Veggies" value="veggies" />
+                <SelectItem label="Veggies" value="veggie" />
               </SelectContent>
             </SelectPortal>
           </Select>
@@ -76,10 +80,20 @@ const ShoppingListScreen = () => {
           <ShoppingListItemModal
             isVisible={isModalVisible}
             onClose={() => setIsModalVisible(false)}
+            addItemToShoppingList = {addItemToShoppingList}
           />
         )}
         </HStack>
 
+      </View>
+      <View>
+        {shoppingList.map((item, index) => (
+          <View key={index} style={styles.shoppingListItem}>
+            <Text>Name: {item.name}</Text>
+            <Text>Category: {item.category}</Text>
+            <Text>Quantity: {item.quantity}</Text>
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
@@ -116,6 +130,13 @@ const styles = StyleSheet.create({
   },
   addItemContainer: {
     justifyContent: "end",
+  },
+  shoppingListItem: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 20
   },
 });
 export default ShoppingListScreen;
