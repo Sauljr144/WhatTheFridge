@@ -5,21 +5,23 @@ import { StyleSheet, View, Text } from 'react-native';
 import ShoppingListScreen from './app/screens/ShoppingListScreen';
 import Screen from './app/screens/Screen';
 import ShoppingListItemModal from './app/components/ShoppingListItemModal';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 export default function App() {
   return (
-  //  <GluestackUIProvider config={config}>
-  //    <Screen style={styles.container}>
-  //     {/* <ShoppingListScreen/> */}
-  //   </Screen>
-  //  </GluestackUIProvider>
 
-<GluestackUIProvider config={config}>
-  <Screen>
+  <GluestackUIProvider config={config}>
+    <GestureHandlerRootView>
+      <Screen>
    <ShoppingListScreen/>
-  </Screen>
+  </Screen> 
+    </GestureHandlerRootView>
 </GluestackUIProvider>
+
+
+
+
  
   
   );

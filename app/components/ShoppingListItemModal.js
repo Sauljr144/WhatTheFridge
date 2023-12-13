@@ -111,36 +111,6 @@ const ShoppingListItemModal = ({
             </Input>
           </FormControl>
 
-          {/* <Select style={styles.input}>
-                <SelectTrigger>
-                  <SelectInput style={styles.input}
-                    placeholder="Category"
-                    onValueChange={(itemCategory) => {
-                     setItemCategory(itemCategory)
-                    }} 
-                    
-                  />
-
-                  <SelectIcon mr="$3">
-                    <Icon as={Entypo} name="chevron-down" size={15} color="black"/>
-                  </SelectIcon>
-                </SelectTrigger>
-                <SelectPortal>
-                  <SelectBackdrop />
-                  <SelectContent>
-                    <SelectDragIndicatorWrapper>
-                      <SelectDragIndicator />
-                    </SelectDragIndicatorWrapper>
-                    <SelectItem label="Beverages" value="beverages"  />
-                    <SelectItem label="Dairy" value="dairy" />
-                    <SelectItem label="Fruits" value="fruits" />
-                    <SelectItem label="Grains" value="grains" />
-                    <SelectItem label="Meats" value="meats" />
-                    <SelectItem label="Miscellaneous" value="misc" />
-                    <SelectItem label="Veggies" value="veggies" />
-                  </SelectContent>
-                </SelectPortal>
-              </Select> */}
           <CategoryPicker
             items={categoryNames}
             placeholder="Category"

@@ -22,45 +22,49 @@ import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
 import CategoryPicker from "../components/CategoryPicker";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { TouchableHighlight } from "react-native";
+import SwipeableItem from "../components/SwipeableItem";
+
 
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [shoppingList, setShoppingList] = useState([])
-  const addItemToShoppingList = (item) =>{
-    setShoppingList((prevList) => [...prevList, item])
-  }
+  const [shoppingList, setShoppingList] = useState([]);
+  const addItemToShoppingList = (item) => {
+    setShoppingList((prevList) => [...prevList, item]);
+  };
 
   const categoryNames = [
     {
-    label: "Beverages",
-    value: 1
-  },
+      label: "Beverages",
+      value: 1,
+    },
     {
-    label: "Dairy",
-    value: 2
-  },
+      label: "Dairy",
+      value: 2,
+    },
     {
-    label: "Fruits",
-    value: 3
-  },
+      label: "Fruits",
+      value: 3,
+    },
     {
-    label: "Grains",
-    value: 4
-  },
+      label: "Grains",
+      value: 4,
+    },
     {
-    label: "Meats",
-    value: 5
-  },
+      label: "Meats",
+      value: 5,
+    },
     {
-    label: "Miscellaneous",
-    value: 6
-  },
+      label: "Miscellaneous",
+      value: 6,
+    },
     {
-    label: "Veggies",
-    value: 7
-  }
-]
+      label: "Veggies",
+      value: 7,
+    },
+  ];
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -72,7 +76,7 @@ const ShoppingListScreen = () => {
             <Text style={styles.subHeaderFont}>Sort By:</Text>
           </VStack>
 
-          <CategoryPicker style={styles.category}/>
+          <CategoryPicker style={styles.category} />
 
           <VStack style={styles.addItemContainer}>
             <Text style={styles.addItemTxt}>Add Item:</Text>
@@ -85,25 +89,34 @@ const ShoppingListScreen = () => {
             onPress={() => setIsModalVisible(true)}
           />
 
-        {isModalVisible && (
-          <ShoppingListItemModal
-            isVisible={isModalVisible}
-            onClose={() => setIsModalVisible(false)}
-            addItemToShoppingList = {addItemToShoppingList}
-          />
-        )}
-        </HStack>
+     
+            {isModalVisible && (
+              <ShoppingListItemModal
+                isVisible={isModalVisible}
+                onClose={() => setIsModalVisible(false)}
+                addItemToShoppingList={addItemToShoppingList}
+              />
+            )}
+        
 
+        </HStack>
       </View>
-      <View>
-        {shoppingList.map((item, index) => (
-          <View key={index} style={styles.shoppingListItem}>
-            <Text>Name: {item.name}</Text>
-            <Text>Category: {item.category}</Text>
-            <Text>Quantity: {item.quantity}</Text>
-          </View>
-        ))}
-      </View>
+      {shoppingList.map((item, index) => (
+        <SwipeableItem
+          key={index}
+          item={item}
+          onDelete={(deletedItem) => {
+            // Handle the delete action here
+            const updatedList = shoppingList.filter(
+              (item) => item !== deletedItem
+            );
+            setShoppingList(updatedList);
+          }}
+        />
+      ))}
+      
+     
+     
     </ScrollView>
   );
 };
@@ -142,15 +155,14 @@ const styles = StyleSheet.create({
   },
   shoppingListItem: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 10,
     marginVertical: 5,
-    borderRadius: 20
+    borderRadius: 20,
   },
-  category:{
-    margin:15,
-    justifyContent: "space-between"
-
-  }
+  category: {
+    margin: 15,
+    justifyContent: "space-between",
+  },
 });
 export default ShoppingListScreen;
