@@ -21,6 +21,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
+import CategoryPicker from "../components/CategoryPicker";
 
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
@@ -30,6 +31,36 @@ const ShoppingListScreen = () => {
     setShoppingList((prevList) => [...prevList, item])
   }
 
+  const categoryNames = [
+    {
+    label: "Beverages",
+    value: 1
+  },
+    {
+    label: "Dairy",
+    value: 2
+  },
+    {
+    label: "Fruits",
+    value: 3
+  },
+    {
+    label: "Grains",
+    value: 4
+  },
+    {
+    label: "Meats",
+    value: 5
+  },
+    {
+    label: "Miscellaneous",
+    value: 6
+  },
+    {
+    label: "Veggies",
+    value: 7
+  }
+]
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -41,29 +72,7 @@ const ShoppingListScreen = () => {
             <Text style={styles.subHeaderFont}>Sort By:</Text>
           </VStack>
 
-          <Select>
-            <SelectTrigger>
-              <SelectInput placeholder="Select option" />
-              <SelectIcon mr="$3">
-                <Entypo name="chevron-down" size={15} color="black" />
-              </SelectIcon>
-            </SelectTrigger>
-            <SelectPortal>
-              <SelectBackdrop />
-              <SelectContent>
-                <SelectDragIndicatorWrapper>
-                  <SelectDragIndicator />
-                </SelectDragIndicatorWrapper>
-                <SelectItem label="Beverages" value="bevs" />
-                <SelectItem label="Dairy" value="dairyy" />
-                <SelectItem label="Fruits" value="fruit" />
-                <SelectItem label="Grains" value="grain" />
-                <SelectItem label="Meats" value="meat" />
-                <SelectItem label="Miscellaneous" value="misc" />
-                <SelectItem label="Veggies" value="veggie" />
-              </SelectContent>
-            </SelectPortal>
-          </Select>
+          <CategoryPicker style={styles.category}/>
 
           <VStack style={styles.addItemContainer}>
             <Text style={styles.addItemTxt}>Add Item:</Text>
@@ -138,5 +147,10 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 20
   },
+  category:{
+    margin:15,
+    justifyContent: "space-between"
+
+  }
 });
 export default ShoppingListScreen;

@@ -12,6 +12,7 @@
     "@gluestack-style/react": "^1.0.26",
     "@gluestack-ui/config": "^1.0.8",
     "@gluestack-ui/themed": "^1.0.24",
+    "@react-native-picker/picker": "^2.6.1",
     "expo": "~49.0.15",
     "expo-status-bar": "~1.6.0",
     "react": "18.2.0",
