@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "fridgeapp",
-    "slug": "fridgeapp",
+    "slug": "whatthefridge",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c5efd38e-a12f-4ad0-a1ed-0b2bebbe2395"
+      }
+    },
+    "owner": "sauljr",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/c5efd38e-a12f-4ad0-a1ed-0b2bebbe2395"
     }
   }
 }
