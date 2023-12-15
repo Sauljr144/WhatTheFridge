@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Button, FlatList, Text, TextInput } from "react-native";
 import { getData, sendData } from "../Services/DataService";
 
-
 const DataTest = () => {
   const categories = [
     "milk",
@@ -16,28 +15,23 @@ const DataTest = () => {
     "other",
   ];
 
+  //useEffect to render data on page load
   useEffect(() => {
-    const getFridgeItems = async () => {
-      let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-      setFridgeItems(myFridgeItems);
-      // console.log(myFridgeItems);
-    };
     getFridgeItems();
+  }, []);
 
-  },[]);
 
-  const [showModal, setShowModal] = useState(false);
 
   //UseStates for Forms
-  // Fridge Item
-  const [fridgeItemName, setFridgeItemName] = useState('');
+  // Fridge Item useStates
+  const [fridgeItemName, setFridgeItemName] = useState("");
   const [fridgeItemID, setFridgeItemID] = useState(0);
-  const [fridgeItemQuantity, setFridgeItemQuantity] = useState('');
-  const [fridgeItemExpirationDate, setFridgeItemExpirationDate] = useState('');
-  const [fridgeItemCategory, setFridgeItemCategory] = useState('');
+  const [fridgeItemQuantity, setFridgeItemQuantity] = useState("");
+  const [fridgeItemExpirationDate, setFridgeItemExpirationDate] = useState("");
+  const [fridgeItemCategory, setFridgeItemCategory] = useState("");
   const [fridgeItemDeleted, setFridgeItemDeleted] = useState(false);
 
-  // Shopping Item
+  // Shopping Item useStates
   const [shoppingItemName, setShoppingItemName] = useState("");
   const [shoppingItemID, setShoppingItemID] = useState(0);
   const [shoppingItemQuantity, setShoppingItemQuantity] = useState(0);
@@ -47,45 +41,45 @@ const DataTest = () => {
   //Bools
   const [edit, setEdit] = useState(false);
 
+  //Arrays
   const [fridgeItems, setFridgeItems] = useState([]);
   const [shoppingItems, setShoppingItems] = useState([]);
 
-  // const newShoppingItems = [{
+  // const newShoppingItems = {
   //     ShoppingItemName: shoppingItemName,
-  //     Id:shoppingItemID,
   //     Quantity: shoppingItemQuantity,
   //     Category: shoppingItemCategory,
   //     IsDeleted: shoppingItemDeleted
-  // }]
+  // }
 
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
 
+//Functions
+  //Get Fridge Items
+  const getFridgeItems = async () => {
+    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
+    setFridgeItems(myFridgeItems);
+  };
+
+  //Add Items Function
   const addFridgeItem = async () => {
-    const newFridgeItems = [
-      {
-        FridgeItemName: fridgeItemName,
-        Id: fridgeItemID,
-        Quantity: fridgeItemQuantity,
-        ExpirationDate: fridgeItemExpirationDate,
-        Category: fridgeItemCategory,
-        IsDeleted: fridgeItemDeleted,
-      },
-    ];
+    const newFridgeItem = {
+      FridgeItemName: fridgeItemName,
+      quantity: fridgeItemQuantity,
+      ExpirationDate: fridgeItemExpirationDate,
+      Category: fridgeItemCategory,
+      IsDeleted: fridgeItemDeleted,
+    };
+    setFridgeItems([...fridgeItems, newFridgeItem]);
 
-    const updatedFridgeItems = [...fridgeItems, newFridgeItems];
+    await sendData("fridge", "AddFridgeItems", newFridgeItem);
 
-    setFridgeItems(updatedFridgeItems);
-    
-    await sendData(updatedFridgeItems);
-    
     // let result = false;
     // if (edit) {
     //     result = await sendData("UpdateFridgeItem", newFridgeItems);
     // } else {
     //     result = await sendData("AddFridgeItems", newFridgeItems);
     // }
-    
+
     // if (result) {
     //     let myFridgeItems = await getData("Fridge", "GetFridgeItems");
     //     setFridgeItems(myFridgeItems);
@@ -94,7 +88,20 @@ const DataTest = () => {
     //     alert(`Blog item not ${edit ? "updated" : "added"}`);
     // }
 
-    console.log(fridgeItems,'it works');
+    console.log(fridgeItems, "it works");
+    getFridgeItems();
+  };
+
+  //Delete a fridge item
+  const deleteFridgeItem = async (item) => {
+    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", id);
+    setFridgeItems([deleteFridgeItems]);
+  };
+
+  //Delete All Items
+  const MasterDelete = async () => {
+    const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
+    setFridgeItems([deleteFridgeItems]);
   };
 
   return (
@@ -103,7 +110,7 @@ const DataTest = () => {
       <TextInput
         placeholder="Enter a Fridge Item"
         value={fridgeItemName}
-        onChangeText={text => setFridgeItemName(text)}
+        onChangeText={(text) => setFridgeItemName(text)}
       />
       <TextInput
         placeholder="Quantity"
@@ -120,8 +127,8 @@ const DataTest = () => {
         value={fridgeItemCategory}
         onChangeText={(text) => setFridgeItemCategory(text)}
       />
-      <Button title="Add Fridge Item" onPress={() =>  addFridgeItem()} />
-      {/* <Button title="Delete Fridge Item" onPress={() => {}} /> */}
+      <Button title="Add Fridge Item" onPress={() => addFridgeItem()} />
+      <Button title="Delete Fridge All Items" onPress={() => MasterDelete()} />
 
       {/* <FlatList>
         data={fridgeItems}
@@ -142,7 +149,6 @@ const DataTest = () => {
       {/* <Text>Shopping Items</Text>
       <Button title="Add Shopping Item" onPress={() => {}} />
       <Button title="Delete Shopping Item" onPress={() => {}} /> */}
-
     </>
   );
 };

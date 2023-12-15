@@ -1,10 +1,10 @@
 //POST
-const sendData = async (passedInData) => {
+const sendData = async (controller, endpoint, passedInData) => {
   try {
-    let result = await fetch('http://localhost:5223/fridge/AddFridgeItems', {
+    let result = await fetch(`http://localhost:5223/${controller}/${endpoint}`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(passedInData),
     });
@@ -16,7 +16,8 @@ const sendData = async (passedInData) => {
 
     let data = await result.json();
     return data;
-  } catch (error) {
+  } 
+  catch (error) {
     console.error(error);
   }
 };
