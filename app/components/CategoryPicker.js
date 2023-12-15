@@ -62,13 +62,13 @@ const CategoryPicker = ({handleAddItem}) => {
                     <SelectDragIndicatorWrapper>
                       <SelectDragIndicator />
                     </SelectDragIndicatorWrapper>
-                    <SelectItem label="Beverages" value="beverages"  />
-                    <SelectItem label="Dairy" value="dairy" />
-                    <SelectItem label="Fruits" value="fruits" />
-                    <SelectItem label="Grains" value="grains" />
-                    <SelectItem label="Meats" value="meats" />
-                    <SelectItem label="Miscellaneous" value="misc" />
-                    <SelectItem label="Veggies" value="veggies" />
+                    <SelectItem label="Beverages" value="1"  />
+                    <SelectItem label="Dairy" value="2" />
+                    <SelectItem label="Fruits" value="3" />
+                    <SelectItem label="Grains" value="4" />
+                    <SelectItem label="Meats" value="5" />
+                    <SelectItem label="Miscellaneous" value="6" />
+                    <SelectItem label="Veggies" value="7" />
                   </SelectContent>
                 </SelectPortal>
               </Select>
@@ -77,11 +77,10 @@ const CategoryPicker = ({handleAddItem}) => {
 const styles = StyleSheet.create({
     input:{
       backgroundColor:"white",
-      margin: 8,
+      margin: 10,
       borderColor: "white",
-      borderRadius: 15
-    
-  
+      borderRadius: 15,
+    width:"50%"
     },
     ModalContent: {
       justifyContent: 'center',

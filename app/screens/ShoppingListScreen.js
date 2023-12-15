@@ -22,10 +22,9 @@ import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
 import CategoryPicker from "../components/CategoryPicker";
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import Swipeable from "react-native-gesture-handler/Swipeable";
 import { TouchableHighlight } from "react-native";
 import SwipeableItem from "../components/SwipeableItem";
-
 
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
@@ -35,72 +34,36 @@ const ShoppingListScreen = () => {
     setShoppingList((prevList) => [...prevList, item]);
   };
 
-  const categoryNames = [
-    {
-      label: "Beverages",
-      value: 1,
-    },
-    {
-      label: "Dairy",
-      value: 2,
-    },
-    {
-      label: "Fruits",
-      value: 3,
-    },
-    {
-      label: "Grains",
-      value: 4,
-    },
-    {
-      label: "Meats",
-      value: 5,
-    },
-    {
-      label: "Miscellaneous",
-      value: 6,
-    },
-    {
-      label: "Veggies",
-      value: 7,
-    },
-  ];
+ 
   return (
     <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
-      <View>
-        <HStack>
-          <VStack>
-            <Text style={styles.subHeaderFont}>Sort By:</Text>
-          </VStack>
 
+      <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
+        <View style={{ flexDirection: "row"}}>
+          <Text style={styles.subHeaderFont}>Sort By:</Text>
           <CategoryPicker style={styles.category} />
-
-          <VStack style={styles.addItemContainer}>
-            <Text style={styles.addItemTxt}>Add Item:</Text>
-          </VStack>
-
+        </View>
+        <View style={{ flexDirection: "row"}}>
+          <Text style={styles.addItemTxt}>Add Item:</Text>
           <Feather
             name="plus-circle"
             size={35}
             color="#FFCE20"
             onPress={() => setIsModalVisible(true)}
           />
-
-     
-            {isModalVisible && (
-              <ShoppingListItemModal
-                isVisible={isModalVisible}
-                onClose={() => setIsModalVisible(false)}
-                addItemToShoppingList={addItemToShoppingList}
-              />
-            )}
-        
-
-        </HStack>
+        </View>
       </View>
+      {isModalVisible && (
+        <ShoppingListItemModal
+          isVisible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          addItemToShoppingList={addItemToShoppingList}
+        />
+      )}
+
       {shoppingList.map((item, index) => (
         <SwipeableItem
           key={index}
@@ -114,9 +77,6 @@ const ShoppingListScreen = () => {
           }}
         />
       ))}
-      
-     
-     
     </ScrollView>
   );
 };
@@ -133,6 +93,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     borderBottomLeftRadius: 25,
+    fontFamily: "Roboto"
+  
   },
   shoppingHeader: {
     fontWeight: 700,
@@ -140,7 +102,7 @@ const styles = StyleSheet.create({
   },
   subHeaderFont: {
     fontWeight: 400,
-    fontSize: 20,
+    fontSize: 15,
     justifyContent: "flex-start",
   },
   addItemBtn: {
@@ -148,7 +110,7 @@ const styles = StyleSheet.create({
   },
   addItemTxt: {
     fontWeight: 400,
-    fontSize: 20,
+    fontSize: 15,
   },
   addItemContainer: {
     justifyContent: "end",
