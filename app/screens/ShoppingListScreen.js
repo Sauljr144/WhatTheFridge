@@ -25,28 +25,32 @@ import CategoryPicker from "../components/CategoryPicker";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { TouchableHighlight } from "react-native";
 import SwipeableItem from "../components/SwipeableItem";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import CategoryPickerScreen from "../components/CategoryPickerScreen";
 
 const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
+
   const addItemToShoppingList = (item) => {
     setShoppingList((prevList) => [...prevList, item]);
   };
 
- 
+  const clearAllItems = () => { setShoppingList([])};
+
   return (
     <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
 
-      <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
-        <View style={{ flexDirection: "row"}}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
-          <CategoryPicker style={styles.category} />
+          <CategoryPickerScreen style={styles.category} />
         </View>
-        <View style={{ flexDirection: "row"}}>
+        <View style={{ flexDirection: "row" }}>
           <Text style={styles.addItemTxt}>Add Item:</Text>
           <Feather
             name="plus-circle"
@@ -55,6 +59,11 @@ const ShoppingListScreen = () => {
             onPress={() => setIsModalVisible(true)}
           />
         </View>
+      </View>
+      <View style={styles.clearAllcontainer}>
+        <TouchableOpacity onPress={clearAllItems}>
+           <Text style={styles.clearAllTxt}>Clear All</Text>
+        </TouchableOpacity>  
       </View>
       {isModalVisible && (
         <ShoppingListItemModal
@@ -93,8 +102,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
     borderBottomLeftRadius: 25,
-    fontFamily: "Roboto"
-  
+    marginBottom: 15,
   },
   shoppingHeader: {
     fontWeight: 700,
@@ -126,5 +134,18 @@ const styles = StyleSheet.create({
     margin: 15,
     justifyContent: "space-between",
   },
+  clearAllcontainer: {
+    margin: 10,
+    paddingRight: 30,
+    paddingBottom: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  clearAllTxt: {
+  textAlign:"center",
+  color:"red",
+   
+  }
+
 });
 export default ShoppingListScreen;

@@ -35,20 +35,22 @@ import {
 } from "@gluestack-ui/themed";
 import { Entypo } from "@expo/vector-icons";
 
-const CategoryPicker = ({handleAddItem}) => {
-    const [itemCategory, setItemCategory] = useState("");
- 
-  
+const CategoryPicker = ({onSelectItem}) => {
+const [selectedCategory, setSelectedCategory] = useState(null);
+
+handleCategoryChange = (itemValue) => {
+  console.log("Selected category in CategoryPicker:", itemValue);
+  setSelectedCategory(itemValue);
+  onSelectItem(itemValue);
+}
+
   return (
             <Select style={styles.input}>
                 <SelectTrigger>
                   <SelectInput style={styles.input}
                     placeholder="Category"
-                    selectedValue={itemCategory}
-                    onValueChange={(itemValue, itemIndex) => {
-                     setItemCategory(itemValue);
-                     handleAddItem(itemValue);
-                    }} 
+                    selectedValue={selectedCategory}
+                    onValueChange={handleCategoryChange}
                     
                   />
 
@@ -62,13 +64,13 @@ const CategoryPicker = ({handleAddItem}) => {
                     <SelectDragIndicatorWrapper>
                       <SelectDragIndicator />
                     </SelectDragIndicatorWrapper>
-                    <SelectItem label="Beverages" value="1"  />
-                    <SelectItem label="Dairy" value="2" />
-                    <SelectItem label="Fruits" value="3" />
-                    <SelectItem label="Grains" value="4" />
-                    <SelectItem label="Meats" value="5" />
-                    <SelectItem label="Miscellaneous" value="6" />
-                    <SelectItem label="Veggies" value="7" />
+                    <SelectItem label="Beverages" value="Beverages"  />
+                    <SelectItem label="Dairy" value="Dairy" />
+                    <SelectItem label="Fruits" value="Fruits" />
+                    <SelectItem label="Grains" value="Grains" />
+                    <SelectItem label="Meats" value="Meats" />
+                    <SelectItem label="Miscellaneous" value="Miscellaneous" />
+                    <SelectItem label="Veggies" value="Veggies" />
                   </SelectContent>
                 </SelectPortal>
               </Select>
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
       margin: 10,
       borderColor: "white",
       borderRadius: 15,
-    width:"50%"
+    
     },
     ModalContent: {
       justifyContent: 'center',

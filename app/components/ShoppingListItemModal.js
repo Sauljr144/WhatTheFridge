@@ -45,48 +45,48 @@ const ShoppingListItemModal = ({
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
   
-  const categoryNames = [
-    {
-      label: "Beverages",
-      value: 1,
-    },
-    {
-      label: "Dairy",
-      value: 2,
-    },
-    {
-      label: "Fruits",
-      value: 3,
-    },
-    {
-      label: "Grains",
-      value: 4,
-    },
-    {
-      label: "Meats",
-      value: 5,
-    },
-    {
-      label: "Miscellaneous",
-      value: 6,
-    },
-    {
-      label: "Veggies",
-      value: 7,
-    },
-  ];
+  // const categoryNames = [
+  //   {
+  //     label: "Beverages",
+  //     value: 1,
+  //   },
+  //   {
+  //     label: "Dairy",
+  //     value: 2,
+  //   },
+  //   {
+  //     label: "Fruits",
+  //     value: 3,
+  //   },
+  //   {
+  //     label: "Grains",
+  //     value: 4,
+  //   },
+  //   {
+  //     label: "Meats",
+  //     value: 5,
+  //   },
+  //   {
+  //     label: "Miscellaneous",
+  //     value: 6,
+  //   },
+  //   {
+  //     label: "Veggies",
+  //     value: 7,
+  //   },
+  // ];
 
   const handleAddItem = () => {
-    const selectedCategory = categoryNames.find(
-      (category) => category.value === itemCategory
-    );
+    // const selectedCategory = categoryNames.find(
+    //   (category) => category.label === itemCategory,
+    // );
 
     const newItem = {
       name: itemName,
-      category: selectedCategory ? selectedCategory.label : "",
+      category: itemCategory,
       quantity: itemQuantity,
     };
-    console.log("selected category:", selectedCategory);
+    console.log("Selected category in ShoppingListItemModal:", itemCategory);
     addItemToShoppingList(newItem);
     onClose();
   };
@@ -112,13 +112,10 @@ const ShoppingListItemModal = ({
           </FormControl>
 
           <CategoryPicker
-            items={categoryNames}
+            // items={categoryNames}
             placeholder="Category"
-            selectedItem={itemCategory}
-            onSelectItem={(item) => setCategory(item)}
-            handleAddItem={(selectedCategory) =>
-              setItemCategory(selectedCategory)
-            }
+            // selectedItem={itemCategory}
+            onSelectItem={(selectedCategory) => setItemCategory(selectedCategory)}
           />
           <Input style={styles.input}>
             <InputField
