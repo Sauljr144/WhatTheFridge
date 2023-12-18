@@ -45,7 +45,7 @@ const CategoryPickerScreen = () => {
     <SelectTrigger variant="underlined">
       <SelectInput style={styles.input}
         placeholder="Category"
-        selectedValue={itemCategory}r
+        selectedValue={itemCategory}
         onValueChange={(itemValue, itemIndex) => {
          setItemCategory(itemValue);
          handleAddItem(itemValue);

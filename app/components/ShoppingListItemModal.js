@@ -1,4 +1,6 @@
-import React, { useState, useRef } from "react";
+// ShoppingListItemModal.js
+
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import {
   Modal,
@@ -7,90 +9,26 @@ import {
   ModalHeader,
   Heading,
   ModalBody,
-  Text,
   ModalFooter,
   Button,
   ButtonText,
-  ScrollView,
-  Center,
-  View,
-  FormControl,
-  FormControlLabel,
-  FormControlLabelText,
-  Icon,
   Input,
   InputField,
-  Select,
-  SelectIcon,
-  SelectTrigger,
-  SelectInput,
-  SelectItem,
-  VStack,
-  SelectContent,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-  SelectPortal,
-  SelectBackdrop,
 } from "@gluestack-ui/themed";
-import { Feather } from "@expo/vector-icons";
 
 import CategoryPicker from "./CategoryPicker";
+import CustomDropdown from "./CustomDropDown";
 
-const ShoppingListItemModal = ({
-  isVisible,
-  onClose,
-  addItemToShoppingList,
-}) => {
+
+const ShoppingListItemModal = ({ isVisible, onClose, addItemToShoppingList, categoryNames }) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
-  
-  // const categoryNames = [
-  //   {
-  //     label: "Beverages",
-  //     value: 1,
-  //   },
-  //   {
-  //     label: "Dairy",
-  //     value: 2,
-  //   },
-  //   {
-  //     label: "Fruits",
-  //     value: 3,
-  //   },
-  //   {
-  //     label: "Grains",
-  //     value: 4,
-  //   },
-  //   {
-  //     label: "Meats",
-  //     value: 5,
-  //   },
-  //   {
-  //     label: "Miscellaneous",
-  //     value: 6,
-  //   },
-  //   {
-  //     label: "Veggies",
-  //     value: 7,
-  //   },
-  // ];
 
-  const handleAddItem = () => {
-    // const selectedCategory = categoryNames.find(
-    //   (category) => category.label === itemCategory,
-    // );
-
-    const newItem = {
-      name: itemName,
-      category: itemCategory,
-      quantity: itemQuantity,
-    };
-    console.log("Selected category in ShoppingListItemModal:", itemCategory);
-    addItemToShoppingList(newItem);
-    onClose();
+  const handleSelectItem = (itemValue) => {
+    console.log('handleSelectItem called with:', itemValue);
+    setItemCategory(itemValue);
   };
-
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
       <ModalBackdrop />
@@ -101,22 +39,20 @@ const ShoppingListItemModal = ({
         </ModalHeader>
 
         <ModalBody style={styles.modalInnerContent}>
-          <FormControl>
-            <Input style={styles.input}>
-              <InputField
-                placeholder="Item Name"
-                value={itemName}
-                onChangeText={(text) => setItemName(text)}
-              />
-            </Input>
-          </FormControl>
+          <Input style={styles.input}>
+            <InputField
+              placeholder="Item Name"
+              value={itemName}
+              onChangeText={(text) => setItemName(text)}
+            />
+          </Input>
 
-          <CategoryPicker
-            // items={categoryNames}
+          <CustomDropdown
             placeholder="Category"
-            // selectedItem={itemCategory}
-            onSelectItem={(selectedCategory) => setItemCategory(selectedCategory)}
+            items={categoryNames}
+            onSelectItem={handleSelectItem}
           />
+
           <Input style={styles.input}>
             <InputField
               placeholder="Quantity"
@@ -125,12 +61,22 @@ const ShoppingListItemModal = ({
             />
           </Input>
         </ModalBody>
+
         <ModalFooter>
           <Button
             size="sm"
             action="positive"
             borderWidth="$0"
-            onPress={handleAddItem}
+            onPress={() => {
+              const newItem = {
+                name: itemName,
+                category: itemCategory,
+                quantity: itemQuantity,
+              };
+              console.log("Selected category in ShoppingListItemModal:", itemCategory);
+              addItemToShoppingList(newItem);
+              onClose();
+            }}
             style={{ backgroundColor: "white" }}
           >
             <ButtonText style={{ color: "black" }}>Add</ButtonText>
@@ -158,4 +104,5 @@ const styles = StyleSheet.create({
     width: "100%", // Adjust the width as needed
   },
 });
+
 export default ShoppingListItemModal;

@@ -39,6 +39,15 @@ const ShoppingListScreen = () => {
 
   const clearAllItems = () => { setShoppingList([])};
 
+  const categoryNames = [
+    { label: "Beverages", value: "Beverages" },
+    { label: "Dairy", value: "Dairy" },
+    { label: "Fruits", value: "Fruits" },
+    { label: "Grains", value: "Grains" },
+    { label: "Meats", value: "Meats" },
+    { label: "Miscellaneous", value: "Miscellaneous" },
+    { label: "Veggies", value: "Veggies" },
+  ];
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -70,6 +79,7 @@ const ShoppingListScreen = () => {
           isVisible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
           addItemToShoppingList={addItemToShoppingList}
+          categoryNames={categoryNames}
         />
       )}
 
