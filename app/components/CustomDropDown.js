@@ -1,7 +1,14 @@
 // CustomDropdown.js
 
-import React, { useState } from 'react';
-import { Modal, ModalBackdrop, ModalContent, Button, ButtonText, View } from '@gluestack-ui/themed';
+import React, { useState } from "react";
+import {
+  Modal,
+  ModalBackdrop,
+  ModalContent,
+  Button,
+  ButtonText,
+  View,
+} from "@gluestack-ui/themed";
 import { StyleSheet } from "react-native";
 
 const CustomDropdown = ({ items, onSelectItem }) => {
@@ -17,7 +24,19 @@ const CustomDropdown = ({ items, onSelectItem }) => {
   return (
     <>
       <Button onPress={() => setIsOpen(true)} style={styles.categorySelect}>
-        <ButtonText style={{ color: 'grey', textAlign: 'left'  }}>{selectedItem || 'Category'}</ButtonText>
+        <ButtonText
+          style={{
+            color: selectedItem ? 'black' : 'grey',
+            fontFamily: "Arial",
+            fontSize: 16,
+            fontWeight: "400",
+            textAlign: "left",
+            marginLeft: 0,
+            paddingLeft: 0,
+          }}
+        >
+          {selectedItem ||"Category"}
+        </ButtonText>
       </Button>
 
       {isOpen && (
@@ -27,8 +46,21 @@ const CustomDropdown = ({ items, onSelectItem }) => {
           <ModalContent style={styles.modalContent}>
             <View>
               {items.map((item) => (
-                <Button key={item.value} onPress={() => handleSelect(item)} style={styles.itemButton}>
-                  <ButtonText style={{ color: 'black'}}>{item.label}</ButtonText>
+                <Button
+                  key={item.value}
+                  onPress={() => handleSelect(item)}
+                  style={styles.itemButton}
+                >
+                  <ButtonText
+                    style={{
+                      color: '#9B9A9A',
+                      fontFamily: "Arial",
+                      fontSize: 16,
+                      fontWeight: "400",
+                    }}
+                  >
+                    {item.label} {selectedItem === item.label && "✔"}
+                  </ButtonText>
                 </Button>
               ))}
             </View>
@@ -43,24 +75,25 @@ const styles = StyleSheet.create({
   categorySelect: {
     backgroundColor: "white",
     margin: 10,
-    borderRadius: 10,
-    borderColor: 'transparent',
-    padding: 10,
+    justifyContent: "flex-start",
+    borderRadius: 15,
+    borderColor: "transparent",
+    paddingLeft: 15,
   },
   modalContent: {
-    backgroundColor: 'white',
-    borderColor: 'gray',
+    backgroundColor: "white",
+    borderColor: "#D4D9D9",
     borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 15,
+    padding: 0,
+    margin: 10,
   },
   itemButton: {
-    backgroundColor: 'white',
-    borderColor: 'gray',
+    backgroundColor: "white",
+    borderColor: "transparent",
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 15,
     margin: 5,
-    padding: 10,
   },
 });
 

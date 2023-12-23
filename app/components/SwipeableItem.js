@@ -37,20 +37,9 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
     );
   };
 
-  const renderLeftActions = (_, dragX) => {
-    const shouldShowButton = dragX > 180;
-
-    if (shouldShowButton) {
-      onEdit(item); // Trigger the edit action
-      return null; // Returning null to avoid rendering default left actions
-    }
-
-    return null;
-  };
 
   return (
     <Swipeable
-      renderLeftActions={renderLeftActions}
       renderRightActions={renderRightActions}
     >
       <TouchableHighlight
@@ -90,7 +79,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 10,
     marginVertical: 5,
-    borderRadius: 20,
+    borderRadius: 15,
   },
   rightActionContainer: {
     flex: 1,
@@ -102,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    borderRadius: 20,
+    borderRadius: 15,
   },
 });
 
