@@ -16,7 +16,7 @@ import {
   InputField,
 } from "@gluestack-ui/themed";
 
-import CategoryPicker from "./CategoryPicker";
+
 import CustomDropdown from "./CustomDropDown";
 
 

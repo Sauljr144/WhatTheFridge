@@ -21,7 +21,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
-import CategoryPicker from "../components/CategoryPicker";
+
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { TouchableHighlight } from "react-native";
 import SwipeableItem from "../components/SwipeableItem";
@@ -32,12 +32,21 @@ const ShoppingListScreen = () => {
   const [category, setCategory] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const handleSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  };
   const addItemToShoppingList = (item) => {
     setShoppingList((prevList) => [...prevList, item]);
   };
-
-  const clearAllItems = () => { setShoppingList([])};
+  let itemsToDisplay = shoppingList;
+  if (selectedCategory) {
+    itemsToDisplay = shoppingList.filter(item => item.category === selectedCategory);
+  }
+  const clearAllItems = () => {
+    setShoppingList([]);
+  };
 
   const categoryNames = [
     { label: "Beverages", value: "Beverages" },
@@ -48,6 +57,7 @@ const ShoppingListScreen = () => {
     { label: "Miscellaneous", value: "Miscellaneous" },
     { label: "Veggies", value: "Veggies" },
   ];
+
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -57,7 +67,10 @@ const ShoppingListScreen = () => {
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
-          <CategoryPickerScreen style={styles.category} />
+          <CategoryPickerScreen
+            style={styles.category}
+            onSelectedCategory={handleSelectedCategory}
+          />
         </View>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.addItemTxt}>Add Item:</Text>
@@ -71,8 +84,8 @@ const ShoppingListScreen = () => {
       </View>
       <View style={styles.clearAllcontainer}>
         <TouchableOpacity onPress={clearAllItems}>
-           <Text style={styles.clearAllTxt}>Clear All</Text>
-        </TouchableOpacity>  
+          <Text style={styles.clearAllTxt}>Clear All</Text>
+        </TouchableOpacity>
       </View>
       {isModalVisible && (
         <ShoppingListItemModal
@@ -83,18 +96,18 @@ const ShoppingListScreen = () => {
         />
       )}
 
-      {shoppingList.map((item, index) => (
-        <SwipeableItem
-          key={index}
-          item={item}
-          onDelete={(deletedItem) => {
-            // Handle the delete action here
-            const updatedList = shoppingList.filter(
-              (item) => item !== deletedItem
-            );
-            setShoppingList(updatedList);
-          }}
-        />
+{itemsToDisplay.map((item, index) => (
+    <SwipeableItem
+      key={index}
+      item={item}
+      onDelete={(deletedItem) => {
+      
+        const updatedList = shoppingList.filter(
+          (item) => item !== deletedItem
+        );
+        setShoppingList(updatedList);
+      }}
+    />
       ))}
     </ScrollView>
   );
@@ -152,10 +165,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   clearAllTxt: {
-  textAlign:"center",
-  color:"red",
-   
-  }
-
+    textAlign: "center",
+    color: "red",
+  },
 });
 export default ShoppingListScreen;
