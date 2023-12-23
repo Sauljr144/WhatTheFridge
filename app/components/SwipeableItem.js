@@ -1,8 +1,16 @@
 // SwipeableItem.js
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { Feather } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+
 import Checkbox from "./Checkbox"; // Import the Checkbox component
 import ShoppingListItemModal from "./ShoppingListItemModal"; // Import the modal component
 
@@ -11,43 +19,39 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
 
-  const renderRightActions = (_, dragX) => {
+  const renderRightActions = (progress, dragX) => {
     const shouldShowButton = dragX < -100;
 
-    if (shouldShowButton !== showDeleteButton) {
-      setShowDeleteButton(shouldShowButton);
-    }
+    // if (shouldShowButton !== showDeleteButton) {
+    //   setShowDeleteButton(shouldShowButton);
+    // }
 
     return (
-      <View style={styles.rightActionContainer}>
-        {showDeleteButton && (
-          <TouchableHighlight
-            underlayColor="#FFCE20"
-            onPress={() => {
-              onDelete(item);
-              setShowDeleteButton(false);
-            }}
-          >
-            <View style={styles.rightAction}>
-              <Feather name="trash-2" size={30} color="#FFF" />
-            </View>
-          </TouchableHighlight>
-        )}
+      <View style={{flexDirection:'row'}}>
+        <View style ={styles.editAction}>
+          <TouchableOpacity onPress={() => handleEdit(item)}>
+            <FontAwesome name="pencil" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+        <View style ={styles.deleteAction}>
+          <TouchableOpacity onPress={() => handleDelete(item)}>
+            <MaterialIcons name="delete-outline" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };
 
-
   return (
-    <Swipeable
-      renderRightActions={renderRightActions}
-    >
+    <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight
         underlayColor="#E0E0E0"
         onPress={() => setShowDeleteButton(false)}
         onLongPress={() => setShowDeleteButton(true)}
       >
-        <View style={{...styles.shoppingListItem, backgroundColor: item.color }}>
+        <View
+          style={{ ...styles.shoppingListItem, backgroundColor: item.color }}
+        >
           <Checkbox isChecked={isChecked} onChange={setIsChecked} />
           <Text>Name: {item.name}</Text>
           <Text>Category: {item.category}</Text>
@@ -86,11 +90,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
-  rightAction: {
-    backgroundColor: "#FF4500",
+  editAction: {
+    backgroundColor: "#05FF00",
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    padding: 15,
+   
+    borderRadius: 15,
+  },
+  deleteAction: {
+    backgroundColor: "#FF0000",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 15,
+    marginRight: 10,
     borderRadius: 15,
   },
 });
