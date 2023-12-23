@@ -20,6 +20,8 @@ const Checkbox = ({ isChecked, onChange }) => {
 const styles = StyleSheet.create({
   checkboxContainer: {
     marginRight: 10,
+    backgroundColor: "white",
+    borderRadius: 50,
   },
 });
 
