@@ -20,7 +20,7 @@ import {
 import CustomDropdown from "./CustomDropDown";
 
 
-const ShoppingListItemModal = ({ isVisible, onClose, addItemToShoppingList, categoryNames }) => {
+const ShoppingListItemModal = ({ isVisible, onClose, addItemToShoppingList, categoryNames, categoryColors }) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
@@ -72,6 +72,7 @@ const ShoppingListItemModal = ({ isVisible, onClose, addItemToShoppingList, cate
                 name: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
+                color: categoryColors[itemCategory]
               };
               console.log("Selected category in ShoppingListItemModal:", itemCategory);
               addItemToShoppingList(newItem);

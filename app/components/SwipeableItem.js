@@ -47,7 +47,7 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
         onPress={() => setShowDeleteButton(false)}
         onLongPress={() => setShowDeleteButton(true)}
       >
-        <View style={styles.shoppingListItem}>
+        <View style={{...styles.shoppingListItem, backgroundColor: item.color }}>
           <Checkbox isChecked={isChecked} onChange={setIsChecked} />
           <Text>Name: {item.name}</Text>
           <Text>Category: {item.category}</Text>

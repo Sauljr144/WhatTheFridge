@@ -21,7 +21,7 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
-
+import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { TouchableHighlight } from "react-native";
 import SwipeableItem from "../components/SwipeableItem";
@@ -38,11 +38,14 @@ const ShoppingListScreen = () => {
     setSelectedCategory(category);
   };
   const addItemToShoppingList = (item) => {
-    setShoppingList((prevList) => [...prevList, item]);
+    const newItem = { ...item, color: categoryColors[item.category] };
+    setShoppingList((prevList) => [...prevList, newItem]);
   };
   let itemsToDisplay = shoppingList;
   if (selectedCategory) {
-    itemsToDisplay = shoppingList.filter(item => item.category === selectedCategory);
+    itemsToDisplay = shoppingList.filter(
+      (item) => item.category === selectedCategory
+    );
   }
   const clearAllItems = () => {
     setShoppingList([]);
@@ -58,6 +61,15 @@ const ShoppingListScreen = () => {
     { label: "Veggies", value: "Veggies" },
   ];
 
+  const categoryColors = {
+    Beverages: "#44BBFE",
+    Dairy: "#FEF644",
+    Fruits: "#44FEBB",
+    Grains: "#FEA844",
+    Meats: "#FE4444",
+    Miscellaneous: "#C244FE",
+    Veggies: "#ACFE44",
+  };
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -93,21 +105,23 @@ const ShoppingListScreen = () => {
           onClose={() => setIsModalVisible(false)}
           addItemToShoppingList={addItemToShoppingList}
           categoryNames={categoryNames}
+          categoryColors={categoryColors}
         />
       )}
 
-{itemsToDisplay.map((item, index) => (
-    <SwipeableItem
-      key={index}
-      item={item}
-      onDelete={(deletedItem) => {
-      
-        const updatedList = shoppingList.filter(
-          (item) => item !== deletedItem
-        );
-        setShoppingList(updatedList);
-      }}
-    />
+      {itemsToDisplay.map((item, index) => (
+        <SwipeableItem
+          key={index}
+          item={item}
+          r
+          children={<ShoppingListItemColor item={item} />}
+          onDelete={(deletedItem) => {
+            const updatedList = shoppingList.filter(
+              (item) => item !== deletedItem
+            );
+            setShoppingList(updatedList);
+          }}
+        />
       ))}
     </ScrollView>
   );
