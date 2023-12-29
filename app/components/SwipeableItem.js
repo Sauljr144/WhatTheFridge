@@ -22,9 +22,10 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
   const renderRightActions = (progress, dragX) => {
     const shouldShowButton = dragX < -100;
 
-    // if (shouldShowButton !== showDeleteButton) {
-    //   setShowDeleteButton(shouldShowButton);
-    // }
+  const handleDelete=()=>{
+    onDelete(item);
+  }
+   
 
     return (
       <View style={{flexDirection:'row'}}>
@@ -34,7 +35,7 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
           </TouchableOpacity>
         </View>
         <View style ={styles.deleteAction}>
-          <TouchableOpacity onPress={() => handleDelete(item)}>
+          <TouchableOpacity onPress={handleDelete}>
             <MaterialIcons name="delete-outline" size={20} color="white" />
           </TouchableOpacity>
         </View>
