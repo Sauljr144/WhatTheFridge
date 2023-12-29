@@ -3,7 +3,7 @@
 import React from 'react';
 import CustomDropdown from './CustomDropDown';
 
-const CategoryPickerScreen = ({ onSelectedCategory }) => {
+const CategoryPickerScreen = ({ onSelectedCategory, selectedCategory }) => {
   const categoryNames = [
     { label: "View All", value: null },
     { label: "Beverages", value: "Beverages" },
@@ -19,6 +19,7 @@ const CategoryPickerScreen = ({ onSelectedCategory }) => {
     <CustomDropdown
       items={categoryNames}
       onSelectItem={onSelectedCategory}
+      selectedValue={selectedCategory}
     />
   );
 };

@@ -1,6 +1,6 @@
 // CustomDropdown.js
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalBackdrop,
@@ -11,15 +11,21 @@ import {
 } from "@gluestack-ui/themed";
 import { StyleSheet } from "react-native";
 
-const CustomDropdown = ({ items, onSelectItem }) => {
+const CustomDropdown = ({ items, onSelectItem, selectedValue}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    const selectedLabel = items.find(item => item.value === selectedValue)?.label;
+    setSelectedItem(selectedLabel);
+  }, [selectedValue]);
 
   const handleSelect = (item) => {
     setSelectedItem(item.label);
     onSelectItem(item.value);
     setIsOpen(false);
   };
+
 
   return (
     <>

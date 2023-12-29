@@ -49,6 +49,7 @@ const ShoppingListScreen = () => {
   }
   const clearAllItems = () => {
     setShoppingList([]);
+    setSelectedCategory(null);
   };
 
   const categoryNames = [
@@ -82,6 +83,7 @@ const ShoppingListScreen = () => {
           <CategoryPickerScreen
             style={styles.category}
             onSelectedCategory={handleSelectedCategory}
+            selectedCategory={selectedCategory}
           />
         </View>
         <View style={{ flexDirection: "row" }}>
