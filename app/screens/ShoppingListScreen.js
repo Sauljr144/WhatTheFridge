@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import {
@@ -29,7 +30,7 @@ import SwipeableItem from "../components/SwipeableItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 
-// ... (your existing imports)
+
 
 const ShoppingListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -58,10 +59,14 @@ const ShoppingListScreen = () => {
     setSelectedCategory(null);
   };
 
-  const handleEdit = (item) => {
-    setIsModalVisible(true);
-    setItemToEdit(item);
+  const handleEdit = (editedItem) => {
+    const updatedList = shoppingList.map((item) =>
+      item === itemToEdit ? editedItem : item
+    );
+    setShoppingList(updatedList);
+    setItemToEdit(null);
   };
+  
 
   const categoryNames = [
     { label: "View All", value: null },
@@ -121,6 +126,8 @@ const ShoppingListScreen = () => {
           categoryNames={categoryNames}
           categoryColors={categoryColors}
           itemToEdit={itemToEdit}
+          isEditing={!!itemToEdit}
+          onEdit={handleEdit}
         />
       )}
 
@@ -135,7 +142,10 @@ const ShoppingListScreen = () => {
             );
             setShoppingList(updatedList);
           }}
-          onEdit={() => handleEdit(item)}
+          onEdit={() => {
+            setIsModalVisible(true);
+            setItemToEdit(item);
+          }}
         />
       ))}
     </ScrollView>
@@ -179,8 +189,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
   },
-
 });
 
 export default ShoppingListScreen;
-

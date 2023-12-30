@@ -70,6 +70,7 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
               categoryColors={categoryColors}
               itemToEdit={itemToEdit} 
               initialItem={item} 
+              
             />
           )}
         </View>

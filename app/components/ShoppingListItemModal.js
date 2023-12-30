@@ -25,6 +25,7 @@ const ShoppingListItemModal = ({
   categoryNames,
   categoryColors,
   itemToEdit,
+  isEditing,
 }) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
@@ -34,9 +35,9 @@ const ShoppingListItemModal = ({
     console.log("itemToEdit in ShoppingListItemModal:", itemToEdit);
     if (itemToEdit) {
       console.log("setting item to edit", itemToEdit);
-      setItemName(itemToEdit.name );
+      setItemName(itemToEdit.name);
       setItemCategory(itemToEdit.category);
-      setItemQuantity(itemToEdit.quantity );
+      setItemQuantity(itemToEdit.quantity);
     } else {
       console.log("No itemToEdit, setting modal fields to empty strings");
       setItemName("");
@@ -55,7 +56,7 @@ const ShoppingListItemModal = ({
 
       <ModalContent style={styles.ModalContent}>
         <ModalHeader>
-          <Heading size="sm">{onEdit ? "Edit Item" : "Add Item"}</Heading>
+          <Heading size="sm">{isEditing ? "Edit Item" : "Add Item"}</Heading>
         </ModalHeader>
 
         <ModalBody style={styles.modalInnerContent}>
@@ -96,12 +97,9 @@ const ShoppingListItemModal = ({
                 color: categoryColors[itemCategory],
               };
 
-              if (onEdit) {
-               console.log("edited Modal", newItem);
+              if (isEditing) {
                 onEdit(newItem);
-                
               } else {
-                
                 addItemToShoppingList(newItem);
               }
 
@@ -110,7 +108,7 @@ const ShoppingListItemModal = ({
             style={{ backgroundColor: "white" }}
           >
             <ButtonText style={{ color: "black" }}>
-              {onEdit ? "Save" : "Add"}
+              {isEditing ? "Done" : "Add"}
             </ButtonText>
           </Button>
         </ModalFooter>
