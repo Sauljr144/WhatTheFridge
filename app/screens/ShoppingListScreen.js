@@ -17,6 +17,7 @@ import {
   SelectDragIndicatorWrapper,
   SelectPortal,
   SelectBackdrop,
+  set,
 } from "@gluestack-ui/themed";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -28,31 +29,42 @@ import SwipeableItem from "../components/SwipeableItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 
+// ... (your existing imports)
+
 const ShoppingListScreen = () => {
-  const [category, setCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [itemToEdit, setItemToEdit] = useState(null);
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
   };
+
   const addItemToShoppingList = (item) => {
     const newItem = { ...item, color: categoryColors[item.category] };
     setShoppingList((prevList) => [...prevList, newItem]);
   };
+
   let itemsToDisplay = shoppingList;
   if (selectedCategory) {
     itemsToDisplay = shoppingList.filter(
       (item) => item.category === selectedCategory
     );
   }
+
   const clearAllItems = () => {
     setShoppingList([]);
     setSelectedCategory(null);
   };
 
+  const handleEdit = (item) => {
+    setIsModalVisible(true);
+    setItemToEdit(item);
+  };
+
   const categoryNames = [
+    { label: "View All", value: null },
     { label: "Beverages", value: "Beverages" },
     { label: "Dairy", value: "Dairy" },
     { label: "Fruits", value: "Fruits" },
@@ -71,6 +83,7 @@ const ShoppingListScreen = () => {
     Miscellaneous: "#C244FE",
     Veggies: "#ACFE44",
   };
+
   return (
     <ScrollView>
       <View style={styles.topBorder}>
@@ -81,7 +94,6 @@ const ShoppingListScreen = () => {
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
           <CategoryPickerScreen
-            style={styles.category}
             onSelectedCategory={handleSelectedCategory}
             selectedCategory={selectedCategory}
           />
@@ -108,6 +120,7 @@ const ShoppingListScreen = () => {
           addItemToShoppingList={addItemToShoppingList}
           categoryNames={categoryNames}
           categoryColors={categoryColors}
+          itemToEdit={itemToEdit}
         />
       )}
 
@@ -115,7 +128,6 @@ const ShoppingListScreen = () => {
         <SwipeableItem
           key={index}
           item={item}
-          r
           children={<ShoppingListItemColor item={item} />}
           onDelete={(deletedItem) => {
             const updatedList = shoppingList.filter(
@@ -123,11 +135,13 @@ const ShoppingListScreen = () => {
             );
             setShoppingList(updatedList);
           }}
+          onEdit={() => handleEdit(item)}
         />
       ))}
     </ScrollView>
   );
 };
+
 const styles = StyleSheet.create({
   topBorder: {
     justifyContent: "flex-end",
@@ -138,40 +152,21 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingBottom: 30,
     borderBottomRightRadius: 25,
-    borderBottomRightRadius: 25,
-    borderBottomLeftRadius: 25,
     borderBottomLeftRadius: 25,
     marginBottom: 15,
   },
   shoppingHeader: {
-    fontWeight: 700,
+    fontWeight: "700",
     fontSize: 24,
   },
   subHeaderFont: {
-    fontWeight: 400,
+    fontWeight: "400",
     fontSize: 15,
     justifyContent: "flex-start",
   },
-  addItemBtn: {
-    padding: 25,
-  },
   addItemTxt: {
-    fontWeight: 400,
+    fontWeight: "400",
     fontSize: 15,
-  },
-  addItemContainer: {
-    justifyContent: "end",
-  },
-  shoppingListItem: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 20,
-  },
-  category: {
-    margin: 15,
-    justifyContent: "space-between",
   },
   clearAllcontainer: {
     margin: 10,
@@ -184,5 +179,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
   },
+
 });
+
 export default ShoppingListScreen;
+

@@ -13,6 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import Checkbox from "./Checkbox"; // Import the Checkbox component
 import ShoppingListItemModal from "./ShoppingListItemModal"; // Import the modal component
+import { set } from "@gluestack-style/react";
 
 const SwipeableItem = ({ item, onDelete, onEdit }) => {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
@@ -25,12 +26,11 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
   const handleDelete=()=>{
     onDelete(item);
   }
-   
-
+ 
     return (
       <View style={{flexDirection:'row'}}>
         <View style ={styles.editAction}>
-          <TouchableOpacity onPress={() => handleEdit(item)}>
+          <TouchableOpacity onPress={()=> onEdit(item)}>
             <FontAwesome name="pencil" size={20} color="white" />
           </TouchableOpacity>
         </View>
@@ -63,11 +63,13 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
               isVisible={isEditModalVisible}
               onClose={() => setIsEditModalVisible(false)}
               addItemToShoppingList={(editedItem) => {
-                // Handle the edited item
-                // You may want to update the item in your shopping list or take other actions
+               
                 setIsEditModalVisible(false);
               }}
-              initialItem={item} // Pass the item to the modal for editing
+              categoryNames={categoryNames}
+              categoryColors={categoryColors}
+              itemToEdit={itemToEdit} 
+              initialItem={item} 
             />
           )}
         </View>
