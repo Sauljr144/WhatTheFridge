@@ -94,7 +94,8 @@ const DataTest = () => {
 
   //Delete a fridge item
   const deleteFridgeItem = async (item) => {
-    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", id);
+    console.log(item);
+    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", item);
     setFridgeItems([deleteFridgeItems]);
   };
 
@@ -143,7 +144,7 @@ const DataTest = () => {
       </FlatList> */}
 
       {fridgeItems.map((item, index) => (
-        <Text key={index}>{item.fridgeItemName}</Text>
+        <Text key={index}>{item.fridgeItemName}<Button title="Edit"/> <Button title="Delete"/></Text>
       ))}
 
       {/* <Text>Shopping Items</Text>
