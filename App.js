@@ -1,22 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import DataTest from './app/screens/DataTest';
-import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
-      <SafeAreaView>
-
-        <View style={styles.container}>
-          <DataTest/>
-          <StatusBar style="auto" />
-        </View>
-
-      </SafeAreaView>
-     
-
-    </GestureHandlerRootView>
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 
