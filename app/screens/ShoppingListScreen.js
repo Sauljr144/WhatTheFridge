@@ -90,12 +90,13 @@ const ShoppingListScreen = () => {
   };
 
   return (
-    <ScrollView>
+    <>
+    
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between", margin:20}}>
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
           <CategoryPickerScreen
@@ -130,7 +131,7 @@ const ShoppingListScreen = () => {
           onEdit={handleEdit}
         />
       )}
-
+<ScrollView>
       {itemsToDisplay.map((item, index) => (
         <SwipeableItem
           key={index}
@@ -149,6 +150,8 @@ const ShoppingListScreen = () => {
         />
       ))}
     </ScrollView>
+    
+    </>
   );
 };
 
@@ -177,6 +180,7 @@ const styles = StyleSheet.create({
   addItemTxt: {
     fontWeight: "400",
     fontSize: 15,
+    marginRight: 10,
   },
   clearAllcontainer: {
     margin: 10,

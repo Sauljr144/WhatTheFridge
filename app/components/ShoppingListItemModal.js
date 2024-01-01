@@ -1,6 +1,6 @@
 // ShoppingListItemModal.js
 import React, { useState, useEffect } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import {
   Modal,
   ModalBackdrop,
@@ -54,9 +54,17 @@ const ShoppingListItemModal = ({
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
       <ModalBackdrop />
 
-      <ModalContent style={styles.ModalContent}>
+      <ModalContent style={styles.ModalContent}> 
+      <View style={styles.ModalContainer}>
+        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>X</Text>
+            </TouchableOpacity>
+      </View>
+       
         <ModalHeader>
+        
           <Heading size="sm">{isEditing ? "Edit Item" : "Add Item"}</Heading>
+          
         </ModalHeader>
 
         <ModalBody style={styles.modalInnerContent}>
@@ -132,6 +140,24 @@ const styles = StyleSheet.create({
   },
   modalInnerContent: {
     width: "100%",
+  },
+  closeButton: {
+    paddingTop: 20,
+    justifyContent: "flex-end",
+  },
+  closeButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "black",
+
+  },
+  ModalContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    width: "100%",
+    margin: 5,
+    paddingRight: 30,
   },
 });
 
