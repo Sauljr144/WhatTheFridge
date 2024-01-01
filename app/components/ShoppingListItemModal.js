@@ -14,8 +14,8 @@ import {
   Input,
   InputField,
 } from "@gluestack-ui/themed";
-
 import CustomDropdown from "./CustomDropDown";
+import { getData, sendData } from "../Services/DataService";
 
 const ShoppingListItemModal = ({
   isVisible,
@@ -48,6 +48,24 @@ const ShoppingListItemModal = ({
 
   const handleSelectItem = (itemValue) => {
     setItemCategory(itemValue);
+  };
+
+  //Arrays
+  const [fridgeItems, setFridgeItems] = useState([]);
+
+//Functions
+  //Function to add to database
+  const addFridgeItem = async () => {
+    const newFridgeItem = {
+      FridgeItemName: itemName,
+      quantity: itemQuantity,
+      // ExpirationDate: fridgeItemExpirationDate,
+      Category: itemCategory,
+      // IsDeleted: fridgeItemDeleted,
+    };
+    setFridgeItems([...fridgeItems, newFridgeItem]);
+    await sendData("fridge", "AddFridgeItems", newFridgeItem);
+    console.log(fridgeItems, "it works");
   };
 
   return (
@@ -109,8 +127,12 @@ const ShoppingListItemModal = ({
                 onEdit(newItem);
               } else {
                 addItemToShoppingList(newItem);
+
+                //Adding to our database
+                addFridgeItem();
               }
 
+              
               onClose();
             }}
             style={{ backgroundColor: "white" }}

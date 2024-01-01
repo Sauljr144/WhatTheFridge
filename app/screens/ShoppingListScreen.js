@@ -1,35 +1,13 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import {
-  HStack,
-  Center,
-  Icon,
-  Button,
-  ButtonIcon,
-  Select,
-  SelectIcon,
-  SelectTrigger,
-  SelectInput,
-  SelectItem,
-  VStack,
-  SelectContent,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-  SelectPortal,
-  SelectBackdrop,
-  set,
-} from "@gluestack-ui/themed";
 import { Feather } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
 import ShoppingListItemColor from "../components/ShoppingListItemColor";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import { TouchableHighlight } from "react-native";
 import SwipeableItem from "../components/SwipeableItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-
+import { getData, sendData } from "../Services/DataService";
 
 
 const ShoppingListScreen = () => {
@@ -37,6 +15,19 @@ const ShoppingListScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
   const [itemToEdit, setItemToEdit] = useState(null);
+
+  //useEffect to render data on page load
+  useEffect(() => {
+    getFridgeItems();
+  }, []);
+  
+
+  //Functions
+  //Get Fridge Items
+  const getFridgeItems = async () => {
+    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
+    setShoppingList(myFridgeItems);
+  };
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
