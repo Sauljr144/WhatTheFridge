@@ -6,8 +6,8 @@ import NavPiece from './app/components/NavPiece';
 export default function App() {
   return (
     <View style={styles.container}>
-     {/* <CreateAccountScreen/> */}
-     <NavPiece/>
+     <CreateAccountScreen/>
+     {/* <NavPiece/> */}
     </View>
   );
 }
