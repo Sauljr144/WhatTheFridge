@@ -13,9 +13,8 @@ import { FontAwesome } from "@expo/vector-icons";
 
 import Checkbox from "./Checkbox"; // Import the Checkbox component
 import ShoppingListItemModal from "./ShoppingListItemModal"; // Import the modal component
-import { set } from "@gluestack-style/react";
 
-const SwipeableItem = ({ item, onDelete, onEdit }) => {
+const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category }) => {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -23,24 +22,23 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
   const renderRightActions = (progress, dragX) => {
     const shouldShowButton = dragX < -100;
 
-  const handleDelete=()=>{
-    onDelete(item);
-  }
- 
-    return (
-      <View style={{flexDirection:'row'}}>
-        <View style ={styles.editAction}>
-          <TouchableOpacity onPress={()=> onEdit(item)}>
-            <FontAwesome name="pencil" size={20} color="white" />
-          </TouchableOpacity>
-        </View>
-        <View style ={styles.deleteAction}>
-          <TouchableOpacity onPress={handleDelete}>
-            <MaterialIcons name="delete-outline" size={20} color="white" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+    // const handleDelete = () => {
+    //   onDelete(item);
+    // };
+          return (
+            <View style={{ flexDirection: "row" }}>
+              <View style={styles.editAction}>
+                <TouchableOpacity onPress={() => onEdit(item)}>
+                  <FontAwesome name="pencil" size={20} color="white" />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.deleteAction}>
+                <TouchableOpacity onPress={onPress}>
+                  <MaterialIcons name="delete-outline" size={20} color="white" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          );
   };
 
   return (
@@ -51,26 +49,24 @@ const SwipeableItem = ({ item, onDelete, onEdit }) => {
         onLongPress={() => setShowDeleteButton(true)}
       >
         <View
-          style={{ ...styles.shoppingListItem, backgroundColor: item.color }}
+          style={{ ...styles.shoppingListItem, backgroundColor: color }}
         >
           <Checkbox isChecked={isChecked} onChange={setIsChecked} />
-          <Text>Name: {item.name}</Text>
-          <Text>Category: {item.category}</Text>
-          <Text>Quantity: {item.quantity}</Text>
+          <Text>Name: {name}</Text>
+          <Text>Category: {category}</Text>
+          <Text>Quantity: {quantity}</Text>
 
           {isEditModalVisible && (
             <ShoppingListItemModal
               isVisible={isEditModalVisible}
               onClose={() => setIsEditModalVisible(false)}
               addItemToShoppingList={(editedItem) => {
-               
                 setIsEditModalVisible(false);
               }}
               categoryNames={categoryNames}
               categoryColors={categoryColors}
-              itemToEdit={itemToEdit} 
-              initialItem={item} 
-              
+              itemToEdit={itemToEdit}
+              initialItem={item}
             />
           )}
         </View>
@@ -99,7 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 15,
-   
+
     borderRadius: 15,
   },
   deleteAction: {

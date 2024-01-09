@@ -11,12 +11,12 @@ import { View, Text, StyleSheet } from 'react-native';
 //     "Veggies": "#ACFE44"
 // };
 
-const ShoppingListItemColor = ({item}) => {
+const ShoppingListItemColor = ({name, quantity}) => {
 
     return (
         <View style={{ ...styles.item, backgroundColor: item.color }}>
-          <Text>{item.name}</Text>
-          <Text>{item.quantity}</Text>
+          <Text>{name}</Text>
+          <Text>{quantity}</Text>
         </View>
       );
     };
