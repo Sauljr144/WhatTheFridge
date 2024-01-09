@@ -53,7 +53,7 @@ const ShoppingListItemModal = ({
   //Arrays
   const [fridgeItems, setFridgeItems] = useState([]);
 
-//Functions
+  //Functions
   //Function to add to database
   const addFridgeItem = async () => {
     const newFridgeItem = {
@@ -68,21 +68,26 @@ const ShoppingListItemModal = ({
     console.log(fridgeItems, "it works");
   };
 
+  //Get Fridge Items
+  const getFridgeItems = async () => {
+    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
+    setFridgeItems(myFridgeItems);
+    console.log(myFridgeItems);
+  };
+
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
       <ModalBackdrop />
 
-      <ModalContent style={styles.ModalContent}> 
-      <View style={styles.ModalContainer}>
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>X</Text>
-            </TouchableOpacity>
-      </View>
-       
+      <ModalContent style={styles.ModalContent}>
+        <View style={styles.ModalContainer}>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Text style={styles.closeButtonText}>X</Text>
+          </TouchableOpacity>
+        </View>
+
         <ModalHeader>
-        
           <Heading size="sm">{isEditing ? "Edit Item" : "Add Item"}</Heading>
-          
         </ModalHeader>
 
         <ModalBody style={styles.modalInnerContent}>
@@ -132,7 +137,6 @@ const ShoppingListItemModal = ({
                 addFridgeItem();
               }
 
-              
               onClose();
             }}
             style={{ backgroundColor: "white" }}
@@ -171,7 +175,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "black",
-
   },
   ModalContainer: {
     flexDirection: "row",

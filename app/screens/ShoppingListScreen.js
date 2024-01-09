@@ -27,7 +27,41 @@ const ShoppingListScreen = () => {
   const getFridgeItems = async () => {
     let myFridgeItems = await getData("Fridge", "GetFridgeItems");
     setShoppingList(myFridgeItems);
+    console.log( myFridgeItems);
   };
+
+
+   //Delete a fridge item
+   const deleteFridgeItem = async (item) => {
+    console.log(item);
+    item.isDeleted = !item.isDeleted;
+    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", item);
+    setShoppingList([deleteFridgeItems]);
+    console.log(deleteFridgeItems);
+  };
+
+
+    //handle delete
+    const handleDelete  = async (item) =>{
+      console.log("first");
+      item.isDeleted = !item.isDeleted;
+  
+      let result = await updateBlogItems(item);
+  
+      if (result) {
+        let userBlogItems = await GetBlogItemsByUserId(blogUserId);
+        setBlogItems(userBlogItems);
+        console.log(userBlogItems);
+      } else alert(`Blog item not ${edit ? "updated" : "added"}`);
+    }
+
+
+    //Delete All Items
+    const MasterDelete = async () => {
+      const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
+      setShoppingList([deleteFridgeItems]);
+    };
+
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
@@ -70,6 +104,24 @@ const ShoppingListScreen = () => {
     { label: "Veggies", value: "Veggies" },
   ];
 
+
+const ColorFn = (item) =>{
+  if (item.category === "Beverages") {
+    return "#44BBFE";
+  } else if (item.category === "Dairy") {
+    return "#FEF644";
+  } else if (item.category === "Fruits") {
+    return "#44FEBB";
+  } else if (item.category === "Grains") {
+    return "#FEA844";
+  } else if (item.category === "Meats") {
+    return "#FE4444";
+  } else if (item.category === "Miscellaneous") {
+    return "#C244FE";
+  } else if (item.category === "Veggies") {
+    return "#ACFE44";
+  }
+}
   const categoryColors = {
     Beverages: "#44BBFE",
     Dairy: "#FEF644",
@@ -106,7 +158,7 @@ const ShoppingListScreen = () => {
         </View>
       </View>
       <View style={styles.clearAllcontainer}>
-        <TouchableOpacity onPress={clearAllItems}>
+        <TouchableOpacity onPress={MasterDelete}>
           <Text style={styles.clearAllTxt}>Clear All</Text>
         </TouchableOpacity>
       </View>
@@ -127,18 +179,27 @@ const ShoppingListScreen = () => {
         <SwipeableItem
           key={index}
           item={item}
-          children={<ShoppingListItemColor item={item} />}
-          onDelete={(deletedItem) => {
-            const updatedList = shoppingList.filter(
-              (item) => item !== deletedItem
-            );
-            setShoppingList(updatedList);
+          name={item.fridgeItemName}
+          quantity={item.quantity}
+          category={item.category}
+          color={ColorFn(item)}
+          children={<ShoppingListItemColor name={item.fridgeItemName} quantity={item.quantity} />}
+          onPress={(deletedItem) => {
+            // const updatedList = shoppingList.filter(
+            //   (item) => item !== deletedItem
+            // );
+
+            deleteFridgeItem(deletedItem);
+            // setShoppingList(updatedList);
+           
           }}
           onEdit={() => {
             setIsModalVisible(true);
             setItemToEdit(item);
           }}
+        
         />
+        
       ))}
     </ScrollView>
     
