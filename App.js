@@ -14,7 +14,6 @@ export default function App() {
     <GestureHandlerRootView>
       <Screen>
    <ShoppingListScreen/>
-   {/* <FridgeListScreen/> */}
   </Screen> 
     </GestureHandlerRootView>
 </GluestackUIProvider>
