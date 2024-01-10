@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
@@ -8,7 +7,6 @@ import SwipeableItem from "../components/SwipeableItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, sendData } from "../Services/DataService";
-
 
 const ShoppingListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -20,48 +18,47 @@ const ShoppingListScreen = () => {
   useEffect(() => {
     getFridgeItems();
   }, []);
-  
 
   //Functions
   //Get Fridge Items
   const getFridgeItems = async () => {
     let myFridgeItems = await getData("Fridge", "GetFridgeItems");
     setShoppingList(myFridgeItems);
-    console.log( myFridgeItems);
+    console.log(myFridgeItems);
   };
 
-
-   //Delete a fridge item
-   const deleteFridgeItem = async (item) => {
+  //Delete a fridge item
+  const deleteFridgeItem = async (item) => {
     console.log(item);
     item.isDeleted = !item.isDeleted;
-    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", item);
+    const deleteFridgeItems = await sendData(
+      "Fridge",
+      "DeleteFridgeItem",
+      item
+    );
     setShoppingList([deleteFridgeItems]);
     console.log(deleteFridgeItems);
   };
 
+  //handle delete
+  const handleDelete = async (item) => {
+    console.log("first");
+    item.isDeleted = !item.isDeleted;
 
-    //handle delete
-    const handleDelete  = async (item) =>{
-      console.log("first");
-      item.isDeleted = !item.isDeleted;
-  
-      let result = await updateBlogItems(item);
-  
-      if (result) {
-        let userBlogItems = await GetBlogItemsByUserId(blogUserId);
-        setBlogItems(userBlogItems);
-        console.log(userBlogItems);
-      } else alert(`Blog item not ${edit ? "updated" : "added"}`);
-    }
+    let result = await updateBlogItems(item);
 
+    if (result) {
+      let userBlogItems = await GetBlogItemsByUserId(blogUserId);
+      setBlogItems(userBlogItems);
+      console.log(userBlogItems);
+    } else alert(`Blog item not ${edit ? "updated" : "added"}`);
+  };
 
-    //Delete All Items
-    const MasterDelete = async () => {
-      const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
-      setShoppingList([deleteFridgeItems]);
-    };
-
+  //Delete All Items
+  const MasterDelete = async () => {
+    const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
+    setShoppingList([deleteFridgeItems]);
+  };
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
@@ -91,7 +88,6 @@ const ShoppingListScreen = () => {
     setShoppingList(updatedList);
     setItemToEdit(null);
   };
-  
 
   const categoryNames = [
     { label: "View All", value: null },
@@ -104,24 +100,23 @@ const ShoppingListScreen = () => {
     { label: "Veggies", value: "Veggies" },
   ];
 
-
-const ColorFn = (item) =>{
-  if (item.category === "Beverages") {
-    return "#44BBFE";
-  } else if (item.category === "Dairy") {
-    return "#FEF644";
-  } else if (item.category === "Fruits") {
-    return "#44FEBB";
-  } else if (item.category === "Grains") {
-    return "#FEA844";
-  } else if (item.category === "Meats") {
-    return "#FE4444";
-  } else if (item.category === "Miscellaneous") {
-    return "#C244FE";
-  } else if (item.category === "Veggies") {
-    return "#ACFE44";
-  }
-}
+  const ColorFn = (item) => {
+    if (item.category === "Beverages") {
+      return "#44BBFE";
+    } else if (item.category === "Dairy") {
+      return "#FEF644";
+    } else if (item.category === "Fruits") {
+      return "#44FEBB";
+    } else if (item.category === "Grains") {
+      return "#FEA844";
+    } else if (item.category === "Meats") {
+      return "#FE4444";
+    } else if (item.category === "Miscellaneous") {
+      return "#C244FE";
+    } else if (item.category === "Veggies") {
+      return "#ACFE44";
+    }
+  };
   const categoryColors = {
     Beverages: "#44BBFE",
     Dairy: "#FEF644",
@@ -134,12 +129,17 @@ const ColorFn = (item) =>{
 
   return (
     <>
-    
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between", margin:20}}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          margin: 20,
+        }}
+      >
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
           <CategoryPickerScreen
@@ -174,35 +174,36 @@ const ColorFn = (item) =>{
           onEdit={handleEdit}
         />
       )}
-<ScrollView>
-      {itemsToDisplay.map((item, index) => (
-        <SwipeableItem
-          key={index}
-          item={item}
-          name={item.fridgeItemName}
-          quantity={item.quantity}
-          category={item.category}
-          color={ColorFn(item)}
-          children={<ShoppingListItemColor name={item.fridgeItemName} quantity={item.quantity} />}
-          onPress={(deletedItem) => {
-            // const updatedList = shoppingList.filter(
-            //   (item) => item !== deletedItem
-            // );
+      <ScrollView>
+        {itemsToDisplay.map((item, index) => (
+          <SwipeableItem
+            key={index}
+            item={item}
+            name={item.fridgeItemName}
+            quantity={item.quantity}
+            category={item.category}
+            color={ColorFn(item)}
+            children={
+              <ShoppingListItemColor
+                name={item.fridgeItemName}
+                quantity={item.quantity}
+              />
+            }
+            onPress={(deletedItem) => {
+              // const updatedList = shoppingList.filter(
+              //   (item) => item !== deletedItem
+              // );
 
-            deleteFridgeItem(deletedItem);
-            // setShoppingList(updatedList);
-           
-          }}
-          onEdit={() => {
-            setIsModalVisible(true);
-            setItemToEdit(item);
-          }}
-        
-        />
-        
-      ))}
-    </ScrollView>
-    
+              deleteFridgeItem(deletedItem);
+              // setShoppingList(updatedList);
+            }}
+            onEdit={() => {
+              setIsModalVisible(true);
+              setItemToEdit(item);
+            }}
+          />
+        ))}
+      </ScrollView>
     </>
   );
 };

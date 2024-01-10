@@ -13,8 +13,8 @@ export default function App() {
   <GluestackUIProvider config={config}>
     <GestureHandlerRootView>
       <Screen>
-   {/* <ShoppingListScreen/> */}
-   <FridgeListScreen/>
+   <ShoppingListScreen/>
+   {/* <FridgeListScreen/> */}
   </Screen> 
     </GestureHandlerRootView>
 </GluestackUIProvider>
