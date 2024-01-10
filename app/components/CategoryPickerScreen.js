@@ -1,5 +1,3 @@
-// CategoryPickerScreen.js
-
 import React from 'react';
 import CustomDropdown from './CustomDropDown';
 

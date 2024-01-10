@@ -33,13 +33,9 @@ const CustomDropdown = ({ items, onSelectItem, selectedValue}) => {
         <ButtonText
           style={{
             color: selectedItem ? 'black' : 'grey',
-            fontFamily: "Arial",
-            fontSize: 16,
-            fontWeight: "400",
-            textAlign: "left",
-            marginLeft: 0,
-            paddingLeft: 0,
-          }}
+            fontSize: 15,
+            fontWeight: "600",
+            }}
         >
           {selectedItem ||"Category"}
         </ButtonText>

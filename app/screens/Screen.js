@@ -1,9 +1,9 @@
 import React from 'react'
-import { SafeAreaView, View } from 'react-native'
+import { SafeAreaView, View, StyleSheet } from 'react-native'
 
 const Screen = ({children}) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.myBg}>
         <View>
        {children}     
         </View>
@@ -11,5 +11,13 @@ const Screen = ({children}) => {
     </SafeAreaView>
   )
 }
+const styles = StyleSheet.create({
+  myBg: {
+    
+    flex: 1,
+    
+    
+  },
+})
 
 export default Screen

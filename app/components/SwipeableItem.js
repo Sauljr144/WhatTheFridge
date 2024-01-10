@@ -42,19 +42,27 @@ const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category 
   };
 
   return (
+
+<View style={styles.myView}>
+
+<View>
+  <Checkbox isChecked={isChecked} onChange={setIsChecked} />
+</View>
+
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight
         underlayColor="#E0E0E0"
         onPress={() => setShowDeleteButton(false)}
         onLongPress={() => setShowDeleteButton(true)}
       >
+        
         <View
           style={{ ...styles.shoppingListItem, backgroundColor: color }}
         >
-          <Checkbox isChecked={isChecked} onChange={setIsChecked} />
-          <Text>Name: {name}</Text>
-          <Text>Category: {category}</Text>
-          <Text>Quantity: {quantity}</Text>
+          
+          
+          <Text style={styles.myText}>{name}</Text>
+          <Text style={styles.myText}>Qty: {quantity}</Text>
 
           {isEditModalVisible && (
             <ShoppingListItemModal
@@ -69,21 +77,34 @@ const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category 
               initialItem={item}
             />
           )}
+
+
+
         </View>
       </TouchableHighlight>
     </Swipeable>
+</View>
+
   );
 };
 
 const styles = StyleSheet.create({
+  myView:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent:"center"
+  },
   shoppingListItem: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
+    borderWidth: 0,
+    padding: 20,
     marginVertical: 5,
     borderRadius: 15,
+    width: 330,
+    justifyContent: "space-between",
+    
   },
   rightActionContainer: {
     flex: 1,
@@ -95,7 +116,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 15,
-
     borderRadius: 15,
   },
   deleteAction: {
@@ -106,6 +126,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     borderRadius: 15,
   },
+  myText:{
+    fontWeight:"600",
+  }
 });
 
 export default SwipeableItem;

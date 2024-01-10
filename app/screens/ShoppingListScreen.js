@@ -1,14 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
 import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import SwipeableItem from "../components/SwipeableItem";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, sendData } from "../Services/DataService";
-
 
 const ShoppingListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -17,51 +15,43 @@ const ShoppingListScreen = () => {
   const [itemToEdit, setItemToEdit] = useState(null);
 
   //useEffect to render data on page load
+  // useEffect(() => {
+  //   getFridgeItems();
+  // }, []);
+
   useEffect(() => {
-    getFridgeItems();
-  }, []);
+    const timer = setTimeout(() => {
+      getFridgeItems();
+    }, 3000); // 3000ms delay
   
+    // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
+    return () => clearTimeout(timer);
+  }, []);
 
   //Functions
   //Get Fridge Items
   const getFridgeItems = async () => {
     let myFridgeItems = await getData("Fridge", "GetFridgeItems");
     setShoppingList(myFridgeItems);
-    console.log( myFridgeItems);
+    console.log(myFridgeItems);
   };
 
-
-   //Delete a fridge item
-   const deleteFridgeItem = async (item) => {
-    console.log(item);
-    item.isDeleted = !item.isDeleted;
-    const deleteFridgeItems = await sendData("Fridge", "DeleteFridgeItem", item);
+  //Delete a fridge item
+  const deleteFridgeItem = async (item) => {
+    const deleteFridgeItems = await sendData(
+      "Fridge",
+      "DeleteFridgeItem",
+      item
+    );
     setShoppingList([deleteFridgeItems]);
     console.log(deleteFridgeItems);
   };
 
-
-    //handle delete
-    const handleDelete  = async (item) =>{
-      console.log("first");
-      item.isDeleted = !item.isDeleted;
-  
-      let result = await updateBlogItems(item);
-  
-      if (result) {
-        let userBlogItems = await GetBlogItemsByUserId(blogUserId);
-        setBlogItems(userBlogItems);
-        console.log(userBlogItems);
-      } else alert(`Blog item not ${edit ? "updated" : "added"}`);
-    }
-
-
-    //Delete All Items
-    const MasterDelete = async () => {
-      const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
-      setShoppingList([deleteFridgeItems]);
-    };
-
+  //Delete All Items
+  const MasterDelete = async () => {
+    const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
+    setShoppingList([deleteFridgeItems]);
+  };
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
@@ -91,7 +81,6 @@ const ShoppingListScreen = () => {
     setShoppingList(updatedList);
     setItemToEdit(null);
   };
-  
 
   const categoryNames = [
     { label: "View All", value: null },
@@ -104,24 +93,25 @@ const ShoppingListScreen = () => {
     { label: "Veggies", value: "Veggies" },
   ];
 
-
-const ColorFn = (item) =>{
-  if (item.category === "Beverages") {
-    return "#44BBFE";
-  } else if (item.category === "Dairy") {
-    return "#FEF644";
-  } else if (item.category === "Fruits") {
-    return "#44FEBB";
-  } else if (item.category === "Grains") {
-    return "#FEA844";
-  } else if (item.category === "Meats") {
-    return "#FE4444";
-  } else if (item.category === "Miscellaneous") {
-    return "#C244FE";
-  } else if (item.category === "Veggies") {
-    return "#ACFE44";
-  }
-}
+  const ColorFn = (item) => {
+    if (item.category === "Beverages") {
+      return "#44BBFE";
+    } else if (item.category === "Dairy") {
+      return "#FEF644";
+    } else if (item.category === "Fruits") {
+      return "#44FEBB";
+    } else if (item.category === "Grains") {
+      return "#FEA844";
+    } else if (item.category === "Meats") {
+      return "#FE4444";
+    } else if (item.category === "Miscellaneous") {
+      return "#C244FE";
+    } else if (item.category === "Veggies") {
+      return "#ACFE44";
+    } else if (item.category === "") {
+      return "#E0E0E0";
+    }
+  };
   const categoryColors = {
     Beverages: "#44BBFE",
     Dairy: "#FEF644",
@@ -134,75 +124,91 @@ const ColorFn = (item) =>{
 
   return (
     <>
-    
-      <View style={styles.topBorder}>
-        <Text style={styles.shoppingHeader}>My Shopping List</Text>
-      </View>
-
-      <View style={{ flexDirection: "row", justifyContent: "space-between", margin:20}}>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.subHeaderFont}>Sort By:</Text>
-          <CategoryPickerScreen
-            onSelectedCategory={handleSelectedCategory}
-            selectedCategory={selectedCategory}
-          />
+      <ScrollView >
+        <View style={styles.topBorder}>
+          <Text style={styles.shoppingHeader}>My Shopping List</Text>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.addItemTxt}>Add Item:</Text>
-          <Feather
-            name="plus-circle"
-            size={35}
-            color="#FFCE20"
-            onPress={() => setIsModalVisible(true)}
-          />
-        </View>
-      </View>
-      <View style={styles.clearAllcontainer}>
-        <TouchableOpacity onPress={MasterDelete}>
-          <Text style={styles.clearAllTxt}>Clear All</Text>
-        </TouchableOpacity>
-      </View>
-      {isModalVisible && (
-        <ShoppingListItemModal
-          isVisible={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
-          addItemToShoppingList={addItemToShoppingList}
-          categoryNames={categoryNames}
-          categoryColors={categoryColors}
-          itemToEdit={itemToEdit}
-          isEditing={!!itemToEdit}
-          onEdit={handleEdit}
-        />
-      )}
-<ScrollView>
-      {itemsToDisplay.map((item, index) => (
-        <SwipeableItem
-          key={index}
-          item={item}
-          name={item.fridgeItemName}
-          quantity={item.quantity}
-          category={item.category}
-          color={ColorFn(item)}
-          children={<ShoppingListItemColor name={item.fridgeItemName} quantity={item.quantity} />}
-          onPress={(deletedItem) => {
-            // const updatedList = shoppingList.filter(
-            //   (item) => item !== deletedItem
-            // );
 
-            deleteFridgeItem(deletedItem);
-            // setShoppingList(updatedList);
-           
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            margin: 20,
           }}
-          onEdit={() => {
-            setIsModalVisible(true);
-            setItemToEdit(item);
-          }}
-        
-        />
-        
-      ))}
-    </ScrollView>
-    
+        >
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.subHeaderFont}>Sort By:</Text>
+            <CategoryPickerScreen
+              onSelectedCategory={handleSelectedCategory}
+              selectedCategory={selectedCategory}
+            />
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.addItemTxt}>Add Items</Text>
+            <Feather
+              name="plus-circle"
+              size={30}
+              color="#FFCE20"
+              onPress={() => setIsModalVisible(true)}
+            />
+          </View>
+        </View>
+        <View style={styles.clearAllcontainer}>
+          <TouchableOpacity onPress={MasterDelete}>
+            <Text style={styles.clearAllTxt}>Clear My List</Text>
+          </TouchableOpacity>
+        </View>
+        {isModalVisible && (
+          <ShoppingListItemModal
+            isVisible={isModalVisible}
+            onClose={() => setIsModalVisible(false)}
+            addItemToShoppingList={addItemToShoppingList}
+            categoryNames={categoryNames}
+            categoryColors={categoryColors}
+            itemToEdit={itemToEdit}
+            isEditing={!!itemToEdit}
+            onEdit={handleEdit}
+          />
+        )}
+
+        {itemsToDisplay.map((item, index) => (
+          <SwipeableItem
+            key={index}
+            item={item}
+            name={item.fridgeItemName}
+            quantity={item.quantity}
+            category={item.category}
+            color={ColorFn(item)}
+            children={
+              <ShoppingListItemColor
+                name={item.fridgeItemName}
+                quantity={item.quantity}
+              />
+            }
+            onPress={(deletedItem) => {
+              const updatedList = shoppingList.filter(
+                (item) => item !== deletedItem
+              );
+              deleteFridgeItem(deletedItem);
+              setShoppingList(updatedList);
+            }}
+            onEdit={() => {
+              setIsModalVisible(true);
+              setItemToEdit(item);
+            }}
+            
+          />
+         
+          
+        ))}
+
+        {/* <FlatList 
+      data={itemsToDisplay}
+      keyExtractor={({item}) => item.fridgeItemId}
+      renderItem={({item}) =>(
+        <SwipeableItem  />
+      )}/> */}
+      </ScrollView>
     </>
   );
 };
@@ -225,25 +231,24 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   subHeaderFont: {
-    fontWeight: "400",
+    fontWeight: "600",
     fontSize: 15,
     justifyContent: "flex-start",
   },
   addItemTxt: {
-    fontWeight: "400",
+    fontWeight: "600",
     fontSize: 15,
     marginRight: 10,
   },
   clearAllcontainer: {
-    margin: 10,
-    paddingRight: 30,
-    paddingBottom: 30,
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 20,
   },
   clearAllTxt: {
     textAlign: "center",
     color: "red",
+    fontWeight: "700",
   },
 });
 

@@ -1,15 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-// const categoryColors = {
-//   "Beverages": "#44BBFE",
-//   "Dairy": "#FEF644",
-//   "Fruits": "#44FEBB",
-//   "Grains": "#FEA844",
-//     "Meats": "#FE4444",
-//     "Miscellaneous": "#C244FE",
-//     "Veggies": "#ACFE44"
-// };
 
 const ShoppingListItemColor = ({name, quantity}) => {
 
