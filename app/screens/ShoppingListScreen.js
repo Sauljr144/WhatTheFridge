@@ -21,7 +21,7 @@ const ShoppingListScreen = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      getFridgeItems();
+      getShoppingItems();
     }, 3000); // 3000ms delay
   
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
@@ -29,11 +29,11 @@ const ShoppingListScreen = () => {
   }, []);
 
   //Functions
-  //Get Fridge Items
-  const getFridgeItems = async () => {
-    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-    setShoppingList(myFridgeItems);
-    console.log(myFridgeItems);
+  //Get Shopping Items
+  const getShoppingItems = async () => {
+    let myShoppingItems = await getData("Shopping", "GetFridgeItems");
+    setShoppingList(myShoppingItems);
+    // console.log(myFridgeItems);
   };
 
   //Delete a fridge item
@@ -49,8 +49,8 @@ const ShoppingListScreen = () => {
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
-    setShoppingList([deleteFridgeItems]);
+    const deleteShoppingItems = await sendData("Shopping", "DeleteAllFridgeItems");
+    setShoppingList([deleteShoppingItems]);
   };
 
   const handleSelectedCategory = (category) => {
@@ -175,7 +175,7 @@ const ShoppingListScreen = () => {
           <SwipeableItem
             key={index}
             item={item}
-            name={item.fridgeItemName}
+            name={item.shoppingItemName}
             quantity={item.quantity}
             category={item.category}
             color={ColorFn(item)}
