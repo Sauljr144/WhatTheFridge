@@ -62,7 +62,10 @@ const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category 
           
           
           <Text style={styles.myText}>{name}</Text>
+          <View>
+
           <Text style={styles.myText}>Qty: {quantity}</Text>
+          </View>
 
           {isEditModalVisible && (
             <ShoppingListItemModal

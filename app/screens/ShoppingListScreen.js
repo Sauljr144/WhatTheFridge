@@ -15,10 +15,6 @@ const ShoppingListScreen = () => {
   const [itemToEdit, setItemToEdit] = useState(null);
 
   //useEffect to render data on page load
-  // useEffect(() => {
-  //   getFridgeItems();
-  // }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       getShoppingItems();
@@ -28,28 +24,29 @@ const ShoppingListScreen = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  //Functions
+  //--------------------------------Functions-------------------------------//
+
   //Get Shopping Items
   const getShoppingItems = async () => {
-    let myShoppingItems = await getData("Shopping", "GetFridgeItems");
+    let myShoppingItems = await getData("Shopping", "GetShoppingItems");
     setShoppingList(myShoppingItems);
-    // console.log(myFridgeItems);
+    console.log(myShoppingItems);
   };
 
-  //Delete a fridge item
-  const deleteFridgeItem = async (item) => {
-    const deleteFridgeItems = await sendData(
-      "Fridge",
-      "DeleteFridgeItem",
+  //Delete a Shopping item
+  const deleteShoppingItem = async (item) => {
+    const deleteShoppingItems = await sendData(
+      "Shopping",
+      "DeleteShoppingItem",
       item
     );
-    setShoppingList([deleteFridgeItems]);
-    console.log(deleteFridgeItems);
+    setShoppingList([deleteShoppingItems]);
+    console.log(deleteShoppingItems);
   };
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteShoppingItems = await sendData("Shopping", "DeleteAllFridgeItems");
+    const deleteShoppingItems = await sendData("Shopping", "DeleteAllShoppingItems");
     setShoppingList([deleteShoppingItems]);
   };
 
@@ -181,7 +178,7 @@ const ShoppingListScreen = () => {
             color={ColorFn(item)}
             children={
               <ShoppingListItemColor
-                name={item.fridgeItemName}
+                name={item.shoppingItemName}
                 quantity={item.quantity}
               />
             }
@@ -189,7 +186,7 @@ const ShoppingListScreen = () => {
               const updatedList = shoppingList.filter(
                 (item) => item !== deletedItem
               );
-              deleteFridgeItem(deletedItem);
+              deleteShoppingItem(deletedItem);
               setShoppingList(updatedList);
             }}
             onEdit={() => {
@@ -202,12 +199,7 @@ const ShoppingListScreen = () => {
           
         ))}
 
-        {/* <FlatList 
-      data={itemsToDisplay}
-      keyExtractor={({item}) => item.fridgeItemId}
-      renderItem={({item}) =>(
-        <SwipeableItem  />
-      )}/> */}
+
       </ScrollView>
     </>
   );

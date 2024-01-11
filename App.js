@@ -12,8 +12,8 @@ export default function App() {
   <GluestackUIProvider config={config}>
     <GestureHandlerRootView style={{flex: 1}}>
       <Screen>
-   {/* <ShoppingListScreen/> */}
-   <FridgeListScreen/>
+   <ShoppingListScreen/>
+   {/* <FridgeListScreen/> */}
   </Screen> 
     </GestureHandlerRootView>
 </GluestackUIProvider>

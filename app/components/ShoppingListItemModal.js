@@ -32,14 +32,11 @@ const ShoppingListItemModal = ({
   const [itemQuantity, setItemQuantity] = useState("");
 
   useEffect(() => {
-    console.log("itemToEdit in ShoppingListItemModal:", itemToEdit);
     if (itemToEdit) {
-      console.log("setting item to edit", itemToEdit);
-      setItemName(itemToEdit.name);
+      setItemName(itemToEdit.shoppingItemName);
       setItemCategory(itemToEdit.category);
       setItemQuantity(itemToEdit.quantity);
     } else {
-      console.log("No itemToEdit, setting modal fields to empty strings");
       setItemName("");
       setItemCategory("");
       setItemQuantity("");
@@ -51,29 +48,21 @@ const ShoppingListItemModal = ({
   };
 
   //Arrays
-  const [fridgeItems, setFridgeItems] = useState([]);
+  const [shoppingItems, setShoppingItems] = useState([]);
 
   //Functions
   //Function to add to database
-  const addFridgeItem = async () => {
-    const newFridgeItem = {
-      FridgeItemName: itemName,
+  const addShoppingItem = async () => {
+    const newShoppingItem = {
+      shoppingItemName: itemName,
       quantity: itemQuantity,
-      // ExpirationDate: fridgeItemExpirationDate,
       Category: itemCategory,
-      // IsDeleted: fridgeItemDeleted,
     };
-    setFridgeItems([...fridgeItems, newFridgeItem]);
-    await sendData("fridge", "AddFridgeItems", newFridgeItem);
-    console.log(fridgeItems, "it works");
+    setShoppingItems([...shoppingItems, newShoppingItem]);
+    await sendData("Shopping", "AddShoppingItems", newShoppingItem);
+    console.log(shoppingItems, "it works");
   };
 
-  //Get Fridge Items
-  const getFridgeItems = async () => {
-    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-    setFridgeItems(myFridgeItems);
-    console.log(myFridgeItems);
-  };
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -122,7 +111,7 @@ const ShoppingListItemModal = ({
             borderWidth="$0"
             onPress={() => {
               const newItem = {
-                name: itemName,
+                shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
                 color: categoryColors[itemCategory],
@@ -134,7 +123,7 @@ const ShoppingListItemModal = ({
                 addItemToShoppingList(newItem);
 
                 //Adding to our database
-                addFridgeItem();
+                addShoppingItem();
               }
 
               onClose();
