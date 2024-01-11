@@ -17,7 +17,7 @@ import {
 import CustomDropdown from "./CustomDropDown";
 import { getData, sendData } from "../Services/DataService";
 
-const FridgeListItemModal = (
+const FridgeListItemModal = ({
   isVisible,
   onClose,
   onEdit,
@@ -25,7 +25,7 @@ const FridgeListItemModal = (
   categoryNames,
   categoryColors,
   itemToEdit,
-  isEditing
+  isEditing}
 ) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
@@ -33,10 +33,10 @@ const FridgeListItemModal = (
   const [fridgeItemExpirationDate, setFridgeItemExpirationDate] = useState("");
 
   useEffect(() => {
-    console.log("itemToEdit in FridgeListItemModal:", itemToEdit);
+ 
     if (itemToEdit) {
-      console.log("setting item to edit", itemToEdit);
-      setItemName(itemToEdit.name);
+  
+      setItemName(itemToEdit.fridgeItemName);
       setItemCategory(itemToEdit.category);
       setItemQuantity(itemToEdit.quantity);
       setFridgeItemExpirationDate(itemToEdit.expirationDate);
@@ -60,7 +60,7 @@ const FridgeListItemModal = (
   //Function to add to database
   const addFridgeItem = async () => {
     const newFridgeItem = {
-      FridgeItemName: itemName,
+      fridgeItemName: itemName,
       quantity: itemQuantity,
       ExpirationDate: fridgeItemExpirationDate,
       Category: itemCategory,
@@ -71,12 +71,6 @@ const FridgeListItemModal = (
     console.log(fridgeItems, "it works");
   };
 
-  //Get Fridge Items
-  const getFridgeItems = async () => {
-    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-    setFridgeItems(myFridgeItems);
-    console.log(myFridgeItems);
-  };
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
       <ModalBackdrop />
@@ -133,7 +127,7 @@ const FridgeListItemModal = (
             borderWidth="$0"
             onPress={() => {
               const newItem = {
-                name: itemName,
+                fridgeItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
                 color: categoryColors[itemCategory],

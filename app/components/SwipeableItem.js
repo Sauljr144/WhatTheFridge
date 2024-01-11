@@ -14,7 +14,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import Checkbox from "./Checkbox"; // Import the Checkbox component
 import ShoppingListItemModal from "./ShoppingListItemModal"; // Import the modal component
 
-const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category }) => {
+const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category, expirationDate }) => {
   const [showDeleteButton, setShowDeleteButton] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -62,7 +62,11 @@ const SwipeableItem = ({ item, onPress, onEdit, quantity, name, color, category 
           
           
           <Text style={styles.myText}>{name}</Text>
-          <Text style={styles.myText}>Qty: {quantity}</Text>
+          <View>
+            <Text style={styles.myText}>Qty: {quantity}</Text>
+          <Text style={styles.myText}>Exp: {expirationDate}</Text>
+          </View>
+        
 
           {isEditModalVisible && (
             <ShoppingListItemModal

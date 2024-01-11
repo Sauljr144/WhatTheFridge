@@ -135,14 +135,14 @@ const FridgeListScreen = () => {
           margin: 20,
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.subHeaderFont}>Sort By:</Text>
           <CategoryPickerScreen
             onSelectedCategory={handleSelectedCategory}
             selectedCategory={selectedCategory}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", alignItems: "center"}}>
           <Text style={styles.addItemTxt}>Add Item:</Text>
           <Feather
             name="plus-circle"
@@ -154,7 +154,7 @@ const FridgeListScreen = () => {
       </View>
       <View style={styles.clearAllcontainer}>
         <TouchableOpacity onPress={MasterDelete}>
-          <Text style={styles.clearAllTxt}>Clear All</Text>
+          <Text style={styles.clearAllTxt}>Clear My List</Text>
         </TouchableOpacity>
       </View>
       {isModalVisible && (
@@ -176,6 +176,7 @@ const FridgeListScreen = () => {
             item={item}
             name={item.fridgeItemName}
             quantity={item.quantity}
+            expirationDate={item.expirationDate}
             category={item.category}
             color={ColorFn(item)}
             children={
@@ -184,6 +185,7 @@ const FridgeListScreen = () => {
                 quantity={item.quantity}
               />
             }
+            
             onPress={(deletedItem) => {
               // const updatedList = shoppingList.filter(
               //   (item) => item !== deletedItem
@@ -197,6 +199,7 @@ const FridgeListScreen = () => {
               setItemToEdit(item);
             }}
           />
+          // console.log(item.expirationDate)
         ))}
       </ScrollView>
     </>
@@ -233,25 +236,24 @@ const styles = StyleSheet.create({
     borderColor: "#FFE175",
   },
   subHeaderFont: {
-    fontWeight: "400",
+    fontWeight: "600",
     fontSize: 15,
     justifyContent: "flex-start",
   },
   addItemTxt: {
-    fontWeight: "400",
+    fontWeight: "600",
     fontSize: 15,
     marginRight: 10,
   },
   clearAllcontainer: {
-    margin: 0,
-    paddingRight: 30,
-    paddingBottom: 30,
+    marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   clearAllTxt: {
     textAlign: "center",
     color: "red",
+    fontWeight: "700",
   },
 });
 export default FridgeListScreen;

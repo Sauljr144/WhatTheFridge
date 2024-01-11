@@ -59,13 +59,16 @@ const ShoppingListItemModal = ({
     const newFridgeItem = {
       FridgeItemName: itemName,
       quantity: itemQuantity,
-      // ExpirationDate: fridgeItemExpirationDate,
+      ExpirationDate: fridgeItemExpirationDate,
       Category: itemCategory,
       // IsDeleted: fridgeItemDeleted,
     };
+  
+    console.log("Adding new fridge item:", newFridgeItem);
+  
     setFridgeItems([...fridgeItems, newFridgeItem]);
     await sendData("fridge", "AddFridgeItems", newFridgeItem);
-    console.log(fridgeItems, "it works");
+    console.log("Fridge items after adding:", fridgeItems);
   };
 
   //Get Fridge Items
