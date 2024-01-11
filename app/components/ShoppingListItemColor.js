@@ -8,6 +8,7 @@ const ShoppingListItemColor = ({name, quantity}) => {
         <View style={{ ...styles.item, backgroundColor: item.color }}>
           <Text>{name}</Text>
           <Text>{quantity}</Text>
+
         </View>
       );
     };
