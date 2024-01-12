@@ -2,12 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-const ShoppingListItemColor = ({name, quantity}) => {
+const ShoppingListItemColor = ({name, quantity, expirationDate}) => {
 
     return (
         <View style={{ ...styles.item, backgroundColor: item.color }}>
           <Text>{name}</Text>
           <Text>{quantity}</Text>
+          {/* <Text>{expirationDate}</Text> */}
 
         </View>
       );

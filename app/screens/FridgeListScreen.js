@@ -53,7 +53,7 @@ const FridgeListScreen = () => {
   };
 //Add Item
   const addItemToShoppingList = (item) => {
-    const newItem = { ...item, color: categoryColors[item.category] };
+    const newItem = { ...item, color: categoryColors[item.category], expirationDate: item.expirationDate };
     setShoppingList((prevList) => [...prevList, newItem]);
   };
 
@@ -183,6 +183,7 @@ const FridgeListScreen = () => {
               <ShoppingListItemColor
                 name={item.fridgeItemName}
                 quantity={item.quantity}
+                expirationDate={item.expirationDate}
               />
             }
             

@@ -131,6 +131,7 @@ const FridgeListItemModal = ({
                 category: itemCategory,
                 quantity: itemQuantity,
                 color: categoryColors[itemCategory],
+                expirationDate: fridgeItemExpirationDate
               };
 
               if (isEditing) {
