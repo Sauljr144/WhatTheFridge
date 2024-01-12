@@ -17,25 +17,17 @@ import {
 import CustomDropdown from "./CustomDropDown";
 import { getData, sendData } from "../Services/DataService";
 
-const ShoppingListItemModal = ({
-  isVisible,
-  onClose,
-  onEdit,
-  addItemToShoppingList,
-  categoryNames,
-  categoryColors,
-  itemToEdit,
-  isEditing,
-}) => {
+const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, onEdit, addItemToShoppingList, categoryNames, categoryColors, itemToEdit, isEditing, submitEdit}) => {
+  
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
 
   useEffect(() => {
     if (itemToEdit) {
-      setItemName(itemToEdit.shoppingItemName);
-      setItemCategory(itemToEdit.category);
-      setItemQuantity(itemToEdit.quantity);
+      setItemName(name);
+      setItemCategory(category);
+      setItemQuantity(quantity);
     } else {
       setItemName("");
       setItemCategory("");
@@ -63,6 +55,9 @@ const ShoppingListItemModal = ({
     console.log(shoppingItems, "it works");
   };
 
+
+
+  
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -98,7 +93,7 @@ const ShoppingListItemModal = ({
           <Input style={styles.input}>
             <InputField
               placeholder="Quantity"
-              value={itemQuantity}
+              value={itemQuantity.toString()}
               onChangeText={(text) => setItemQuantity(text)}
             />
           </Input>
@@ -114,11 +109,14 @@ const ShoppingListItemModal = ({
                 shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
-                color: categoryColors[itemCategory],
+                // color: categoryColors[itemCategory],
               };
 
               if (isEditing) {
                 onEdit(newItem);
+                submitEdit(newItem);
+
+               
               } else {
                 addItemToShoppingList(newItem);
 
