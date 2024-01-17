@@ -21,7 +21,7 @@ const FridgeListItemModal = ({
   isVisible,
   onClose,
   onEdit,
-  addItemToShoppingList,
+  addItemToFridgeList,
   categoryNames,
   categoryColors,
   itemToEdit,
@@ -137,7 +137,7 @@ const FridgeListItemModal = ({
               if (isEditing) {
                 onEdit(newItem);
               } else {
-                addItemToShoppingList(newItem);
+                addItemToFridgeList(newItem);
 
                 //Adding to our database
                 addFridgeItem();

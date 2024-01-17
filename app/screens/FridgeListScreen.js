@@ -12,13 +12,28 @@ import { FontAwesome } from "@expo/vector-icons";
 const FridgeListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [shoppingList, setShoppingList] = useState([]);
+
   const [itemToEdit, setItemToEdit] = useState(null);
+  const [fridgeList, setFridgeList] = useState([])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      getFridgeItems();
+    }, 3000); // 3000ms delay
+  
+    // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
   };
-
+ //Get Shopping Items
+ const getFridgeItems = async () => {
+  let myFridgeItems = await getData("Fridge", "GetFridgeItems");
+  setFridgeList(myFridgeItems);
+  // console.log(myFridgeItems);
+};
   //Delete a fridge item
   const deleteFridgeItem = async (item) => {
     console.log(item);
@@ -28,47 +43,33 @@ const FridgeListScreen = () => {
       "DeleteFridgeItem",
       item
     );
-    setShoppingList([deleteFridgeItems]);
+    setFridgeList([deleteFridgeItems]);
     console.log(deleteFridgeItems);
-  };
-
-  //handle delete
-  const handleDelete = async (item) => {
-    console.log("first");
-    item.isDeleted = !item.isDeleted;
-
-    let result = await updateBlogItems(item);
-
-    if (result) {
-      let userBlogItems = await GetBlogItemsByUserId(blogUserId);
-      setBlogItems(userBlogItems);
-      console.log(userBlogItems);
-    } else alert(`Blog item not ${edit ? "updated" : "added"}`);
   };
 
   //Delete All Items
   const MasterDelete = async () => {
     const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
-    setShoppingList([deleteFridgeItems]);
+    setFridgeList([deleteFridgeItems]);
   };
 //Add Item
-  const addItemToShoppingList = (item) => {
+  const addItemToFridgeList = (item) => {
     const newItem = { ...item, color: categoryColors[item.category], expirationDate: item.expirationDate };
-    setShoppingList((prevList) => [...prevList, newItem]);
+    setFridgeList((prevList) => [...prevList, newItem]);
   };
 
 //edit item
   const handleEdit = (editedItem) => {
-    const updatedList = shoppingList.map((item) =>
+    const updatedList = fridgeList.map((item) =>
       item === itemToEdit ? editedItem : item
     );
-    setShoppingList(updatedList);
+    setFridgeList(updatedList);
     setItemToEdit(null);
   };
 
-  let itemsToDisplay = shoppingList;
+  let itemsToDisplay = fridgeList;
   if (selectedCategory) {
-    itemsToDisplay = shoppingList.filter(
+    itemsToDisplay = fridgeList.filter(
       (item) => item.category === selectedCategory
     );
   }
@@ -161,7 +162,7 @@ const FridgeListScreen = () => {
         <FridgeListItemModal
           isVisible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
-          addItemToShoppingList={addItemToShoppingList}
+          addItemToFridgeList={addItemToFridgeList}
           categoryNames={categoryNames}
           categoryColors={categoryColors}
           itemToEdit={itemToEdit}
