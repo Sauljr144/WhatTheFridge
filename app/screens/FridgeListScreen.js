@@ -3,16 +3,16 @@ import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import FridgeListItemModal from "../components/FridgeListItemModal";
 import ShoppingListItemColor from "../components/ShoppingListItemColor";
-import SwipeableItem from "../components/SwipeableItem";
+import SwipableFridgeItem from "../components/SwipableFridgeItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, sendData } from "../Services/DataService";
 import { Input, InputField } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import EditAndDelete from "../components/EditAndDelete";
 const FridgeListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
   const [itemToEdit, setItemToEdit] = useState(null);
   const [fridgeList, setFridgeList] = useState([])
 
@@ -172,14 +172,29 @@ const FridgeListScreen = () => {
       )}
       <ScrollView>
         {itemsToDisplay.map((item, index) => (
-          <SwipeableItem
+          <SwipableFridgeItem
             key={index}
             item={item}
             name={item.fridgeItemName}
             quantity={item.quantity}
             expirationDate={item.expirationDate}
-            category={item.category}
+            category={item.Category}
             color={ColorFn(item)}
+            renderRightActions={() => (
+              <EditAndDelete
+                onPress1={() => {
+                  setIsModalVisible(true);
+                  setItemToEdit(item);
+                }}
+                onPress2={(deletedItem) => {
+                  const updatedList = fridgeList.filter(
+                    (item) => item !== deletedItem
+                  );
+                  deleteFridgeItem(deletedItem);
+                  setFridgeList(updatedList);
+                }}
+              />
+            )}
             children={
               <ShoppingListItemColor
                 name={item.fridgeItemName}

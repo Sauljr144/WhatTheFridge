@@ -62,8 +62,8 @@ const FridgeListItemModal = ({
     const newFridgeItem = {
       fridgeItemName: itemName,
       quantity: itemQuantity,
-      ExpirationDate: fridgeItemExpirationDate,
-      Category: itemCategory,
+      expirationDate: fridgeItemExpirationDate,
+      category: itemCategory,
       // IsDeleted: fridgeItemDeleted,
     };
     setFridgeItems([...fridgeItems, newFridgeItem]);
