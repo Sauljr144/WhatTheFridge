@@ -17,29 +17,18 @@ import {
 import CustomDropdown from "./CustomDropDown";
 import { getData, sendData } from "../Services/DataService";
 
-const ShoppingListItemModal = ({
-  isVisible,
-  onClose,
-  onEdit,
-  addItemToShoppingList,
-  categoryNames,
-  categoryColors,
-  itemToEdit,
-  isEditing,
-}) => {
+const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, onEdit, addItemToShoppingList, categoryNames, categoryColors, itemToEdit, isEditing, submitEdit}) => {
+  
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState("");
 
   useEffect(() => {
-    console.log("itemToEdit in ShoppingListItemModal:", itemToEdit);
     if (itemToEdit) {
-      console.log("setting item to edit", itemToEdit);
-      setItemName(itemToEdit.name);
-      setItemCategory(itemToEdit.category);
-      setItemQuantity(itemToEdit.quantity);
+      setItemName(name);
+      setItemCategory(category);
+      setItemQuantity(quantity);
     } else {
-      console.log("No itemToEdit, setting modal fields to empty strings");
       setItemName("");
       setItemCategory("");
       setItemQuantity("");
@@ -51,32 +40,24 @@ const ShoppingListItemModal = ({
   };
 
   //Arrays
-  const [fridgeItems, setFridgeItems] = useState([]);
+  const [shoppingItems, setShoppingItems] = useState([]);
 
   //Functions
   //Function to add to database
-  const addFridgeItem = async () => {
-    const newFridgeItem = {
-      FridgeItemName: itemName,
+  const addShoppingItem = async () => {
+    const newShoppingItem = {
+      shoppingItemName: itemName,
       quantity: itemQuantity,
-      ExpirationDate: fridgeItemExpirationDate,
       Category: itemCategory,
-      // IsDeleted: fridgeItemDeleted,
     };
-  
-    console.log("Adding new fridge item:", newFridgeItem);
-  
-    setFridgeItems([...fridgeItems, newFridgeItem]);
-    await sendData("fridge", "AddFridgeItems", newFridgeItem);
-    console.log("Fridge items after adding:", fridgeItems);
+    setShoppingItems([...shoppingItems, newShoppingItem]);
+    await sendData("Shopping", "AddShoppingItems", newShoppingItem);
+    console.log(shoppingItems, "it works");
   };
 
-  //Get Fridge Items
-  const getFridgeItems = async () => {
-    let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-    setFridgeItems(myFridgeItems);
-    console.log(myFridgeItems);
-  };
+
+
+  
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -112,7 +93,7 @@ const ShoppingListItemModal = ({
           <Input style={styles.input}>
             <InputField
               placeholder="Quantity"
-              value={itemQuantity}
+              value={itemQuantity.toString()}
               onChangeText={(text) => setItemQuantity(text)}
             />
           </Input>
@@ -125,19 +106,22 @@ const ShoppingListItemModal = ({
             borderWidth="$0"
             onPress={() => {
               const newItem = {
-                name: itemName,
+                shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
-                color: categoryColors[itemCategory],
+                // color: categoryColors[itemCategory],
               };
 
               if (isEditing) {
                 onEdit(newItem);
+                submitEdit(newItem);
+
+               
               } else {
                 addItemToShoppingList(newItem);
 
                 //Adding to our database
-                addFridgeItem();
+                addShoppingItem();
               }
 
               onClose();
