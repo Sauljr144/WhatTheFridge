@@ -14,7 +14,8 @@ const FridgeListScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
-  const [fridgeList, setFridgeList] = useState([])
+  const [fridgeList, setFridgeList] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -51,10 +52,11 @@ const FridgeListScreen = () => {
   const MasterDelete = async () => {
     const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
     setFridgeList([deleteFridgeItems]);
+    console.log(deleteFridgeItems);
   };
 //Add Item
   const addItemToFridgeList = (item) => {
-    const newItem = { ...item, color: categoryColors[item.category], expirationDate: item.expirationDate };
+    const newItem = { ...item, color: categoryColors[item?.category], expirationDate: item.expirationDate };
     setFridgeList((prevList) => [...prevList, newItem]);
   };
 
@@ -68,9 +70,16 @@ const FridgeListScreen = () => {
   };
 
   let itemsToDisplay = fridgeList;
+//filter by category
   if (selectedCategory) {
     itemsToDisplay = fridgeList.filter(
-      (item) => item.category === selectedCategory
+      (item) => item?.category === selectedCategory
+    );
+  }
+  //search items
+  if (search) {
+    itemsToDisplay = fridgeList.filter((item) =>
+      item?.fridgeItemName.toLowerCase().includes(search.toLowerCase())
     );
   }
 
@@ -125,8 +134,16 @@ const FridgeListScreen = () => {
           isDisabled={false}
           isInvalid={false}
           isReadOnly={false}
+        
         >
-          <InputField placeholder="Search" />
+          <InputField 
+          placeholder="Search Items" 
+          value={search}
+          onChangeText={(text) => {
+            setSearch(text);
+          
+          }}
+          />
         </Input>
       </View>
       <View
@@ -175,10 +192,10 @@ const FridgeListScreen = () => {
           <SwipableFridgeItem
             key={index}
             item={item}
-            name={item.fridgeItemName}
-            quantity={item.quantity}
-            expirationDate={item.expirationDate}
-            category={item.Category}
+            name={item?.fridgeItemName}
+            quantity={item?.quantity}
+            expirationDate={item?.expirationDate}
+            category={item?.Category}
             color={ColorFn(item)}
             renderRightActions={() => (
               <EditAndDelete
@@ -197,9 +214,9 @@ const FridgeListScreen = () => {
             )}
             children={
               <ShoppingListItemColor
-                name={item.fridgeItemName}
-                quantity={item.quantity}
-                expirationDate={item.expirationDate}
+                name={item?.fridgeItemName}
+                quantity={item?.quantity}
+                expirationDate={item?.expirationDate}
               />
             }
             
