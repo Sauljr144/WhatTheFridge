@@ -95,20 +95,23 @@ const FridgeListScreen = () => {
   ];
 
   const ColorFn = (item) => {
-    if (item.category === "Beverages") {
-      return "#44BBFE";
-    } else if (item.category === "Dairy") {
-      return "#FEF644";
-    } else if (item.category === "Fruits") {
-      return "#44FEBB";
-    } else if (item.category === "Grains") {
-      return "#FEA844";
-    } else if (item.category === "Meats") {
-      return "#FE4444";
-    } else if (item.category === "Miscellaneous") {
-      return "#C244FE";
-    } else if (item.category === "Veggies") {
-      return "#ACFE44";
+    switch (item?.category) {
+      case "Beverages":
+        return "#44BBFE";
+      case "Dairy":
+        return "#FEF644";
+      case "Fruits":
+        return "#44FEBB";
+      case "Grains":
+        return "#FEA844";
+      case "Meats":
+        return "#FE4444";
+      case "Miscellaneous":
+        return "#C244FE";
+      case "Veggies":
+        return "#ACFE44";
+      default:
+        return ""; 
     }
   };
   const categoryColors = {

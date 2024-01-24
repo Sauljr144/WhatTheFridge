@@ -42,7 +42,7 @@ const SwipeableItem = ({ item,  quantity, name, color, renderRightActions, expir
           <View>
 
           <Text style={styles.myText}>Qty: {quantity}</Text>
-          <Text style={styles.myText}> Exp: {expirationDate}</Text>
+          <Text style={styles.myText}>Exp: {expirationDate}</Text>
           
           </View>
 
