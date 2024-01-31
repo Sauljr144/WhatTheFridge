@@ -55,7 +55,10 @@ const FridgeListItemModal = ({
 
   //Arrays
   const [fridgeItems, setFridgeItems] = useState([]);
-
+  
+  useEffect(() => {
+    console.log(fridgeItems, "it works");
+  }, [fridgeItems]);
   //Functions
   //Function to add to database
   const addFridgeItem = async () => {
@@ -66,9 +69,10 @@ const FridgeListItemModal = ({
       category: itemCategory,
       // IsDeleted: fridgeItemDeleted,
     };
+   
     setFridgeItems([...fridgeItems, newFridgeItem]);
     await sendData("fridge", "AddFridgeItems", newFridgeItem);
-    console.log(fridgeItems, "it works");
+    // console.log(fridgeItems, "it works");
   };
 
   return (

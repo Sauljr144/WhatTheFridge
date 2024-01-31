@@ -47,7 +47,7 @@ const SwipeableItem = ({ item,  quantity, name, color, renderRightActions, expir
           </View>
 
           {isEditModalVisible && (
-            <ShoppingListItemModal
+            <FridgeListItemModal
               isVisible={isEditModalVisible}
               onClose={() => setIsEditModalVisible(false)}
               addItemToShoppingList={(editedItem) => {
