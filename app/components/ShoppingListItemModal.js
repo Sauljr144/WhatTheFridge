@@ -48,11 +48,12 @@ const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, on
     const newShoppingItem = {
       shoppingItemName: itemName,
       quantity: itemQuantity,
+      isDeleted: false,
       Category: itemCategory,
     };
     setShoppingItems([...shoppingItems, newShoppingItem]);
     await sendData("Shopping", "AddShoppingItems", newShoppingItem);
-    console.log(shoppingItems, "it works");
+    console.log(newShoppingItem, "it works");
   };
 
 
@@ -109,6 +110,7 @@ const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, on
                 shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
+                isDeleted: false,
                 // color: categoryColors[itemCategory],
               };
 
