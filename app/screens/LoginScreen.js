@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import {View,StyleSheet,Text, SafeAreaView,TouchableOpacity} from 'react-native'
 import { TextInput,Button } from 'react-native'
 
-const LoginScreen = () => {
+
+const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const handleSubmit = () => {
@@ -14,7 +15,7 @@ return (
   <SafeAreaView style={styles.container}>
   <View>
     <Text style={styles.text}>What The</Text>
-    <Text style={styles.text}>Fridge.</Text>
+    <Text style={styles.text2}>Fridge.</Text>
     
   </View>
   <View style={styles.box}>
@@ -24,7 +25,7 @@ return (
     <Text style={styles.toptext}>Password</Text>
     <TextInput value={password} placeholder='Enter password here' onChangeText={(text) => setPassword(text)} style={styles.passwordInput}/>
     <Button title='Submit' onPress={handleSubmit} color={'#FFE27B'} style={styles.button}/>
-    <TouchableOpacity style={styles.logintext}><Text>Create Account?</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.logintext} onPress={() => navigation.navigate('Create')}><Text>Create Account?</Text></TouchableOpacity>
   </View>
 
   </SafeAreaView>
@@ -41,29 +42,36 @@ const styles = StyleSheet.create({
     paddingLeft:10,
     paddingRight:10,
     borderRadius:20,
-    width:'140%',
-    height:'100%'
-    
+    width:'75%',
+    height:'65%',
+    marginTop:50,
+    marginBottom:50
   },
   text:{
      fontSize:40,
      fontWeight:'bold',
-     marginBottom:40,
      
+  },
+  text2:{
+    fontSize:40,
+    fontWeight:'bold',
   },
   container:{
     justifyContent:'center',
-    alignItems:'center'
+    alignItems:'center',
+    backgroundColor: "#FFCE20",
+    flex:'1'
   },
   button:{
     borderRadius:20,
     marginTop:20
   },
   login:{
-    marginTop:20,
+    marginTop:10,
     textAlign:'center',
-    marginBottom:20,
-    fontSize:25
+    marginBottom:40,
+    fontSize:25,
+    fontWeight:'bold'
   },
   usernametext:{
     fontSize:15,

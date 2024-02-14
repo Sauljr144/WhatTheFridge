@@ -3,7 +3,8 @@ import {View,StyleSheet,Text, SafeAreaView, TouchableOpacity} from 'react-native
 import { TextInput,Button } from 'react-native'
 import colors from '../config/colors'
 
-const CreateAccountScreen = () => {
+
+const CreateAccountScreen = ({navigation}) => {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const handleSubmit = () => {
@@ -25,7 +26,7 @@ const CreateAccountScreen = () => {
       <Text style={styles.toptext}>Password</Text>
       <TextInput value={password} placeholder='Enter password here' onChangeText={(text) => setPassword(text)} style={styles.passwordInput}/>
       <Button title='Submit' onPress={handleSubmit} color={'#FFE27B'} style={styles.button}/>
-      <TouchableOpacity style={styles.logintext}><Text>Login?</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.logintext} onPress={() => navigation.navigate('Login')}><Text>Login?</Text></TouchableOpacity>
     </View>
 
     </SafeAreaView>
@@ -42,10 +43,10 @@ const styles = StyleSheet.create({
       paddingLeft:10,
       paddingRight:10,
       borderRadius:20,
-      width:'140%',
-      height:'100%',
-      marginTop:40
-      
+      width:'75%',
+      height:'65%',
+      marginTop:50,
+      marginBottom:50
     },
     text:{
        fontSize:40,
@@ -58,7 +59,9 @@ const styles = StyleSheet.create({
     },
     container:{
       justifyContent:'center',
-      alignItems:'center'
+      alignItems:'center',
+      backgroundColor: "#FFCE20",
+      flex:'1'
     },
     button:{
       borderRadius:20,
@@ -68,7 +71,8 @@ const styles = StyleSheet.create({
       marginTop:10,
       textAlign:'center',
       marginBottom:40,
-      fontSize:25
+      fontSize:25,
+      fontWeight:'bold'
     },
     usernametext:{
       fontSize:15,
