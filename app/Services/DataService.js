@@ -29,31 +29,13 @@ const getData = async (controller, endpoint) => {
     return data;
 };
 
+const getTest = async () => {
 
-// //DELETE
-// const deleteDataItem = async (controller, endpoint, itemId) => {
-//   try {
-//     let result = await fetch(`http://localhost:5223/${controller}/${endpoint}/${itemId}`, {
-//       method: "DELETE",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify(itemId),
-//     });
+  let result = await fetch(`http://localhost:5223/Shopping`);
 
-//     if (!result.ok) {
-//       const message = `An error has occured: ${result.status}`;
-//       throw new Error(message);
-//     }
-
-//     let data = await result.json();
-//     return data;
-    
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
+  let data = await result.json();
+  return data;
+}
 
 
-
-export {sendData, getData};
+export {sendData, getData, getTest};

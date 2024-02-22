@@ -6,8 +6,9 @@ import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import SwipeableItem from "../components/SwipeableItem";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-import { getData, sendData, deleteDataItem } from "../Services/DataService";
+import { getData, sendData, deleteDataItem, getTest } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
+import { get, set } from "@gluestack-style/react";
 
 const ShoppingListScreen = () => {
   //--------------------------------UseStates-------------------------------//
@@ -15,10 +16,7 @@ const ShoppingListScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
   const [itemToEdit, setItemToEdit] = useState(null);
-  // const [itemsToDisplay, setitemsToDisplay] = useState([])
 
-
- 
   
   //useEffect to render data on page load
   useEffect(() => {
@@ -34,53 +32,37 @@ const ShoppingListScreen = () => {
   }, []);
 
 
-
-  // useEffect(() => {
-
-  //    //Filtering
-  //    console.log('filtering')
-
-     
-  //   if (selectedCategory) {
-      
-  //     shoppingList(shoppingList.filter((item) => item.category === selectedCategory))
-  //   }
-  //   // if(shoppingList){
-
-  //   //   let x = shoppingList.filter(item => item.isDeleted === false)
-  //   //   setitemsToDisplay(x);
-  //   // }
-
-  // },[shoppingList]);
-
   //--------------------------------Functions-------------------------------//
 
   //Get Shopping Items
   const getShoppingItems = async () => {
-    let myShoppingItems = await getData("Shopping", "GetShoppingItems");
-    setShoppingList(myShoppingItems);
-    // setitemsToDisplay(myShoppingItems);
+    // let myShoppingItems = await getData("Shopping", "GetShoppingItems");
+    // setShoppingList(myShoppingItems);
+    let test = await getTest();
+    setShoppingList(test);
   };
 
 
-  
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
     const newItem = { ...item, color: categoryColors[item.category] };
     setShoppingList([...shoppingList, newItem]);
-    
-    // setitemsToDisplay((prevList) => [...prevList, newItem]);
   };
 
   //Edit Shopping Item
   const updateShoppingItem = async (item) => {
-    const updatedShoppingItem = await sendData(
+    const update = await sendData(
       "Shopping",
       "UpdateShoppingItem",
       item
     );
-    setShoppingList([updateShoppingItem]);
-    console.log(updateShoppingItem);
+
+    if(update) {
+      const items = getShoppingItems();
+      setShoppingList(items);
+    }
+
+    
   };
 
   //Delete a Shopping item
@@ -89,8 +71,6 @@ const ShoppingListScreen = () => {
     let shoppingItems = await sendData("shopping","UpdateShoppingItem",item);
     setShoppingList([...shoppingList,shoppingItems]);
     console.log(item);
-    
-
   };
 
   //Delete All Items
@@ -110,7 +90,6 @@ const ShoppingListScreen = () => {
 
   //  Filtering
 
-
    let itemsToDisplay = shoppingList;
    if (selectedCategory) {
      itemsToDisplay = shoppingList.filter(
@@ -126,7 +105,6 @@ const ShoppingListScreen = () => {
     setShoppingList(updatedList);
     setItemToEdit(null);
   };
-
 
 
   //Color Function
@@ -240,15 +218,11 @@ const ShoppingListScreen = () => {
           renderRightActions={() => (
             <EditAndDelete
               onPress1={() => {
-                // setIsModalVisible(true);
-                // setItemToEdit(item);
-                // console.log(item?.isDeleted);
-                console.log(item?.shoppingItemName);
+                setIsModalVisible(true);
+                setItemToEdit(item);
               }}
               onPress2={() => {
                 deleteShoppingItem(item);
-               
-
               }}
             />
           )}
