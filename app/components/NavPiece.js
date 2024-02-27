@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, View ,StyleSheet, TouchableOpacity,Image} from 'react-native'
 
-const NavPiece = () => {
+const NavPiece = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
