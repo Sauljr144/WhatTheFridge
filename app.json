@@ -4,10 +4,8 @@
     "slug": "whatthefridge",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+ 
         "backgroundColor": "#ffffff"
       }
     },
@@ -28,15 +26,15 @@
     },
     "extra": {
       "eas": {
-        "projectId": "9aa90591-c3ca-4ed7-866f-50c37715964d"
+        "projectId": "b0d7e992-00ad-41e2-aec8-a2a851a1ebfb"
       }
     },
-    "owner": "amirsmt",
+    "owner": "valerie4792",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/9aa90591-c3ca-4ed7-866f-50c37715964d"
+      "url": "https://u.expo.dev/b0d7e992-00ad-41e2-aec8-a2a851a1ebfb"
     }
   }
 }

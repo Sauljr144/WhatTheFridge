@@ -10,21 +10,12 @@ const Warp = createStackNavigator();
 
 export default function App() {
   return (
-
-  <GluestackUIProvider config={config}>
-    <GestureHandlerRootView style={{flex: 1}}>
-      <Screen>
-   <ShoppingListScreen/>
-   {/* <FridgeListScreen/> */}
-  </Screen> 
-    </GestureHandlerRootView>
-</GluestackUIProvider>
-
-
-
-
- 
-  
+    <NavigationContainer style={styles.container}>
+      <Warp.Navigator>
+        <Warp.Screen name="Create" component={CreateAccountScreen} />
+        <Warp.Screen name="Login" component={LoginScreen} />
+      </Warp.Navigator>
+    </NavigationContainer>
   );
 }
 
