@@ -15,23 +15,26 @@ import {
   InputField,
 } from "@gluestack-ui/themed";
 import CustomDropdown from "./CustomDropDown";
-import { getData, sendData } from "../Services/DataService";
+import { getData, sendData, editData } from "../Services/DataService";
 
-const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, onEdit, addItemToShoppingList, categoryNames, categoryColors, itemToEdit, isEditing, submitEdit}) => {
+const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose, onEdit, addItemToShoppingList, categoryNames, categoryColors, itemToEdit, isEditing, submitEdit}) => {
   
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
-  const [itemQuantity, setItemQuantity] = useState("");
+  const [itemQuantity, setItemQuantity] = useState(0);
+  const [itemId, setItemId] = useState(0);
 
   useEffect(() => {
     if (itemToEdit) {
       setItemName(name);
       setItemCategory(category);
       setItemQuantity(quantity);
+      setItemId(id);
     } else {
       setItemName("");
       setItemCategory("");
-      setItemQuantity("");
+      setItemQuantity(0);
+      setItemId(0);
     }
   }, [itemToEdit]);
 
@@ -46,18 +49,28 @@ const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, on
   //Function to add to database
   const addShoppingItem = async () => {
     const newShoppingItem = {
+      id: itemId,
+      expirationDate: null,
       shoppingItemName: itemName,
       quantity: itemQuantity,
-      Category: itemCategory,
+      isDeleted: false,
+      category: itemCategory
     };
     setShoppingItems([...shoppingItems, newShoppingItem]);
-    await sendData("Shopping", "AddShoppingItems", newShoppingItem);
-    console.log(shoppingItems, "it works");
+    await sendData("Shopping", newShoppingItem);
+    console.log(newShoppingItem, "it works");
   };
 
+  // const editItem = (id, item) => {
+  //   let result = editData(id, item);
+  //   console.log(result);
+  // }
 
+  const editItem = async (id, item) => {
+    await editData("Shopping",id, item);
+    console.log(id, item, "it works");
+  };
 
-  
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -106,17 +119,20 @@ const ShoppingListItemModal = ({name, category, quantity, isVisible, onClose, on
             borderWidth="$0"
             onPress={() => {
               const newItem = {
+                id: itemId,
+                expirationDate: null,
                 shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
-                // color: categoryColors[itemCategory],
+                isDeleted: false
               };
 
               if (isEditing) {
                 onEdit(newItem);
-                submitEdit(newItem);
+                // submitEdit(newItem);
+                console.log(newItem);
+                editItem(itemId, newItem);
 
-               
               } else {
                 addItemToShoppingList(newItem);
 

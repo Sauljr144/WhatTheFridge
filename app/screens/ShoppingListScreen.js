@@ -6,84 +6,77 @@ import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import SwipeableItem from "../components/SwipeableItem";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-import { getData, sendData } from "../Services/DataService";
+import { getData, sendData, deleteData, deleteAllData } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
+import { get, set } from "@gluestack-style/react";
 
 const ShoppingListScreen = () => {
+  //--------------------------------UseStates-------------------------------//
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
   const [itemToEdit, setItemToEdit] = useState(null);
 
+  
   //useEffect to render data on page load
   useEffect(() => {
     const timer = setTimeout(() => {
+
       getShoppingItems();
-    }, 3000); // 3000ms delay
+
+    }, 0); // 3000ms delay
+    
 
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
 
+
   //--------------------------------Functions-------------------------------//
 
   //Get Shopping Items
   const getShoppingItems = async () => {
-    let myShoppingItems = await getData("Shopping", "GetShoppingItems");
-    setShoppingList(myShoppingItems);
-    console.log(myShoppingItems);
+    let result = await getData("shopping");
+    setShoppingList(result);
+    
   };
 
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
     const newItem = { ...item, color: categoryColors[item.category] };
-    setShoppingList((prevList) => [...prevList, newItem]);
+    setShoppingList([...shoppingList, newItem]);
   };
 
-  //Edit Shopping Item
-  const editShoppingItem = async (item) => {
-    const editShoppingItems = await sendData(
-      "Shopping",
-      "EditShoppingItem",
-      item
-    );
-    setShoppingList([editShoppingItems]);
-    console.log(editShoppingItems);
-  };
 
   //Delete a Shopping item
-  const deleteShoppingItem = async (item) => {
-    const deleteShoppingItems = await sendData(
-      "Shopping",
-      "DeleteShoppingItem",
-      item
-    );
-    setShoppingList([deleteShoppingItems]);
-    console.log(deleteShoppingItems);
-  };
+  const deleteItem = async (id) => {
+    await deleteData("shopping",id);
+    console.log(id);
+    getShoppingItems();
+  }
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteShoppingItems = await sendData(
-      "Shopping",
-      "DeleteAllShoppingItems"
-    );
-    setShoppingList([deleteShoppingItems]);
+    const result = await deleteAllData("shopping");
+    getShoppingItems();
   };
 
   //Select Category
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
+    console.log(category);
   };
 
-  //Filtering
-  let itemsToDisplay = shoppingList;
-  if (selectedCategory) {
-    itemsToDisplay = shoppingList.filter(
-      (item) => item.category === selectedCategory
-    );
-  }
+  //  Filtering
 
+   let itemsToDisplay = shoppingList;
+   if (selectedCategory) {
+     itemsToDisplay = shoppingList.filter(
+       (item) => item?.category === selectedCategory
+     )
+   }
+
+  //Edit Item
   const handleEdit = (editedItem) => {
     const updatedList = shoppingList.map((item) =>
       item === itemToEdit ? editedItem : item
@@ -92,6 +85,31 @@ const ShoppingListScreen = () => {
     setItemToEdit(null);
   };
 
+
+  //Color Function
+  const ColorFn = (item) => {
+    switch(item?.category) {
+      case "Beverages":
+        return "#44BBFE";
+      case "Dairy":
+        return "#FEF644";
+      case "Fruits":
+        return "#44FEBB";
+      case "Grains":
+        return "#FEA844";
+      case "Meats":
+        return "#FE4444";
+      case "Miscellaneous":
+        return "#C244FE";
+      case "Veggies":
+        return "#ACFE44";
+      case "":
+        return "#E0E0E0";
+      default:
+        // return a default color or null if item.category is not matched
+        return null;
+    }
+  };
   const categoryNames = [
     { label: "View All", value: null },
     { label: "Beverages", value: "Beverages" },
@@ -102,26 +120,6 @@ const ShoppingListScreen = () => {
     { label: "Miscellaneous", value: "Miscellaneous" },
     { label: "Veggies", value: "Veggies" },
   ];
-
-  const ColorFn = (item) => {
-    if (item.category === "Beverages") {
-      return "#44BBFE";
-    } else if (item.category === "Dairy") {
-      return "#FEF644";
-    } else if (item.category === "Fruits") {
-      return "#44FEBB";
-    } else if (item.category === "Grains") {
-      return "#FEA844";
-    } else if (item.category === "Meats") {
-      return "#FE4444";
-    } else if (item.category === "Miscellaneous") {
-      return "#C244FE";
-    } else if (item.category === "Veggies") {
-      return "#ACFE44";
-    } else if (item.category === "") {
-      return "#E0E0E0";
-    }
-  };
   const categoryColors = {
     Beverages: "#44BBFE",
     Dairy: "#FEF644",
@@ -131,6 +129,8 @@ const ShoppingListScreen = () => {
     Miscellaneous: "#C244FE",
     Veggies: "#ACFE44",
   };
+
+  
 
   return (
     <ScrollView>
@@ -171,9 +171,10 @@ const ShoppingListScreen = () => {
 
       {isModalVisible && (
         <ShoppingListItemModal
-          name={itemToEdit ? itemToEdit.shoppingItemName : ""}
-          quantity={itemToEdit ? itemToEdit.quantity : ""}
-          category={itemToEdit ? itemToEdit.category : ""}
+          name={itemToEdit?.shoppingItemName}
+          quantity={itemToEdit?.quantity}
+          category={itemToEdit?.category}
+          id={itemToEdit?.id}
           isVisible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
           addItemToShoppingList={addItemToShoppingList}
@@ -182,7 +183,7 @@ const ShoppingListScreen = () => {
           itemToEdit={itemToEdit}
           isEditing={!!itemToEdit}
           onEdit={handleEdit}
-          submitEdit={editShoppingItem}
+          // submitEdit={getShoppingItems}
         />
       )}
 
@@ -190,29 +191,28 @@ const ShoppingListScreen = () => {
         <SwipeableItem
           key={index}
           item={item}
-          name={item.shoppingItemName}
-          quantity={item.quantity}
-          category={item.category}
+          name={item?.shoppingItemName}
+          quantity={item?.quantity}
+          category={item?.category}
           color={ColorFn(item)}
           renderRightActions={() => (
             <EditAndDelete
               onPress1={() => {
                 setIsModalVisible(true);
                 setItemToEdit(item);
+                
+
               }}
-              onPress2={(deletedItem) => {
-                const updatedList = shoppingList.filter(
-                  (item) => item !== deletedItem
-                );
-                deleteShoppingItem(deletedItem);
-                setShoppingList(updatedList);
+              onPress2={() => {
+                // deleteShoppingItem(item);
+                deleteItem(item?.id);
               }}
             />
           )}
           children={
             <ShoppingListItemColor
-              name={item.shoppingItemName}
-              quantity={item.quantity}
+              name={item?.shoppingItemName}
+              quantity={item?.quantity}
             />
           }
           onEdit={() => {
@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "700",
   },
+ 
 });
 
 export default ShoppingListScreen;

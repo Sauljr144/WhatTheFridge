@@ -5,17 +5,21 @@ import NavPiece from "./app/components/NavPiece";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./app/screens/LoginScreen";
+import { GluestackUIProvider } from "@gluestack-ui/themed";
 
 const Warp = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
+    <GluestackUIProvider>
+        <NavigationContainer style={styles.container}>
       <Warp.Navigator>
         <Warp.Screen name="Create" component={CreateAccountScreen} />
         <Warp.Screen name="Login" component={LoginScreen} />
       </Warp.Navigator>
     </NavigationContainer>
+    </GluestackUIProvider>
+  
   );
 }
 
