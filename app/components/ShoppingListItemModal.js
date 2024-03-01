@@ -61,11 +61,7 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
     console.log(newShoppingItem, "it works");
   };
 
-  // const editItem = (id, item) => {
-  //   let result = editData(id, item);
-  //   console.log(result);
-  // }
-
+  //Function to edit item in database
   const editItem = async (id, item) => {
     await editData("Shopping",id, item);
     console.log(id, item, "it works");
