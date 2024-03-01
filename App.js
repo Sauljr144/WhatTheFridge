@@ -14,8 +14,8 @@ const Warp = createStackNavigator();
 export default function App() {
   return (
     <GluestackUIProvider>
-        <NavigationContainer style={styles.container}>
-    <GluestackUIProvider>
+      
+   
         <NavigationContainer style={styles.container}>
       <Warp.Navigator>
         <Warp.Screen name="Create" component={CreateAccountScreen} />
@@ -24,7 +24,6 @@ export default function App() {
 
       </Warp.Navigator>
     </NavigationContainer>
-    </GluestackUIProvider>
   
     </GluestackUIProvider>
   
