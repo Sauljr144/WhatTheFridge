@@ -6,7 +6,7 @@ import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import SwipeableItem from "../components/SwipeableItem";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-import { getData, sendData, deleteDataItem, getTest } from "../Services/DataService";
+import { getData, sendData, deleteData, deleteAllData } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
 import { get, set } from "@gluestack-style/react";
 
@@ -36,12 +36,10 @@ const ShoppingListScreen = () => {
 
   //Get Shopping Items
   const getShoppingItems = async () => {
-    // let myShoppingItems = await getData("Shopping", "GetShoppingItems");
-    // setShoppingList(myShoppingItems);
-    let test = await getTest();
-    setShoppingList(test);
+    let result = await getData("shopping");
+    setShoppingList(result);
+    
   };
-
 
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
@@ -49,37 +47,18 @@ const ShoppingListScreen = () => {
     setShoppingList([...shoppingList, newItem]);
   };
 
-  //Edit Shopping Item
-  const updateShoppingItem = async (item) => {
-    const update = await sendData(
-      "Shopping",
-      "UpdateShoppingItem",
-      item
-    );
-
-    if(update) {
-      const items = getShoppingItems();
-      setShoppingList(items);
-    }
-
-    
-  };
 
   //Delete a Shopping item
-  const deleteShoppingItem = async (item) => {
-    item.isDeleted = !item.isDeleted;
-    let shoppingItems = await sendData("shopping","UpdateShoppingItem",item);
-    setShoppingList([...shoppingList,shoppingItems]);
-    console.log(item);
-  };
+  const deleteItem = async (id) => {
+    await deleteData("shopping",id);
+    console.log(id);
+    getShoppingItems();
+  }
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteShoppingItems = await sendData(
-      "Shopping",
-      "DeleteAllShoppingItems"
-    );
-    setShoppingList([deleteShoppingItems]);
+    const result = await deleteAllData("shopping");
+    getShoppingItems();
   };
 
   //Select Category
@@ -192,9 +171,10 @@ const ShoppingListScreen = () => {
 
       {isModalVisible && (
         <ShoppingListItemModal
-          name={itemToEdit ? itemToEdit.shoppingItemName : ""}
-          quantity={itemToEdit ? itemToEdit.quantity : ""}
-          category={itemToEdit ? itemToEdit.category : ""}
+          name={itemToEdit?.shoppingItemName}
+          quantity={itemToEdit?.quantity}
+          category={itemToEdit?.category}
+          id={itemToEdit?.id}
           isVisible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
           addItemToShoppingList={addItemToShoppingList}
@@ -203,11 +183,11 @@ const ShoppingListScreen = () => {
           itemToEdit={itemToEdit}
           isEditing={!!itemToEdit}
           onEdit={handleEdit}
-          submitEdit={updateShoppingItem}
+          // submitEdit={getShoppingItems}
         />
       )}
 
-      {itemsToDisplay.filter(item => item?.isDeleted === false).map((item, index) => (
+      {itemsToDisplay.map((item, index) => (
         <SwipeableItem
           key={index}
           item={item}
@@ -220,9 +200,12 @@ const ShoppingListScreen = () => {
               onPress1={() => {
                 setIsModalVisible(true);
                 setItemToEdit(item);
+                
+
               }}
               onPress2={() => {
-                deleteShoppingItem(item);
+                // deleteShoppingItem(item);
+                deleteItem(item?.id);
               }}
             />
           )}
