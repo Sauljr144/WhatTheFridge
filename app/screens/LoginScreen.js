@@ -64,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
               style={styles.logintext}
               onPress={() => navigation.navigate("Create")}
             >
-              <Text>Create Account?</Text>
+              <Text style={{fontSize:12}}>Create Account?</Text>
             </TouchableOpacity>
           </View>
         </View>
