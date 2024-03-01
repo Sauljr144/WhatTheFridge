@@ -11,7 +11,11 @@ const Warp = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-        <Warp.Navigator>
+        <Warp.Navigator
+          screenOptions={{
+            headerShown: false
+          }} 
+        >
           <Warp.Screen name="Create" component={CreateAccountScreen} />
           <Warp.Screen name="Login" component={LoginScreen} />
         </Warp.Navigator>
