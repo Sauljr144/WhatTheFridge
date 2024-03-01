@@ -6,12 +6,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./app/screens/LoginScreen";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
+import { GluestackUIProvider } from "@gluestack-ui/themed";
 import FridgeListScreen from "./app/screens/FridgeListScreen";
 
 const Warp = createStackNavigator();
 
 export default function App() {
   return (
+    <GluestackUIProvider>
+        <NavigationContainer style={styles.container}>
     <GluestackUIProvider>
         <NavigationContainer style={styles.container}>
       <Warp.Navigator>
@@ -21,6 +24,8 @@ export default function App() {
 
       </Warp.Navigator>
     </NavigationContainer>
+    </GluestackUIProvider>
+  
     </GluestackUIProvider>
   
   );
