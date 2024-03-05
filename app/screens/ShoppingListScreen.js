@@ -33,7 +33,7 @@ const ShoppingListScreen = () => {
 
 
   //--------------------------------Functions-------------------------------//
-
+//change get data to fridge
   //Get Shopping Items
   const getShoppingItems = async () => {
     let result = await getData("shopping");
@@ -44,14 +44,13 @@ const ShoppingListScreen = () => {
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
     const newItem = { ...item, color: categoryColors[item.category] };
-    setShoppingList([...shoppingList, newItem]);
+    setShoppingList([...shoppingList, newItem]); //new line to set fridgelist
   };
 
 
   //Delete a Shopping item
   const deleteItem = async (id) => {
     await deleteData("shopping",id);
-    console.log(id);
     getShoppingItems();
   }
 
@@ -169,6 +168,7 @@ const ShoppingListScreen = () => {
         </TouchableOpacity>
       </View>
 
+{/* double check below */}
       {isModalVisible && (
         <ShoppingListItemModal
           name={itemToEdit?.shoppingItemName}
@@ -204,7 +204,7 @@ const ShoppingListScreen = () => {
 
               }}
               onPress2={() => {
-                // deleteShoppingItem(item);
+  
                 deleteItem(item?.id);
               }}
             />

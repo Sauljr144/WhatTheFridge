@@ -12,40 +12,44 @@ import {
   ButtonText,
   Input,
   InputField,
-  set,
 } from "@gluestack-ui/themed";
 import CustomDropdown from "./CustomDropDown";
-import { getData, sendData } from "../Services/DataService";
+import { getData, sendData, editData } from "../Services/DataService";
 
 const FridgeListItemModal = ({
+  name,
+  id,
+  category,
+  quantity,
   isVisible,
   onClose,
   onEdit,
   addItemToFridgeList,
+  itemExpDate,
   categoryNames,
   categoryColors,
   itemToEdit,
-  isEditing}
-) => {
+  isEditing,
+}) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
-  const [itemQuantity, setItemQuantity] = useState("");
-  const [fridgeItemExpirationDate, setFridgeItemExpirationDate] = useState("");
+  const [itemQuantity, setItemQuantity] = useState(0);
+  const [itemId, setItemId] = useState(0);
+  const [itemExpirationDate, setItemExpirationDate] = useState("");
 
   useEffect(() => {
- 
     if (itemToEdit) {
-  
-      setItemName(itemToEdit.fridgeItemName);
-      setItemCategory(itemToEdit.category);
-      setItemQuantity(itemToEdit.quantity);
-      setFridgeItemExpirationDate(itemToEdit.expirationDate);
+      setItemName(name);
+      setItemCategory(category);
+      setItemQuantity(quantity);
+      setItemExpirationDate(itemExpDate);
+      setItemId(id);
     } else {
-      console.log("No itemToEdit, setting modal fields to empty strings");
       setItemName("");
       setItemCategory("");
-      setItemQuantity("");
-      setFridgeItemExpirationDate("");
+      setItemQuantity(0);
+      setItemExpirationDate("");
+      setItemId(0);
     }
   }, [itemToEdit]);
 
@@ -55,25 +59,29 @@ const FridgeListItemModal = ({
 
   //Arrays
   const [fridgeItems, setFridgeItems] = useState([]);
-  
-  useEffect(() => {
-    console.log(fridgeItems, "it works");
-  }, [fridgeItems]);
-  //Functions
+
+
   //Function to add to database
   const addFridgeItem = async () => {
     const newFridgeItem = {
+      id: itemId,
+      expirationDate: itemExpirationDate,
       fridgeItemName: itemName,
       quantity: itemQuantity,
-      expirationDate: fridgeItemExpirationDate,
+      isDeleted: false,
       category: itemCategory,
-      // IsDeleted: fridgeItemDeleted,
     };
-   
+
     setFridgeItems([...fridgeItems, newFridgeItem]);
-    await sendData("fridge", "AddFridgeItems", newFridgeItem);
-    // console.log(fridgeItems, "it works");
+    await sendData("fridge", newFridgeItem);
+    console.log(newFridgeItem, "it works");
   };
+
+    //need to add to fridgle list modal for edit item
+    const editItem = async (id, item) => {
+      await editData("fridge", id, item);
+      console.log(id, item, "it works");
+    };
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -99,29 +107,27 @@ const FridgeListItemModal = ({
             />
           </Input>
 
-        <CustomDropdown  
+          <CustomDropdown
             placeholder="Category"
             items={categoryNames}
             onSelectItem={handleSelectItem}
-            selectedValue={itemToEdit ? itemToEdit.category : null}/>
-      
-            <Input style={styles.input}>
+            selectedValue={itemToEdit ? itemToEdit.category : null}
+          />
+
+          <Input style={styles.input}>
             <InputField
               placeholder="Quantity"
-              value={itemQuantity}
+              value={itemQuantity.toString()}
               onChangeText={(text) => setItemQuantity(text)}
             />
           </Input>
           <Input style={styles.input}>
-         
             <InputField
               placeholder="Expiration Date"
-              value={fridgeItemExpirationDate}
-              onChangeText={(text) => setFridgeItemExpirationDate(text)}
+              value={itemExpirationDate}
+              onChangeText={(text) => setItemExpirationDate(text)}
             />
           </Input>
-      
-    
         </ModalBody>
 
         <ModalFooter>
@@ -131,18 +137,20 @@ const FridgeListItemModal = ({
             borderWidth="$0"
             onPress={() => {
               const newItem = {
+                id: itemId,
+                expirationDate: itemExpirationDate,
                 fridgeItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
-                color: categoryColors[itemCategory],
-                expirationDate: fridgeItemExpirationDate
+                isDeleted: false,
               };
 
               if (isEditing) {
                 onEdit(newItem);
+                console.log(newItem);
+                editItem(itemId, newItem);
               } else {
                 addItemToFridgeList(newItem);
-
                 //Adding to our database
                 addFridgeItem();
               }
@@ -167,7 +175,7 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderRadius: 15,
   },
- 
+
   ModalContent: {
     justifyContent: "center",
     alignItems: "center",
@@ -194,7 +202,5 @@ const styles = StyleSheet.create({
     margin: 5,
     paddingRight: 30,
   },
-
-
 });
 export default FridgeListItemModal;

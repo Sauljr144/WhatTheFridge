@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import FridgeListItemModal from "../components/FridgeListItemModal";
-import ShoppingListItemColor from "../components/ShoppingListItemColor";
+import FridgeListItemColor from "../components/FridgeListItemColor";
 import SwipableFridgeItem from "../components/SwipableFridgeItem";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-import { getData, sendData } from "../Services/DataService";
-import { Input, InputField } from "@gluestack-ui/themed";
+import { getData, deleteData, deleteAllData } from "../Services/DataService";
+import { Input, InputField, get, set } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import EditAndDelete from "../components/EditAndDelete";
 const FridgeListScreen = () => {
@@ -20,47 +20,56 @@ const FridgeListScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       getFridgeItems();
-    }, 3000); // 3000ms delay
-  
+    }, 0); // 3000ms delay
+
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
 
-  const handleSelectedCategory = (category) => {
-    setSelectedCategory(category);
+  //--------------------------------Functions-------------------------------//
+
+  //Get Fridge Items
+  const getFridgeItems = async () => {
+    let myFridgeItems = await getData("Fridge");
+    setFridgeList(myFridgeItems);
+    // console.log(myFridgeItems);
   };
- //Get Shopping Items
- const getFridgeItems = async () => {
-  let myFridgeItems = await getData("Fridge", "GetFridgeItems");
-  setFridgeList(myFridgeItems);
-  // console.log(myFridgeItems);
-};
+
+  //Add Item
+  const addItemToFridgeList = (item) => {
+    const newItem = {
+      ...item,
+      color: categoryColors[item.category],
+      expirationDate: item.expirationDate,
+    };
+    setFridgeList([...fridgeList, newItem]);
+  };
+
   //Delete a fridge item
-  const deleteFridgeItem = async (item) => {
-    console.log(item);
-    item.isDeleted = !item.isDeleted;
-    const deleteFridgeItems = await sendData(
-      "Fridge",
-      "DeleteFridgeItem",
-      item
-    );
-    setFridgeList([deleteFridgeItems]);
-    console.log(deleteFridgeItems);
+  const deleteItem = async (id) => {
+    await deleteData("fridge", id);
+    getFridgeItems();
   };
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteFridgeItems = await sendData("Fridge", "DeleteAllFridgeItems");
-    setFridgeList([deleteFridgeItems]);
-    console.log(deleteFridgeItems);
-  };
-//Add Item
-  const addItemToFridgeList = (item) => {
-    const newItem = { ...item, color: categoryColors[item?.category], expirationDate: item.expirationDate };
-    setFridgeList((prevList) => [...prevList, newItem]);
+    const deleteFridgeItems = await deleteAllData("fridge");
+    getFridgeItems();
   };
 
-//edit item
+  //Set Selected Category
+  const handleSelectedCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
+  //filter by category
+  let itemsToDisplay = fridgeList;
+  if (selectedCategory) {
+    itemsToDisplay = fridgeList.filter(
+      (item) => item?.category === selectedCategory
+    );
+  }
+  //edit item
   const handleEdit = (editedItem) => {
     const updatedList = fridgeList.map((item) =>
       item === itemToEdit ? editedItem : item
@@ -69,13 +78,6 @@ const FridgeListScreen = () => {
     setItemToEdit(null);
   };
 
-  let itemsToDisplay = fridgeList;
-//filter by category
-  if (selectedCategory) {
-    itemsToDisplay = fridgeList.filter(
-      (item) => item?.category === selectedCategory
-    );
-  }
   //search items
   if (search) {
     itemsToDisplay = fridgeList.filter((item) =>
@@ -83,17 +85,7 @@ const FridgeListScreen = () => {
     );
   }
 
-  const categoryNames = [
-    { label: "View All", value: null },
-    { label: "Beverages", value: "Beverages" },
-    { label: "Dairy", value: "Dairy" },
-    { label: "Fruits", value: "Fruits" },
-    { label: "Grains", value: "Grains" },
-    { label: "Meats", value: "Meats" },
-    { label: "Miscellaneous", value: "Miscellaneous" },
-    { label: "Veggies", value: "Veggies" },
-  ];
-
+  //Color Function
   const ColorFn = (item) => {
     switch (item?.category) {
       case "Beverages":
@@ -110,10 +102,25 @@ const FridgeListScreen = () => {
         return "#C244FE";
       case "Veggies":
         return "#ACFE44";
+      case "":
+        return "#E0E0E0";
       default:
-        return ""; 
+        // return a default color or null if item.category is not matched
+        return null;
     }
   };
+
+  const categoryNames = [
+    { label: "View All", value: null },
+    { label: "Beverages", value: "Beverages" },
+    { label: "Dairy", value: "Dairy" },
+    { label: "Fruits", value: "Fruits" },
+    { label: "Grains", value: "Grains" },
+    { label: "Meats", value: "Meats" },
+    { label: "Miscellaneous", value: "Miscellaneous" },
+    { label: "Veggies", value: "Veggies" },
+  ];
+
   const categoryColors = {
     Beverages: "#44BBFE",
     Dairy: "#FEF644",
@@ -123,8 +130,9 @@ const FridgeListScreen = () => {
     Miscellaneous: "#C244FE",
     Veggies: "#ACFE44",
   };
+
   return (
-    <>
+    <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Fridge List</Text>
       </View>
@@ -137,15 +145,13 @@ const FridgeListScreen = () => {
           isDisabled={false}
           isInvalid={false}
           isReadOnly={false}
-        
         >
-          <InputField 
-          placeholder="Search Items" 
-          value={search}
-          onChangeText={(text) => {
-            setSearch(text);
-          
-          }}
+          <InputField
+            placeholder="Search Items"
+            value={search}
+            onChangeText={(text) => {
+              setSearch(text);
+            }}
           />
         </Input>
       </View>
@@ -163,7 +169,7 @@ const FridgeListScreen = () => {
             selectedCategory={selectedCategory}
           />
         </View>
-        <View style={{ flexDirection: "row", alignItems: "center"}}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.addItemTxt}>Add Item:</Text>
           <Feather
             name="plus-circle"
@@ -180,6 +186,11 @@ const FridgeListScreen = () => {
       </View>
       {isModalVisible && (
         <FridgeListItemModal
+          name={itemToEdit?.fridgeItemName}
+          quantity={itemToEdit?.quantity}
+          category={itemToEdit?.category}
+          itemExpDate={itemToEdit?.expirationDate}
+          id={itemToEdit?.id}
           isVisible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
           addItemToFridgeList={addItemToFridgeList}
@@ -190,56 +201,43 @@ const FridgeListScreen = () => {
           onEdit={handleEdit}
         />
       )}
-      <ScrollView>
-        {itemsToDisplay.map((item, index) => (
-          <SwipableFridgeItem
-            key={index}
-            item={item}
-            name={item?.fridgeItemName}
-            quantity={item?.quantity}
-            expirationDate={item?.expirationDate}
-            category={item?.Category}
-            color={ColorFn(item)}
-            renderRightActions={() => (
-              <EditAndDelete
-                onPress1={() => {
-                  setIsModalVisible(true);
-                  setItemToEdit(item);
-                }}
-                onPress2={(deletedItem) => {
-                  const updatedList = fridgeList.filter(
-                    (item) => item !== deletedItem
-                  );
-                  deleteFridgeItem(deletedItem);
-                  setFridgeList(updatedList);
-                }}
-              />
-            )}
-            children={
-              <ShoppingListItemColor
-                name={item?.fridgeItemName}
-                quantity={item?.quantity}
-                expirationDate={item?.expirationDate}
-              />
-            }
-            
-            onPress={(deletedItem) => {
-              // const updatedList = shoppingList.filter(
-              //   (item) => item !== deletedItem
-              // );
 
-              deleteFridgeItem(deletedItem);
-              // setShoppingList(updatedList);
-            }}
-            onEdit={() => {
-              setIsModalVisible(true);
-              setItemToEdit(item);
-            }}
-          />
-          // console.log(item.expirationDate)
-        ))}
-      </ScrollView>
-    </>
+      {itemsToDisplay.map((item, index) => (
+        <SwipableFridgeItem
+          key={index}
+          item={item}
+          name={item?.fridgeItemName}
+          quantity={item?.quantity}
+          expirationDate={item?.expirationDate}
+          category={item?.Category}
+          color={ColorFn(item)}
+          renderRightActions={() => (
+            <EditAndDelete
+              onPress1={() => {
+                setIsModalVisible(true);
+                setItemToEdit(item);
+              }}
+              onPress2={() => {
+                console.log(item);
+                deleteItem(item?.id);
+                
+              }}
+            />
+          )}
+          children={
+            <FridgeListItemColor
+              name={item?.fridgeItemName}
+              quantity={item?.quantity}
+              expirationDate={item?.expirationDate}
+            />
+          }
+          onEdit={() => {
+            setIsModalVisible(true);
+            setItemToEdit(item);
+          }}
+        />
+      ))}
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({
@@ -293,4 +291,5 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 });
+
 export default FridgeListScreen;

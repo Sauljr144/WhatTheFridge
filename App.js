@@ -6,20 +6,20 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import LoginScreen from "./app/screens/LoginScreen";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
-import { GluestackUIProvider } from "@gluestack-ui/themed";
 import FridgeListScreen from "./app/screens/FridgeListScreen";
+import { config } from "@gluestack-ui/config"
 
 const Warp = createStackNavigator();
 
 export default function App() {
   return (
-    <GluestackUIProvider>
+    <GluestackUIProvider config={config}>
       
    
         <NavigationContainer style={styles.container}>
       <Warp.Navigator>
-        <Warp.Screen name="Create" component={CreateAccountScreen} />
-        <Warp.Screen name="Login" component={LoginScreen} />
+        {/* <Warp.Screen name="Create" component={CreateAccountScreen} />
+        <Warp.Screen name="Login" component={LoginScreen} /> */}
         <Warp.Screen name="FridgeList" component={FridgeListScreen} />
 
       </Warp.Navigator>
