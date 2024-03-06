@@ -35,6 +35,7 @@ const CustomDropdown = ({ items, onSelectItem, selectedValue}) => {
             color: selectedItem ? 'black' : 'grey',
             fontSize: 15,
             fontWeight: "600",
+            
             }}
         >
           {selectedItem ||"Category"}
@@ -55,8 +56,7 @@ const CustomDropdown = ({ items, onSelectItem, selectedValue}) => {
                 >
                   <ButtonText
                     style={{
-                      color: '#9B9A9A',
-                      fontFamily: "Arial",
+                      color: 'black',
                       fontSize: 16,
                       fontWeight: "400",
                     }}

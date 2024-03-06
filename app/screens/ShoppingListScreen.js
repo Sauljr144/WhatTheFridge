@@ -4,11 +4,12 @@ import { Feather } from "@expo/vector-icons";
 import ShoppingListItemModal from "../components/ShoppingListItemModal";
 import ShoppingListItemColor from "../components/ShoppingListItemColor";
 import SwipeableItem from "../components/SwipeableItem";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
-import { getData, sendData, deleteData, deleteAllData } from "../Services/DataService";
+import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
-import { get, set } from "@gluestack-style/react";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { SafeAreaView } from "react-native";
 
 const ShoppingListScreen = () => {
   //--------------------------------UseStates-------------------------------//
@@ -16,21 +17,17 @@ const ShoppingListScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
   const [itemToEdit, setItemToEdit] = useState(null);
+  const [deleteModal, setDeleteModal] = useState(false);
 
-  
   //useEffect to render data on page load
   useEffect(() => {
     const timer = setTimeout(() => {
-
       getShoppingItems();
-
     }, 0); // 3000ms delay
-    
 
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
-
 
   //--------------------------------Functions-------------------------------//
 
@@ -38,22 +35,20 @@ const ShoppingListScreen = () => {
   const getShoppingItems = async () => {
     let result = await getData("shopping");
     setShoppingList(result);
-    
   };
 
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
-    const newItem = { ...item, color: categoryColors[item.category] };
+    const newItem = { ...item};
     setShoppingList([...shoppingList, newItem]);
   };
 
-
   //Delete a Shopping item
   const deleteItem = async (id) => {
-    await deleteData("shopping",id);
+    await deleteData("shopping", id);
     console.log(id);
     getShoppingItems();
-  }
+  };
 
   //Delete All Items
   const MasterDelete = async () => {
@@ -69,12 +64,12 @@ const ShoppingListScreen = () => {
 
   //  Filtering
 
-   let itemsToDisplay = shoppingList;
-   if (selectedCategory) {
-     itemsToDisplay = shoppingList.filter(
-       (item) => item?.category === selectedCategory
-     )
-   }
+  let itemsToDisplay = shoppingList;
+  if (selectedCategory) {
+    itemsToDisplay = shoppingList.filter(
+      (item) => item?.category === selectedCategory
+    );
+  }
 
   //Edit Item
   const handleEdit = (editedItem) => {
@@ -85,10 +80,9 @@ const ShoppingListScreen = () => {
     setItemToEdit(null);
   };
 
-
   //Color Function
   const ColorFn = (item) => {
-    switch(item?.category) {
+    switch (item?.category) {
       case "Beverages":
         return "#44BBFE";
       case "Dairy":
@@ -130,11 +124,12 @@ const ShoppingListScreen = () => {
     Veggies: "#ACFE44",
   };
 
-  
-
   return (
-    <ScrollView>
-      <View style={styles.topBorder}>
+    <SafeAreaView style={{flex:1, backgroundColor:"#FFCE20"}}>
+          
+    <ScrollView style={{ backgroundColor:"white"}} >
+      
+      <View style={styles.topBorder }>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
 
@@ -164,10 +159,12 @@ const ShoppingListScreen = () => {
       </View>
 
       <View style={styles.clearAllcontainer}>
-        <TouchableOpacity onPress={MasterDelete}>
+        <TouchableOpacity onPress={() => setDeleteModal(true)}>
           <Text style={styles.clearAllTxt}>Clear My List</Text>
         </TouchableOpacity>
       </View>
+
+      {/* {deleteModal && ()} */}
 
       {isModalVisible && (
         <ShoppingListItemModal
@@ -187,41 +184,47 @@ const ShoppingListScreen = () => {
         />
       )}
 
-      {itemsToDisplay.map((item, index) => (
-        <SwipeableItem
-          key={index}
-          item={item}
-          name={item?.shoppingItemName}
-          quantity={item?.quantity}
-          category={item?.category}
-          color={ColorFn(item)}
-          renderRightActions={() => (
-            <EditAndDelete
-              onPress1={() => {
-                setIsModalVisible(true);
-                setItemToEdit(item);
-                
+      {itemsToDisplay.length === 0 ? ( 
 
-              }}
-              onPress2={() => {
-                // deleteShoppingItem(item);
-                deleteItem(item?.id);
-              }}
-            />
-          )}
-          children={
-            <ShoppingListItemColor
-              name={item?.shoppingItemName}
-              quantity={item?.quantity}
-            />
-          }
-          onEdit={() => {
-            setIsModalVisible(true);
-            setItemToEdit(item);
-          }}
-        />
-      ))}
+        <View style={{flexDirection:"row",alignItems: "center", marginTop: 150, justifyContent:"center"}}>
+          <Text style={styles.empty}>Add Some Items!</Text>
+          <Icon name="smile-o" size={22} color="grey"/>
+        </View>
+      ) : (
+        itemsToDisplay.map((item, index) => (
+          <SwipeableItem
+            key={index}
+            item={item}
+            name={item?.shoppingItemName}
+            quantity={item?.quantity}
+            category={item?.category}
+            color={ColorFn(item)}
+            renderRightActions={() => (
+              <EditAndDelete
+                onPress1={() => {
+                  setIsModalVisible(true);
+                  setItemToEdit(item);
+                }}
+                onPress2={() => {
+                  deleteItem(item?.id);
+                }}
+              />
+            )}
+            children={
+              <ShoppingListItemColor
+                name={item?.shoppingItemName}
+                quantity={item?.quantity}
+              />
+            }
+            onEdit={() => {
+              setIsModalVisible(true);
+              setItemToEdit(item);
+            }}
+          />
+        ))
+      )}
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -262,7 +265,13 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "700",
   },
- 
+  empty: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "600",
+    color: "grey",
+    marginRight: 10,
+  },
 });
 
 export default ShoppingListScreen;
