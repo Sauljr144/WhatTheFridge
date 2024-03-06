@@ -204,7 +204,7 @@ const ShoppingListScreen = () => {
 
               }}
               onPress2={() => {
-  
+              
                 deleteItem(item?.id);
               }}
             />

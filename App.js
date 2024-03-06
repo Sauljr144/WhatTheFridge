@@ -8,6 +8,8 @@ import LoginScreen from "./app/screens/LoginScreen";
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import FridgeListScreen from "./app/screens/FridgeListScreen";
 import { config } from "@gluestack-ui/config"
+import ShoppingListScreen from "./app/screens/ShoppingListScreen";
+
 
 const Warp = createStackNavigator();
 
@@ -21,6 +23,7 @@ export default function App() {
         {/* <Warp.Screen name="Create" component={CreateAccountScreen} />
         <Warp.Screen name="Login" component={LoginScreen} /> */}
         <Warp.Screen name="FridgeList" component={FridgeListScreen} />
+        {/* <Warp.Screen name="ShopList" component={ShoppingListScreen} /> */}
 
       </Warp.Navigator>
     </NavigationContainer>

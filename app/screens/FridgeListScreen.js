@@ -30,17 +30,16 @@ const FridgeListScreen = () => {
 
   //Get Fridge Items
   const getFridgeItems = async () => {
-    let myFridgeItems = await getData("Fridge");
+    let myFridgeItems = await getData("fridge");
     setFridgeList(myFridgeItems);
     // console.log(myFridgeItems);
   };
 
-  //Add Item
+  // Add Item
   const addItemToFridgeList = (item) => {
     const newItem = {
       ...item,
-      color: categoryColors[item.category],
-      expirationDate: item.expirationDate,
+   
     };
     setFridgeList([...fridgeList, newItem]);
   };
@@ -53,13 +52,14 @@ const FridgeListScreen = () => {
 
   //Delete All Items
   const MasterDelete = async () => {
-    const deleteFridgeItems = await deleteAllData("fridge");
+    const result = await deleteAllData("fridge");
     getFridgeItems();
   };
 
   //Set Selected Category
   const handleSelectedCategory = (category) => {
     setSelectedCategory(category);
+    console.log(category);
   };
 
   //filter by category
