@@ -2,13 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-const ShoppingListItemColor = ({name, quantity, expirationDate}) => {
+const FridgeListItemColor = ({name, quantity, expirationDate}) => {
 
     return (
-        <View style={{ ...styles.item}}>
+        <View style={{ ...styles.item }}>
           <Text>{name}</Text>
           <Text>{quantity}</Text>
-          {/* <Text>{expirationDate}</Text> */}
+          <Text>{expirationDate}</Text>
 
         </View>
       );
@@ -22,4 +22,4 @@ const ShoppingListItemColor = ({name, quantity, expirationDate}) => {
       },
     });
 
-export default ShoppingListItemColor
+export default FridgeListItemColor
