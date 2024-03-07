@@ -62,7 +62,7 @@ const LoginScreen = ({ navigation }) => {
                   marginHorizontal: 10,
                 }}/>
              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <TouchableOpacity onPress={handleSubmit}>
                   <Btn />
                 </TouchableOpacity>
               </View>
