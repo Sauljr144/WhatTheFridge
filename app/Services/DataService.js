@@ -31,8 +31,7 @@ const sendData = async (controller, passedInData) => {
 
 // Put
 const editData = async (controller, id, item) => {
-
-
+  
   const response = await fetch(`http://localhost:5223/${controller}/${id}`, {
     method: "PUT",
     headers: {

@@ -18,11 +18,13 @@ export default function App() {
       
    
         <NavigationContainer style={styles.container}>
-      <Warp.Navigator>
+        <Warp.Navigator screenOptions={{
+          headerShown: false
+        }}>
         {/* <Warp.Screen name="Create" component={CreateAccountScreen} />
         <Warp.Screen name="Login" component={LoginScreen} /> */}
-        <Warp.Screen name="FridgeList" component={FridgeListScreen} />
-        {/* <Warp.Screen name="ShopList" component={ShoppingListScreen} /> */}
+        {/* <Warp.Screen name="FridgeList" component={FridgeListScreen} /> */}
+        <Warp.Screen name="ShopList" component={ShoppingListScreen} />
 
       </Warp.Navigator>
     </NavigationContainer>
