@@ -3,7 +3,7 @@ import CustomDropdown from './CustomDropDown';
 
 const CategoryPickerScreen = ({ onSelectedCategory, selectedCategory }) => {
   const categoryNames = [
-    { label: "View All", value: "" },
+    { label: "View All", value: null },
     { label: "Beverages", value: "Beverages" },
     { label: "Dairy", value: "Dairy" },
     { label: "Fruits", value: "Fruits" },

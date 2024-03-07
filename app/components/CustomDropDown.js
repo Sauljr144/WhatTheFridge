@@ -13,7 +13,7 @@ import { StyleSheet } from "react-native";
 
 const CustomDropdown = ({ items, onSelectItem, selectedValue}) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState("");
 
   useEffect(() => {
     const selectedLabel = items.find(item => item.value === selectedValue)?.label;

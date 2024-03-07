@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
                   marginHorizontal: 10,
                 }}/>
              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Shopping")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ShopList")}>
                   <Btn />
                 </TouchableOpacity>
               </View>

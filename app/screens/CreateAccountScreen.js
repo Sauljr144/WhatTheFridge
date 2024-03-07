@@ -59,7 +59,7 @@ const CreateAccountScreen = ({ navigation }) => {
               />
 
               <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={handleSubmit}>
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                   <Btn />
                 </TouchableOpacity>
               </View>

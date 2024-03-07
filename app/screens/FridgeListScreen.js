@@ -134,6 +134,7 @@ const FridgeListScreen = ({navigation}) => {
   };
 
   return (
+    <>
     <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Fridge List</Text>
@@ -240,6 +241,8 @@ const FridgeListScreen = ({navigation}) => {
         />
       ))}
     </ScrollView>
+    <NavPiece navigation={navigation}/>
+    </>
   );
 };
 const styles = StyleSheet.create({

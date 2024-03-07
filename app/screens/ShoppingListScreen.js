@@ -11,18 +11,13 @@ import EditAndDelete from "../components/EditAndDelete";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native";
 import { set } from "@gluestack-style/react";
+import NavPiece from "../components/NavPiece";
 
 const ShoppingListScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
-  const [itemToEdit, setItemToEdit] = useState({
-    shoppingItemName: "",
-    quantity: 0,
-    category: "",
-    id: 0,
-  
-  });
+  const [itemToEdit, setItemToEdit] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
 
   //useEffect to render data on page load
@@ -111,7 +106,7 @@ const ShoppingListScreen = ({navigation}) => {
     }
   };
   const categoryNames = [
-    { label: "View All", value: null },
+    { label: "View All", value: null},
     { label: "Beverages", value: "Beverages" },
     { label: "Dairy", value: "Dairy" },
     { label: "Fruits", value: "Fruits" },
@@ -131,7 +126,9 @@ const ShoppingListScreen = ({navigation}) => {
   };
 
   return (
-    <ScrollView>
+    <>
+    <SafeAreaView style={{flex:1, backgroundColor:"#FFCE20"}}>
+    <ScrollView style={{ backgroundColor:"white"}} stickyHeaderIndices={[0]}>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
@@ -230,6 +227,9 @@ const ShoppingListScreen = ({navigation}) => {
         ))
       )}
     </ScrollView>
+    </SafeAreaView>
+    <NavPiece navigation={navigation}/>
+    </>
   );
 };
 
@@ -237,14 +237,15 @@ const styles = StyleSheet.create({
   topBorder: {
     justifyContent: "flex-end",
     alignItems: "start",
-    height: 120,
+    height: 90,
     width: "100%",
     backgroundColor: "#FFCE20",
     paddingLeft: 30,
     paddingBottom: 30,
+    paddingTop: 20,
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
-    marginBottom: 15,
+    marginBottom: 5,
   },
   shoppingHeader: {
     fontWeight: "700",
