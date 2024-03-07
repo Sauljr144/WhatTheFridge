@@ -20,9 +20,7 @@ const FridgeListScreen = ({ navigation }) => {
   const [fridgeList, setFridgeList] = useState([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    console.log(itemToEdit?.id);
-  }, [itemToEdit]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       getFridgeItems();
