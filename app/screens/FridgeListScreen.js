@@ -111,7 +111,7 @@ const FridgeListScreen = () => {
   };
 
   const categoryNames = [
-    { label: "View All", value: null },
+    { label: "View All", value: "" },
     { label: "Beverages", value: "Beverages" },
     { label: "Dairy", value: "Dairy" },
     { label: "Fruits", value: "Fruits" },

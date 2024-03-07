@@ -10,13 +10,20 @@ import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native";
+import { set } from "@gluestack-style/react";
 
 const ShoppingListScreen = () => {
   //--------------------------------UseStates-------------------------------//
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
-  const [itemToEdit, setItemToEdit] = useState(null);
+  const [itemToEdit, setItemToEdit] = useState({
+    shoppingItemName: "",
+    quantity: 0,
+    category: "",
+    id: 0,
+  
+  });
   const [deleteModal, setDeleteModal] = useState(false);
 
   //useEffect to render data on page load
