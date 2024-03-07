@@ -19,11 +19,16 @@ const FridgeListScreen = ({navigation}) => {
   const [fridgeList, setFridgeList] = useState([]);
   const [search, setSearch] = useState("");
 
+
+  useEffect(() => {
+    console.log(itemToEdit?.id);
+  }, [itemToEdit]);
   useEffect(() => {
     const timer = setTimeout(() => {
       getFridgeItems();
     }, 0); // 3000ms delay
 
+ 
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
@@ -41,7 +46,6 @@ const FridgeListScreen = ({navigation}) => {
   const addItemToFridgeList = (item) => {
     const newItem = {
       ...item,
-   
     };
     setFridgeList([...fridgeList, newItem]);
   };
@@ -204,6 +208,38 @@ const FridgeListScreen = ({navigation}) => {
           onEdit={handleEdit}
         />
       )}
+      <ScrollView>
+        {itemsToDisplay.map((item, index) => (
+          <SwipeableItem
+            key={index}
+            item={item}
+            name={item.fridgeItemName}
+            quantity={item.quantity}
+            category={item.category}
+            color={ColorFn(item)}
+            children={
+              <ShoppingListItemColor
+                name={item.fridgeItemName}
+                quantity={item.quantity}
+              />
+            }
+            onPress={(deletedItem) => {
+              // const updatedList = shoppingList.filter(
+              //   (item) => item !== deletedItem
+              // );
+
+              deleteFridgeItem(deletedItem);
+              // setShoppingList(updatedList);
+            }}
+            onEdit={() => {
+              setIsModalVisible(true);
+              setItemToEdit(item);
+            }}
+          />
+        ))}
+      </ScrollView>
+      <NavPiece navigation={navigation}/>
+    
 
       {itemsToDisplay.map((item, index) => (
         <SwipableFridgeItem
@@ -223,7 +259,6 @@ const FridgeListScreen = ({navigation}) => {
               onPress2={() => {
                 console.log(item);
                 deleteItem(item?.id);
-                
               }}
             />
           )}

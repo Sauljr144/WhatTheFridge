@@ -22,7 +22,19 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b0d7e992-00ad-41e2-aec8-a2a851a1ebfb"
+      }
+    },
+    "owner": "valerie4792",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b0d7e992-00ad-41e2-aec8-a2a851a1ebfb"
     }
   }
 }

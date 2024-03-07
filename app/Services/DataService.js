@@ -51,6 +51,9 @@ const editData = async (controller, id, item) => {
 // Delete Item
 const deleteData = async (controller, id) => {
   try {
+
+    console.log(`Deleting item with ID: ${id}`);
+
     let result = await fetch(`http://localhost:5223/${controller}/${id}`, {
       method: "DELETE",
       headers: {
@@ -62,6 +65,7 @@ const deleteData = async (controller, id) => {
       const message = `Error check your code! ${result.status}`;
       throw new Error(message);
     }
+  
 
   } catch (error) {
     console.error(error);
@@ -71,6 +75,9 @@ const deleteData = async (controller, id) => {
 //Delete All
 const deleteAllData = async (controller) => {
   try {
+
+   
+
     let result = await fetch(`http://localhost:5223/${controller}`, {
       method: "DELETE",
       headers: {
