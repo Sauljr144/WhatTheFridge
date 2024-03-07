@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, SafeAreaView } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import FridgeListItemModal from "../components/FridgeListItemModal";
 import FridgeListItemColor from "../components/FridgeListItemColor";
@@ -10,15 +10,15 @@ import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import { Input, InputField, get, set } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import EditAndDelete from "../components/EditAndDelete";
-
 import NavPiece from "../components/NavPiece";
-const FridgeListScreen = ({navigation}) => {
+import Icon from "react-native-vector-icons/FontAwesome";
+
+const FridgeListScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
   const [fridgeList, setFridgeList] = useState([]);
   const [search, setSearch] = useState("");
-
 
   useEffect(() => {
     console.log(itemToEdit?.id);
@@ -28,7 +28,6 @@ const FridgeListScreen = ({navigation}) => {
       getFridgeItems();
     }, 0); // 3000ms delay
 
- 
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
@@ -139,144 +138,131 @@ const FridgeListScreen = ({navigation}) => {
 
   return (
     <>
-    <ScrollView>
-      <View style={styles.topBorder}>
-        <Text style={styles.shoppingHeader}>My Fridge List</Text>
-      </View>
-
-      <View style={styles.Input}>
-        <Input
-          variant="outline"
-          size="md"
-          style={styles.InputField}
-          isDisabled={false}
-          isInvalid={false}
-          isReadOnly={false}
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#FFCE20" }}>
+        <ScrollView
+          style={{ backgroundColor: "white" }}
+          stickyHeaderIndices={[0]}
         >
-          <InputField
-            placeholder="Search Items"
-            value={search}
-            onChangeText={(text) => {
-              setSearch(text);
-            }}
-          />
-        </Input>
-      </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          margin: 20,
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={styles.subHeaderFont}>Sort By:</Text>
-          <CategoryPickerScreen
-            onSelectedCategory={handleSelectedCategory}
-            selectedCategory={selectedCategory}
-          />
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={styles.addItemTxt}>Add Item:</Text>
-          <Feather
-            name="plus-circle"
-            size={35}
-            color="#FFCE20"
-            onPress={() => setIsModalVisible(true)}
-          />
-        </View>
-      </View>
-      <View style={styles.clearAllcontainer}>
-        <TouchableOpacity onPress={MasterDelete}>
-          <Text style={styles.clearAllTxt}>Clear My List</Text>
-        </TouchableOpacity>
-      </View>
-      {isModalVisible && (
-        <FridgeListItemModal
-          name={itemToEdit?.fridgeItemName}
-          quantity={itemToEdit?.quantity}
-          category={itemToEdit?.category}
-          itemExpDate={itemToEdit?.expirationDate}
-          id={itemToEdit?.id}
-          isVisible={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
-          addItemToFridgeList={addItemToFridgeList}
-          categoryNames={categoryNames}
-          categoryColors={categoryColors}
-          itemToEdit={itemToEdit}
-          isEditing={!!itemToEdit}
-          onEdit={handleEdit}
-        />
-      )}
-      <ScrollView>
-        {itemsToDisplay.map((item, index) => (
-          <SwipeableItem
-            key={index}
-            item={item}
-            name={item.fridgeItemName}
-            quantity={item.quantity}
-            category={item.category}
-            color={ColorFn(item)}
-            children={
-              <ShoppingListItemColor
-                name={item.fridgeItemName}
-                quantity={item.quantity}
+          <View style={styles.topBorder}>
+            <Text style={styles.shoppingHeader}>My Fridge List</Text>
+          </View>
+
+          <View style={styles.Input}>
+            <Input
+              variant="outline"
+              size="md"
+              style={styles.InputField}
+              isDisabled={false}
+              isInvalid={false}
+              isReadOnly={false}
+            >
+              <InputField
+                placeholder="Search Items"
+                value={search}
+                onChangeText={(text) => {
+                  setSearch(text);
+                }}
               />
-            }
-            onPress={(deletedItem) => {
-              // const updatedList = shoppingList.filter(
-              //   (item) => item !== deletedItem
-              // );
-
-              deleteFridgeItem(deletedItem);
-              // setShoppingList(updatedList);
+            </Input>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              margin: 20,
             }}
-            onEdit={() => {
-              setIsModalVisible(true);
-              setItemToEdit(item);
-            }}
-          />
-        ))}
-      </ScrollView>
-      <NavPiece navigation={navigation}/>
-    
-
-      {itemsToDisplay.map((item, index) => (
-        <SwipableFridgeItem
-          key={index}
-          item={item}
-          name={item?.fridgeItemName}
-          quantity={item?.quantity}
-          expirationDate={item?.expirationDate}
-          category={item?.Category}
-          color={ColorFn(item)}
-          renderRightActions={() => (
-            <EditAndDelete
-              onPress1={() => {
-                setIsModalVisible(true);
-                setItemToEdit(item);
-              }}
-              onPress2={() => {
-                console.log(item);
-                deleteItem(item?.id);
-              }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.subHeaderFont}>Sort By:</Text>
+              <CategoryPickerScreen
+                onSelectedCategory={handleSelectedCategory}
+                selectedCategory={selectedCategory}
+              />
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.addItemTxt}>Add Item:</Text>
+              <Feather
+                name="plus-circle"
+                size={35}
+                color="#FFCE20"
+                onPress={() => setIsModalVisible(true)}
+              />
+            </View>
+          </View>
+          <View style={styles.clearAllcontainer}>
+            <TouchableOpacity onPress={MasterDelete}>
+              <Text style={styles.clearAllTxt}>Clear My List</Text>
+            </TouchableOpacity>
+          </View>
+          {isModalVisible && (
+            <FridgeListItemModal
+              name={itemToEdit?.fridgeItemName}
+              quantity={itemToEdit?.quantity}
+              category={itemToEdit?.category}
+              itemExpDate={itemToEdit?.expirationDate}
+              id={itemToEdit?.id}
+              isVisible={isModalVisible}
+              onClose={() => setIsModalVisible(false)}
+              addItemToFridgeList={addItemToFridgeList}
+              categoryNames={categoryNames}
+              categoryColors={categoryColors}
+              itemToEdit={itemToEdit}
+              isEditing={!!itemToEdit}
+              onEdit={handleEdit}
             />
           )}
-          children={
-            <FridgeListItemColor
-              name={item?.fridgeItemName}
-              quantity={item?.quantity}
-              expirationDate={item?.expirationDate}
-            />
-          }
-          onEdit={() => {
-            setIsModalVisible(true);
-            setItemToEdit(item);
-          }}
-        />
-      ))}
-    </ScrollView>
-    <NavPiece navigation={navigation}/>
+
+          {itemsToDisplay.length === 0 ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginTop: 150,
+                justifyContent: "center",
+              }}
+            >
+              <Text style={styles.empty}>Add Some Items!</Text>
+              <Icon name="smile-o" size={22} color="grey" />
+            </View>
+          ) : (
+            itemsToDisplay.map((item, index) => (
+              <SwipableFridgeItem
+                key={index}
+                item={item}
+                name={item?.fridgeItemName}
+                quantity={item?.quantity}
+                expirationDate={item?.expirationDate}
+                category={item?.Category}
+                color={ColorFn(item)}
+                renderRightActions={() => (
+                  <EditAndDelete
+                    onPress1={() => {
+                      setIsModalVisible(true);
+                      setItemToEdit(item);
+                    }}
+                    onPress2={() => {
+                      console.log(item);
+                      deleteItem(item?.id);
+                    }}
+                  />
+                )}
+                children={
+                  <FridgeListItemColor
+                    name={item?.fridgeItemName}
+                    quantity={item?.quantity}
+                    expirationDate={item?.expirationDate}
+                  />
+                }
+                onEdit={() => {
+                  setIsModalVisible(true);
+                  setItemToEdit(item);
+                }}
+              />
+            ))
+          )}
+        </ScrollView>
+      </SafeAreaView>
+      <NavPiece navigation={navigation} />
     </>
   );
 };
@@ -284,14 +270,15 @@ const styles = StyleSheet.create({
   topBorder: {
     justifyContent: "flex-end",
     alignItems: "start",
-    height: 120,
+    height: 90,
     width: "100%",
     backgroundColor: "#FFCE20",
     paddingLeft: 30,
     paddingBottom: 30,
+    paddingTop: 20,
     borderBottomRightRadius: 25,
     borderBottomLeftRadius: 25,
-    marginBottom: 15,
+    marginBottom: 5,
   },
   shoppingHeader: {
     fontWeight: "700",
@@ -329,6 +316,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "red",
     fontWeight: "700",
+  },
+  empty: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "600",
+    color: "grey",
+    marginRight: 10,
   },
 });
 
