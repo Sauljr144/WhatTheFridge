@@ -237,7 +237,7 @@ const FridgeListScreen = ({navigation}) => {
         ))}
       </ScrollView>
       <NavPiece navigation={navigation}/>
-    </>
+    
 
       {itemsToDisplay.map((item, index) => (
         <SwipableFridgeItem
