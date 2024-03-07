@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const ShoppingListItemColor = ({name, quantity, expirationDate}) => {
 
     return (
-        <View style={{ ...styles.item, backgroundColor: item.color }}>
+        <View style={{ ...styles.item}}>
           <Text>{name}</Text>
           <Text>{quantity}</Text>
           {/* <Text>{expirationDate}</Text> */}

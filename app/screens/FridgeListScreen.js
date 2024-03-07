@@ -9,6 +9,7 @@ import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import { Input, InputField, get, set } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
+import EditAndDelete from "../components/EditAndDelete";
 
 import NavPiece from "../components/NavPiece";
 const FridgeListScreen = ({navigation}) => {
@@ -116,7 +117,7 @@ const FridgeListScreen = ({navigation}) => {
   };
 
   const categoryNames = [
-    { label: "View All", value: null },
+    { label: "View All", value: "" },
     { label: "Beverages", value: "Beverages" },
     { label: "Dairy", value: "Dairy" },
     { label: "Fruits", value: "Fruits" },
@@ -137,6 +138,7 @@ const FridgeListScreen = ({navigation}) => {
   };
 
   return (
+    <>
     <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Fridge List</Text>
@@ -274,6 +276,8 @@ const FridgeListScreen = ({navigation}) => {
         />
       ))}
     </ScrollView>
+    <NavPiece navigation={navigation}/>
+    </>
   );
 };
 const styles = StyleSheet.create({

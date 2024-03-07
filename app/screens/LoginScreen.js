@@ -25,6 +25,7 @@ const LoginScreen = ({ navigation }) => {
   };
   return (
     <>
+  
       <SafeAreaView style={styles.container}>
         <View style={{marginTop: 50, marginLeft: 50}}>
           <Text style={styles.text}>What The</Text>
@@ -62,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
                   marginHorizontal: 10,
                 }}/>
              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={handleSubmit}>
+                <TouchableOpacity onPress={() => navigation.navigate("ShopList")}>
                   <Btn />
                 </TouchableOpacity>
               </View>
