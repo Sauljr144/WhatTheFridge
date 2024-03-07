@@ -31,8 +31,7 @@ const sendData = async (controller, passedInData) => {
 
 // Put
 const editData = async (controller, id, item) => {
-
-
+  
   const response = await fetch(`http://localhost:5223/${controller}/${id}`, {
     method: "PUT",
     headers: {
@@ -41,16 +40,16 @@ const editData = async (controller, id, item) => {
     body: JSON.stringify(item),
   })
     .then((response) => response)
-    .then((data) => {
-      if (!data.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    .then((result) => {
+      if (!result.ok) {
+        throw new Error(`HTTP error! status: ${result.status}`);
       }
-      return data;
+      return result;
     });
 };
 
 // Delete Item
-const deleteData = async (controller,id) => {
+const deleteData = async (controller, id) => {
   try {
     let result = await fetch(`http://localhost:5223/${controller}/${id}`, {
       method: "DELETE",

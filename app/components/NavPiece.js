@@ -30,11 +30,15 @@ const styles = StyleSheet.create({
       height:30,
     },
     container:{
+
         position:'sticky',
         backgroundColor:'#FFF8F2',
         width:'100%',
         height:'10%',
-        padding:60,
+        paddingLeft:50,
+        paddingRight:50,
+        paddingTop:10,
+        paddingBottom:10,
         alignItems:'center',
         flexDirection:'row',
         justifyContent:'space-between'
