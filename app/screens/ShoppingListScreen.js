@@ -30,7 +30,7 @@ const ShoppingListScreen = () => {
   }, []);
 
   //--------------------------------Functions-------------------------------//
-
+//change get data to fridge
   //Get Shopping Items
   const getShoppingItems = async () => {
     let result = await getData("shopping");
@@ -39,8 +39,8 @@ const ShoppingListScreen = () => {
 
   //Add Shopping Item
   const addItemToShoppingList = (item) => {
-    const newItem = { ...item};
-    setShoppingList([...shoppingList, newItem]);
+    const newItem = { ...item, color: categoryColors[item.category] };
+    setShoppingList([...shoppingList, newItem]); //new line to set fridgelist
   };
 
   //Delete a Shopping item
@@ -166,6 +166,9 @@ const ShoppingListScreen = () => {
 
       {/* {deleteModal && ()} */}
 
+      {/* {deleteModal && ()} */}
+
+{/* double check below */}
       {isModalVisible && (
         <ShoppingListItemModal
           name={itemToEdit?.shoppingItemName}

@@ -17,8 +17,21 @@ import {
 import CustomDropdown from "./CustomDropDown";
 import { getData, sendData, editData } from "../Services/DataService";
 
-const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose, onEdit, addItemToShoppingList, categoryNames, categoryColors, itemToEdit, isEditing, submitEdit}) => {
-  
+const ShoppingListItemModal = ({
+  name,
+  id,
+  category,
+  quantity,
+  isVisible,
+  onClose,
+  onEdit,
+  addItemToShoppingList,
+  categoryNames,
+  categoryColors,
+  itemToEdit,
+  isEditing,
+  submitEdit,
+}) => {
   const [itemName, setItemName] = useState("");
   const [itemCategory, setItemCategory] = useState("");
   const [itemQuantity, setItemQuantity] = useState(0);
@@ -47,6 +60,8 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
 
   //Functions
   //Function to add to database
+
+  //has to match backend for fridge item screen
   const addShoppingItem = async () => {
     const newShoppingItem = {
       id: itemId,
@@ -54,8 +69,10 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
       shoppingItemName: itemName,
       quantity: itemQuantity,
       isDeleted: false,
-      category: itemCategory
+      category: itemCategory,
     };
+
+    //need to add to fridgle list modal
     setShoppingItems([...shoppingItems, newShoppingItem]);
     await sendData("Shopping", newShoppingItem);
     console.log(newShoppingItem, "it works");
@@ -63,10 +80,9 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
 
   //Function to edit item in database
   const editItem = async (id, item) => {
-    await editData("Shopping",id, item);
+    await editData("Shopping", id, item);
     console.log(id, item, "it works");
   };
-
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
@@ -109,6 +125,7 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
         </ModalBody>
 
         <ModalFooter>
+          {/* needs to match backend for fridgelist modal */}
           <Button
             size="sm"
             action="positive"
@@ -120,21 +137,19 @@ const ShoppingListItemModal = ({name, id, category, quantity, isVisible, onClose
                 shoppingItemName: itemName,
                 category: itemCategory,
                 quantity: itemQuantity,
-                isDeleted: false
+                isDeleted: false,
               };
 
               if (isEditing) {
                 onEdit(newItem);
-                // submitEdit(newItem);
                 console.log(newItem);
                 editItem(itemId, newItem);
-
               } else {
                 addItemToShoppingList(newItem);
-
                 //Adding to our database
                 addShoppingItem();
               }
+              //needs match backend for fridgelist modal
 
               onClose();
             }}

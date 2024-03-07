@@ -50,7 +50,7 @@ const editData = async (controller, id, item) => {
 };
 
 // Delete Item
-const deleteData = async (controller,id) => {
+const deleteData = async (controller, id) => {
   try {
     let result = await fetch(`http://localhost:5223/${controller}/${id}`, {
       method: "DELETE",
