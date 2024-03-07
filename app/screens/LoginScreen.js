@@ -13,7 +13,15 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = () => {
-    username, password;
+    // username, // password;
+    // navigation.navigate('FridgeList')
+    if(username === 'username' && password === 'password')
+    {
+      navigation.navigate('FridgeList')
+    }
+    else{
+        alert('Incorrect username or password.')
+    } 
   };
   return (
     <>
@@ -54,7 +62,7 @@ const LoginScreen = ({ navigation }) => {
                   marginHorizontal: 10,
                 }}/>
              <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <TouchableOpacity onPress={handleSubmit}>
                   <Btn />
                 </TouchableOpacity>
               </View>

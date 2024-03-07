@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { TextInput, Button } from "react-native";
-import colors from "../config/colors";
 import Btn from "../components/Btn";
 
 const CreateAccountScreen = ({ navigation }) => {
@@ -15,6 +14,7 @@ const CreateAccountScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const handleSubmit = () => {
     username, password;
+    console.log(handleSubmit)
   };
   return (
     <>
@@ -59,7 +59,7 @@ const CreateAccountScreen = ({ navigation }) => {
               />
 
               <View style={{ alignItems: "center" }}>
-                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <TouchableOpacity onPress={handleSubmit}>
                   <Btn />
                 </TouchableOpacity>
               </View>
