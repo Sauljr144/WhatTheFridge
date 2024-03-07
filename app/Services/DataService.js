@@ -41,11 +41,11 @@ const editData = async (controller, id, item) => {
     body: JSON.stringify(item),
   })
     .then((response) => response)
-    .then((data) => {
-      if (!data.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    .then((result) => {
+      if (!result.ok) {
+        throw new Error(`HTTP error! status: ${result.status}`);
       }
-      return data;
+      return result;
     });
 };
 
