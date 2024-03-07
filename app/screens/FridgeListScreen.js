@@ -17,11 +17,16 @@ const FridgeListScreen = () => {
   const [fridgeList, setFridgeList] = useState([]);
   const [search, setSearch] = useState("");
 
+
+  useEffect(() => {
+    console.log(itemToEdit?.id);
+  }, [itemToEdit]);
   useEffect(() => {
     const timer = setTimeout(() => {
       getFridgeItems();
     }, 0); // 3000ms delay
 
+ 
     // Cleanup function to clear the timeout if the component unmounts before the timeout finishes
     return () => clearTimeout(timer);
   }, []);
@@ -39,7 +44,6 @@ const FridgeListScreen = () => {
   const addItemToFridgeList = (item) => {
     const newItem = {
       ...item,
-   
     };
     setFridgeList([...fridgeList, newItem]);
   };
@@ -220,7 +224,6 @@ const FridgeListScreen = () => {
               onPress2={() => {
                 console.log(item);
                 deleteItem(item?.id);
-                
               }}
             />
           )}

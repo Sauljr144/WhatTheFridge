@@ -14,7 +14,7 @@ import {
   InputField,
 } from "@gluestack-ui/themed";
 import CustomDropdown from "./CustomDropDown";
-import { getData, sendData, editData } from "../Services/DataService";
+import { sendData, editData } from "../Services/DataService";
 
 const FridgeListItemModal = ({
   name,
@@ -60,7 +60,6 @@ const FridgeListItemModal = ({
   //Arrays
   const [fridgeItems, setFridgeItems] = useState([]);
 
-
   //Function to add to database
   const addFridgeItem = async () => {
     const newFridgeItem = {
@@ -77,11 +76,11 @@ const FridgeListItemModal = ({
     console.log(newFridgeItem, "it works");
   };
 
-    //need to add to fridgle list modal for edit item
-    const editItem = async (id, item) => {
-      await editData("fridge", id, item);
-      console.log(id, item, "it works");
-    };
+  //need to add to fridgle list modal for edit item
+  const editItem = async (id, item) => {
+    await editData("fridge", id, item);
+    console.log(id, item, "it works");
+  };
 
   return (
     <Modal isOpen={isVisible} onClose={onClose} size="lg">
