@@ -10,7 +10,9 @@ import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import { Input, InputField, get, set } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
 import EditAndDelete from "../components/EditAndDelete";
-const FridgeListScreen = () => {
+
+import NavPiece from "../components/NavPiece";
+const FridgeListScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);

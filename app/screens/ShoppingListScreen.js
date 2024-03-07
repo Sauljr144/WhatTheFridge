@@ -12,8 +12,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { SafeAreaView } from "react-native";
 import { set } from "@gluestack-style/react";
 
-const ShoppingListScreen = () => {
-  //--------------------------------UseStates-------------------------------//
+const ShoppingListScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
@@ -132,11 +131,8 @@ const ShoppingListScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor:"#FFCE20"}}>
-          
-    <ScrollView style={{ backgroundColor:"white"}} >
-      
-      <View style={styles.topBorder }>
+    <ScrollView>
+      <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
       </View>
 
@@ -234,7 +230,6 @@ const ShoppingListScreen = () => {
         ))
       )}
     </ScrollView>
-    </SafeAreaView>
   );
 };
 
