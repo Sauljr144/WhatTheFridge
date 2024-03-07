@@ -9,8 +9,9 @@ import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, deleteData, deleteAllData } from "../Services/DataService";
 import { Input, InputField, get, set } from "@gluestack-ui/themed";
 import { FontAwesome } from "@expo/vector-icons";
-import EditAndDelete from "../components/EditAndDelete";
-const FridgeListScreen = () => {
+
+import NavPiece from "../components/NavPiece";
+const FridgeListScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [itemToEdit, setItemToEdit] = useState(null);
@@ -205,6 +206,38 @@ const FridgeListScreen = () => {
           onEdit={handleEdit}
         />
       )}
+      <ScrollView>
+        {itemsToDisplay.map((item, index) => (
+          <SwipeableItem
+            key={index}
+            item={item}
+            name={item.fridgeItemName}
+            quantity={item.quantity}
+            category={item.category}
+            color={ColorFn(item)}
+            children={
+              <ShoppingListItemColor
+                name={item.fridgeItemName}
+                quantity={item.quantity}
+              />
+            }
+            onPress={(deletedItem) => {
+              // const updatedList = shoppingList.filter(
+              //   (item) => item !== deletedItem
+              // );
+
+              deleteFridgeItem(deletedItem);
+              // setShoppingList(updatedList);
+            }}
+            onEdit={() => {
+              setIsModalVisible(true);
+              setItemToEdit(item);
+            }}
+          />
+        ))}
+      </ScrollView>
+      <NavPiece navigation={navigation}/>
+    </>
 
       {itemsToDisplay.map((item, index) => (
         <SwipableFridgeItem

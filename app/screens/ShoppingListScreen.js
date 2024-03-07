@@ -8,10 +8,10 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import CategoryPickerScreen from "../components/CategoryPickerScreen";
 import { getData, sendData, deleteData, deleteAllData } from "../Services/DataService";
 import EditAndDelete from "../components/EditAndDelete";
+import NavPiece from "../components/NavPiece";
 import { get, set } from "@gluestack-style/react";
 
-const ShoppingListScreen = () => {
-  //--------------------------------UseStates-------------------------------//
+const ShoppingListScreen = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [shoppingList, setShoppingList] = useState([]);
@@ -132,6 +132,7 @@ const ShoppingListScreen = () => {
   
 
   return (
+    <>
     <ScrollView>
       <View style={styles.topBorder}>
         <Text style={styles.shoppingHeader}>My Shopping List</Text>
@@ -222,6 +223,8 @@ const ShoppingListScreen = () => {
         />
       ))}
     </ScrollView>
+    <NavPiece navigation={navigation}/>
+    </>
   );
 };
 

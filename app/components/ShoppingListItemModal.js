@@ -78,7 +78,7 @@ const ShoppingListItemModal = ({
     console.log(newShoppingItem, "it works");
   };
 
-  //need to add to fridgle list modal for edit item
+  //Function to edit item in database
   const editItem = async (id, item) => {
     await editData("Shopping", id, item);
     console.log(id, item, "it works");
